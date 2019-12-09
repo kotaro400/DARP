@@ -7,11 +7,12 @@
 #include "InputData.hpp"
 #include "myfunction.hpp"
 #include "Location.hpp"
+#include "Request.hpp"
 
 using namespace std;
 
 void InputData::setInputData(string inputfile){
-    int i;
+    int i,nodetype;
     vector<int> temp_int_v;
     vector<double> temp_double_v;
     vector<string> temp_string_v;
@@ -43,6 +44,9 @@ void InputData::setInputData(string inputfile){
     getline(file,line);
     temp_string_v = splitstring(line,',');
     this->locationList[0].setLocation(stoi(temp_string_v[0]),stod(temp_string_v[1]),stod(temp_string_v[2]));
+    this->RequestList[0].setRequest(0,stoi(temp_string_v[3]),stoi(temp_string_v[4]),stoi(temp_string_v[5]),stoi(temp_string_v[6]),0);
+    Pickup test;
+    test.setPickup(0,stoi(temp_string_v[3]),stoi(temp_string_v[4]),stoi(temp_string_v[5]),stoi(temp_string_v[6]));
     temp_string_v.clear();
     
 
@@ -51,10 +55,13 @@ void InputData::setInputData(string inputfile){
         getline(file,line);
         temp_string_v = splitstring(line,',');
         this->locationList[i].setLocation(stoi(temp_string_v[0]),stod(temp_string_v[1]),stod(temp_string_v[2]));
+        if (i<= RequestSize/2){
+            nodetype = 1;
+        }else{
+            nodetype = 2;
+        }
+        this->RequestList[i].setRequest(stoi(temp_string_v[0]),stoi(temp_string_v[3]),stoi(temp_string_v[4]),stoi(temp_string_v[5]),stoi(temp_string_v[6]),nodetype);
         temp_string_v.clear();
-    }
-    for(int i=1;i<=this->RequestSize;i++){
-        cout << this->locationList[i].getLat() << endl;
     }
 
 }

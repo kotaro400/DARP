@@ -85,8 +85,17 @@ void Node::updateOrder() {
 // **********************//
 // Request				//
 // **********************//
-Request::Request() {
-}
+// Request::Request() {
+// 	this->demand = -1;
+// 	this->earliest = -1;
+// 	this->latest = -1;
+// }
+
+// void Request::setRequest() {
+	// this->demand = demand;
+	// this->earliest = earliest;
+	// this->latest = latest;
+// }
 
 // void Request::setCustomer(const Customer* customer) {
 // 	this->customer = customer;
@@ -98,16 +107,16 @@ Request::Request() {
 //**********************//
 // Pick					//
 //**********************//
-Pickup::Pickup() {
-	this->drop = nullptr;
-}
+// Pickup::Pickup() {
+// 	this->drop = nullptr;
+// }
 
-void Pickup::setDrop(Node* drop) {
-	this->drop = drop;
-}
-Node* Pickup::getDrop() const {
-	return this->drop;
-}
+// void Pickup::setDrop(Node* drop) {
+// 	this->drop = drop;
+// }
+// Node* Pickup::getDrop() const {
+// 	return this->drop;
+// }
 
 // void Pickup::updateCap() {
 // 	int temp_int;
@@ -129,16 +138,16 @@ Node* Pickup::getDrop() const {
 //**********************//
 // Drop					//
 //**********************//
-Dropoff::Dropoff() {
-	this->pick = nullptr;
-}
+// Dropoff::Dropoff() {
+// 	this->pick = nullptr;
+// }
 
-void Dropoff::setPick(Node* pick) {
-	this->pick = pick;
-}
-Node* Dropoff::getPick() const {
-	return this->pick;
-}
+// void Dropoff::setPick(Node* pick) {
+// 	this->pick = pick;
+// }
+// Node* Dropoff::getPick() const {
+// 	return this->pick;
+// }
 
 // void Dropoff::updateCap() {
 // 	int temp_int;

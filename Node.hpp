@@ -56,47 +56,48 @@ class Node {
         void updateOrder();
 };
 
-class Request :public Node {
-private:
-	//fixed
-	int demand;
-    int earliest;
-    int latest;
+// class Request :public Node {
+// private:
+// 	//fixed
+// 	int demand;
+//     int earliest;
+//     int latest;
 
-public:
-	Request();
-};
+// public:
+// 	Request();
+//     void setRequest();
+// };
 
 
 //**********************//
 // Pick					//
 //**********************//
-class Pickup :public Request {
-private:
-	Node* drop;
-public:
-	Pickup();
+// class Pickup :public Request {
+// private:
+// 	Node* drop;
+// public:
+// 	Pickup();
 
-	void setDrop(Node* drop);
-	Node* getDrop() const;
+// 	void setDrop(Node* drop);
+// 	Node* getDrop() const;
 
-	void updateCap();
-};
+// 	void updateCap();
+// };
 
 //**********************//
 // Drop					//
 //**********************//
-class Dropoff :public Request {
-private:
-	Node* pick;
-public:
-	Dropoff();
+// class Dropoff :public Request {
+// private:
+// 	Node* pick;
+// public:
+// 	Dropoff();
 
-	void setPick(Node* pick);
-	Node* getPick() const;
+// 	void setPick(Node* pick);
+// 	Node* getPick() const;
 
-	void updateCap();
-};
+// 	void updateCap();
+// };
 
 //**********************//
 // Depot					//

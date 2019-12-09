@@ -1,5 +1,6 @@
 #include <iostream>
 #include "InputData.hpp"
+#include "Route.hpp"
 using namespace std;
 
 int main(int argc, char *argv[]){
@@ -11,5 +12,7 @@ int main(int argc, char *argv[]){
     cout << inputdata.getRequestSize() << endl;
     cout << inputdata.getMaximumRouteDuration() << endl;
     cout << inputdata.getVehicleCapacity() << endl;
+
+    vector<Route> RouteList(inputdata.getVehicleNum());
   
 }
