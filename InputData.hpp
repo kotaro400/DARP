@@ -8,19 +8,19 @@ using namespace std;
 class InputData{
     private:
         int VehicleNum;
-        int UserSize;
+        int RequestSize;
         int MaximumRouteDuration;
         int VehicleCapacity;
-        vector<Location> LocationList;
+        vector<Location> locationList; //デポがidx:0, pickが1-n dropがn+1-2n
         vector<Request> RequestList;
     public:
         void setInputData(string inputfile);
         void setVehicleNum(int vehiclesize);
-        void setUserSize(int usersize);
+        void setRequestSize(int usersize);
         void setMaximumRouteDuration(int maximumrouteduration);
         void setVehicleCapacity(int vehiclecapacity);
         int getVehicleNum();
-        int getUserSize();
+        int getRequestSize();
         int getMaximumRouteDuration();
         int getVehicleCapacity();
 

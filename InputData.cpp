@@ -6,6 +6,7 @@
 
 #include "InputData.hpp"
 #include "myfunction.hpp"
+#include "Location.hpp"
 
 using namespace std;
 
@@ -27,44 +28,34 @@ void InputData::setInputData(string inputfile){
     getline(file,line);
     temp_int_v = splitint(line, ',');
     this->VehicleNum = temp_int_v[0];
-    this->UserSize = temp_int_v[1];
+    this->RequestSize = temp_int_v[1];
     this->MaximumRouteDuration = temp_int_v[2];
     this->VehicleCapacity = temp_int_v[3];
     temp_int_v.clear();
 
-    this->LocationList.reserve(2 * this->UserSize);
-	this->LocationList.resize(2 * this->UserSize);
-    this->RequestList.reserve(2 * this->UserSize);
-    this->RequestList.resize(2 * this->UserSize);
-
+    this->locationList.reserve(this->RequestSize);
+	this->locationList.resize(this->RequestSize);
+    this->RequestList.reserve(this->RequestSize);
+    this->RequestList.resize(this->RequestSize);
 
     
     // firstdepot
     getline(file,line);
-    cout << "first depot" << endl;
+    temp_string_v = splitstring(line,',');
+    this->locationList[0].setLocation(stoi(temp_string_v[0]),stod(temp_string_v[1]),stod(temp_string_v[2]));
+    temp_string_v.clear();
+    
 
-    // requests (pickup)
-    cout << "pickup" << endl;
-    for(int i=0;i < this->UserSize; i++){
+    
+    for(int i=1;i <= this->RequestSize; i++){
         getline(file,line);
         temp_string_v = splitstring(line,',');
-        cout << line << endl;
+        this->locationList[i].setLocation(stoi(temp_string_v[0]),stod(temp_string_v[1]),stod(temp_string_v[2]));
         temp_string_v.clear();
     }
-    // requests (dropoff)
-    cout << "dropoff" << endl;
-    for(int i=0; i < this->UserSize;i++){
-        getline(file,line);
-        temp_string_v = splitstring(line,',');
-        cout << line << endl;
-        temp_string_v.clear();
+    for(int i=1;i<=this->RequestSize;i++){
+        cout << this->locationList[i].getLat() << endl;
     }
-
-    // lastdepot
-    getline(file,line);
-
-    cout << "last depot" << endl;
-    cout << line << endl;
 
 }
 
@@ -73,8 +64,8 @@ void InputData::setInputData(string inputfile){
 int InputData::getVehicleNum() {
     return VehicleNum;
 }
-int InputData::getUserSize() {
-    return UserSize;
+int InputData::getRequestSize() {
+    return RequestSize;
 }
 int InputData::getMaximumRouteDuration() {
     return MaximumRouteDuration;
