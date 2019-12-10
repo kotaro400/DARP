@@ -5,6 +5,7 @@
 using namespace std;
 
 #include "myfunction.hpp"
+#include "Route.hpp"
 
 vector<int> splitint(string input, char delimiter){
     int first = 0;
@@ -59,4 +60,9 @@ vector<double> splitdouble(string input, char delimiter){
 		result.push_back(temp);
 	}
     return result;
+}
+
+void makeInitialRoute(){
+    cout << "初期解" << endl;
+
 }

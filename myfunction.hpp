@@ -2,8 +2,11 @@
 
 #include<vector>
 #include<string>
+#include "Route.hpp"
 using namespace std;
 
 vector<int> splitint(string input, char delimiter);
 vector<double> splitdouble(string input, char delimiter);
 vector<string> splitstring(string input, char delimiter);
+void makeInitialRoute();
+// Route* getRouteByNum(int num);

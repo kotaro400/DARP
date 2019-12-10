@@ -5,3 +5,11 @@ using namespace std;
 Route::Route(){
     cout << "Routeのコンストラクタ" << endl;
 }
+
+void Route::setRouteNumber(int num){
+    this->RouteNumber = num;
+}
+
+// Route* Route::getRouteByNum(int num){
+//     return 
+// }

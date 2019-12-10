@@ -11,5 +11,7 @@ private:
 
 public:
 	Route();
+    void setRouteNumber(int num);
+    Route* getRouteByNum(int num);  
 
 };
