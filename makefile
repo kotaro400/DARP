@@ -1,6 +1,6 @@
-a.out :	main.o InputData.o myfunction.o Location.o Request.o Route.o
-	g++ main.o InputData.o myfunction.o Location.o Request.o Route.o
-main.o : main.cpp InputData.hpp Route.hpp
+a.out :	main.o InputData.o myfunction.o Location.o Request.o Route.o Cost.o
+	g++ main.o InputData.o myfunction.o Location.o Request.o Route.o Cost.o
+main.o : main.cpp InputData.hpp Route.hpp Location.hpp Cost.hpp
 	g++ -c main.cpp -o main.o
 InputData.o : InputData.cpp InputData.hpp myfunction.hpp Location.hpp Node.hpp Request.hpp
 	g++ -c InputData.cpp -o InputData.o
@@ -14,3 +14,5 @@ Request.o : Request.hpp Request.cpp
 	g++ -c Request.cpp -o Request.o
 Route.o : Route.cpp Route.hpp
 	g++ -c Route.cpp -o Route.o
+Cost.o : Cost.cpp Cost.hpp
+	g++ -c Cost.cpp -o Cost.o

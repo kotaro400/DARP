@@ -9,6 +9,7 @@ class Location{
 	double lng;	//longitude
 
 public:
+	Location();
 	void setLocation(const int index, const double lat, const double lng);
 	int getIndex() const;
 	double getLat() const;

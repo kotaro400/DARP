@@ -26,6 +26,6 @@ class InputData{
         int getRequestSize();
         int getMaximumRouteDuration();
         int getVehicleCapacity();
-
+        Location* getLocationPointer(int index);
 
 };

@@ -3,6 +3,7 @@ using namespace std;
 #include"Request.hpp"
 
 Request::Request(){
+	// cout << "Requestのコンストラクタ" << endl;
 }
 void Request::setRequest(int locationIdx, int servicetime, int demand,int earliest,int latest, int nodetype) {
 	this->locationIdx = locationIdx;

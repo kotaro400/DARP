@@ -1,7 +1,11 @@
 using namespace std;
 #include"Location.hpp"
 #include <string>
+#include <iostream>
 
+Location::Location(){
+	// cout << "Locationのコンストラクタ" << endl;
+}
 void Location::setLocation(const int index, const double lat, const double lng) {
 	this->index = index;
 	this->lat = lat;

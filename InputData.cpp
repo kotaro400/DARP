@@ -38,15 +38,14 @@ void InputData::setInputData(string inputfile){
 	this->locationList.resize(this->RequestSize);
     this->RequestList.reserve(this->RequestSize);
     this->RequestList.resize(this->RequestSize);
-
     
     // firstdepot
     getline(file,line);
     temp_string_v = splitstring(line,',');
     this->locationList[0].setLocation(stoi(temp_string_v[0]),stod(temp_string_v[1]),stod(temp_string_v[2]));
     this->RequestList[0].setRequest(0,stoi(temp_string_v[3]),stoi(temp_string_v[4]),stoi(temp_string_v[5]),stoi(temp_string_v[6]),0);
-    Pickup test;
-    test.setPickup(0,stoi(temp_string_v[3]),stoi(temp_string_v[4]),stoi(temp_string_v[5]),stoi(temp_string_v[6]));
+    // Pickup test;
+    // test.setPickup(0,stoi(temp_string_v[3]),stoi(temp_string_v[4]),stoi(temp_string_v[5]),stoi(temp_string_v[6]));
     temp_string_v.clear();
     
 
@@ -79,4 +78,8 @@ int InputData::getMaximumRouteDuration() {
 }
 int InputData::getVehicleCapacity() {
     return VehicleCapacity;
+}
+
+Location* InputData::getLocationPointer(int index){
+    return &this->locationList[index];
 }
