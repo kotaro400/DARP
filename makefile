@@ -4,7 +4,7 @@ main.o : main.cpp InputData.hpp Route.hpp Location.hpp Cost.hpp myfunction.hpp R
 	g++ -c main.cpp -o main.o
 InputData.o : InputData.cpp InputData.hpp myfunction.hpp Location.hpp Node.hpp Request.hpp
 	g++ -c InputData.cpp -o InputData.o
-myfunction.o : myfunction.cpp myfunction.hpp Route.hpp
+myfunction.o : myfunction.cpp myfunction.hpp
 	g++ -c myfunction.cpp -o myfunction.o
 Location.o : Location.hpp Location.cpp
 	g++ -c Location.cpp -o Location.o
