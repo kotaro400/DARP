@@ -9,4 +9,7 @@ class Cost{
 
     public:
         Cost(int RequestSize);
+        void setCost(int Xindex,double Xlat,double Xlng,int Yindex,double Ylat,double Ylng);
+        double getCost(int indexI,int indexJ);
 };
+

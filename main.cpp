@@ -22,16 +22,17 @@ int main(int argc, char *argv[]){
     // 2店間の距離と時間を計算
     Location* loc1;
     Location* loc2;
+    Cost cost(inputdata.getRequestSize());
     for (i=0;i<=inputdata.getRequestSize();i++){
         for (j=0;j<=inputdata.getRequestSize();j++){
             // コストを計算
             loc1 = inputdata.getLocationPointer(i);
             loc2 = inputdata.getLocationPointer(j);
+            cost.setCost(i,loc1->getLat(),loc1->getLng(),j,loc2->getLat(),loc2->getLng());
         }
     }
-    Location* test = inputdata.getLocationPointer(2);
-    cout << test->getLat() << endl;
-    Cost cost(53);
+    cout << cost.getCost(3,5) << endl;
+    cout << cost.getCost(5,3) << endl;
 
 
 
@@ -41,6 +42,9 @@ int main(int argc, char *argv[]){
     // for(i=0;i<inputdata.getVehicleNum();i++) {
     //     RouteList[i].setRouteNumber(i);
     // }
+
+    // RouteListクラス:複数のルートをまとめて保持するクラス 
+    // Routeクラスよりも初期解生成とか近傍探索がしやすそう
     RouteList RouteList(inputdata.getVehicleNum());
     RouteList.makeInitialRoute(inputdata.getRequestSize());
 
