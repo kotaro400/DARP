@@ -3,7 +3,8 @@
         {
             "name": "Mac",
             "includePath": [
-                "${workspaceFolder}/**"
+                "${workspaceFolder}/**",
+                "/Library/gurobi900/mac64/include"
             ],
             "defines": [],
             "macFrameworkPath": [],

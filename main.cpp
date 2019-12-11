@@ -5,11 +5,22 @@
 #include "Location.hpp"
 #include "Cost.hpp"
 #include "myfunction.hpp"
-#include <ilcplex/ilocplex.h>
+#include <gurobi_c++.h>
 using namespace std;
 
 int main(int argc, char *argv[]){
     int i,j;
+    cout << "rttt" << endl;
+    try{
+        GRBEnv env = GRBEnv();
+        cout << "gu" << endl;
+    } catch (GRBException e) {
+        cout << "Error code = " << e.getErrorCode() << endl;
+        cout << e.getMessage() << endl;
+    } catch (...) {
+        cout << "Error during optimization" << endl;
+    }
+    cout << "gurobi" << endl;
     
     // 入力を受け取り
     InputData inputdata;
