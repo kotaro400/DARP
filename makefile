@@ -1,7 +1,7 @@
 a.out :	main.o InputData.o myfunction.o Location.o Request.o Route.o Cost.o RouteList.o
 	g++ main.o InputData.o myfunction.o Location.o Request.o Route.o Cost.o RouteList.o
 main.o : main.cpp InputData.hpp Route.hpp Location.hpp Cost.hpp myfunction.hpp RouteList.hpp
-	g++ -c main.cpp -o main.o
+	g++ -I/Applications/CPLEX_Studio1210/opl/include -c main.cpp -o main.o -w
 InputData.o : InputData.cpp InputData.hpp myfunction.hpp Location.hpp Node.hpp Request.hpp
 	g++ -c InputData.cpp -o InputData.o
 myfunction.o : myfunction.cpp myfunction.hpp

@@ -5,6 +5,7 @@
 #include "Location.hpp"
 #include "Cost.hpp"
 #include "myfunction.hpp"
+#include <ilcplex/ilocplex.h>
 using namespace std;
 
 int main(int argc, char *argv[]){
@@ -31,8 +32,6 @@ int main(int argc, char *argv[]){
             cost.setCost(i,loc1->getLat(),loc1->getLng(),j,loc2->getLat(),loc2->getLng());
         }
     }
-    cout << cost.getCost(3,5) << endl;
-    cout << cost.getCost(5,3) << endl;
 
 
 

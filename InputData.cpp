@@ -18,7 +18,7 @@ void InputData::setInputData(string inputfile){
     vector<string> temp_string_v;
 
     cout << "file name:" << inputfile << endl;
-
+ 
     ifstream file(inputfile);
     if (!file) {
 		cerr << "ERROR: could not open inputfile." << endl;
