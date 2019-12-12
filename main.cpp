@@ -10,17 +10,14 @@ using namespace std;
 
 int main(int argc, char *argv[]){
     int i,j;
-    cout << "rttt" << endl;
     try{
         GRBEnv env = GRBEnv();
-        cout << "gu" << endl;
     } catch (GRBException e) {
         cout << "Error code = " << e.getErrorCode() << endl;
         cout << e.getMessage() << endl;
     } catch (...) {
         cout << "Error during optimization" << endl;
     }
-    cout << "gurobi" << endl;
     
     // 入力を受け取り
     InputData inputdata;
@@ -44,6 +41,9 @@ int main(int argc, char *argv[]){
         }
     }
     // 乗車時間のペナルティ関数をここでいれる
+    for(int i=1;i<=inputdata.getRequestSize()/2;i++){
+        // cout << cost.getCost(i,i+inputdata.getRequestSize()/2) << endl;
+    }
 
 
 

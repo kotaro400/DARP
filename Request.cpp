@@ -32,9 +32,17 @@ void Pickup::setPickPenalty(const vector<double> &temp){
 	PLF temp_plf;
 	for (i = 0;i < n;i++) {
 		temp_plf.setPLF(temp[3 * i], temp[3 * i + 1], temp[3 * i + 2]);
+		this->pickpnal.push_back(temp_plf);
 	}
-	this->pickpnal.push_back(temp_plf);
+	// cout << this->pickpnal.size() << endl;
 }
+
+int Pickup::getPickPenalty(){
+	// return (int)this->pickpnal[0].getSlope();
+	return this->pickpnal.size();
+	
+}
+
 
 void Pickup::setPickup(int locationIdx, int servicetime, int demand,int earliest,int latest){
 	this->locationIdx = locationIdx;
@@ -44,6 +52,7 @@ void Pickup::setPickup(int locationIdx, int servicetime, int demand,int earliest
 	this->latest = latest;
 	this->nodetype = nodetype;
 }
+
 
 Dropoff::Dropoff(){
 	

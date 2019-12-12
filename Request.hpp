@@ -27,6 +27,8 @@ class Pickup : public Request{
         Pickup();
         void setPickPenalty(const vector<double> &temp);
         void setPickup(int locationIdx, int servicetime, int demand,int earliest,int latest);
+        int getPickPenalty();
+
 
 };
 class Dropoff :public Request{
