@@ -43,6 +43,7 @@ int main(int argc, char *argv[]){
             cost.setCost(i,loc1->getLat(),loc1->getLng(),j,loc2->getLat(),loc2->getLng());
         }
     }
+    // 乗車時間のペナルティ関数をここでいれる
 
 
 

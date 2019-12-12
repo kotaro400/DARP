@@ -36,18 +36,17 @@ void InputData::setInputData(string inputfile){
 
     this->locationList.reserve(this->RequestSize);
 	this->locationList.resize(this->RequestSize);
-    this->RequestList.reserve(this->RequestSize);
-    this->RequestList.resize(this->RequestSize);
+    this->PickupList.reserve(this->RequestSize/2+1);
+    this->PickupList.resize(this->RequestSize/2+1);
+    this->DropoffList.reserve(this->RequestSize/2+1);
+    this->DropoffList.resize(this->RequestSize/2+1);
     
-    // firstdepot
+    // depot
     getline(file,line);
     temp_string_v = splitstring(line,',');
     this->locationList[0].setLocation(stoi(temp_string_v[0]),stod(temp_string_v[1]),stod(temp_string_v[2]));
-    this->RequestList[0].setRequest(0,stoi(temp_string_v[3]),stoi(temp_string_v[4]),stoi(temp_string_v[5]),stoi(temp_string_v[6]),0);
-    // Pickup test;
-    // test.setPickup(0,stoi(temp_string_v[3]),stoi(temp_string_v[4]),stoi(temp_string_v[5]),stoi(temp_string_v[6]));
     temp_string_v.clear();
-    
+    getline(file,line); //デポのペナルティ関数だから無視
 
     
     for(int i=1;i <= this->RequestSize; i++){
@@ -55,12 +54,18 @@ void InputData::setInputData(string inputfile){
         temp_string_v = splitstring(line,',');
         this->locationList[i].setLocation(stoi(temp_string_v[0]),stod(temp_string_v[1]),stod(temp_string_v[2]));
         if (i<= RequestSize/2){
-            nodetype = 1;
+            this->PickupList[i].setPickup(stod(temp_string_v[0]),stod(temp_string_v[3]),stod(temp_string_v[4]),stoi(temp_string_v[5]),stoi(temp_string_v[6]));
+            getline(file,line);
+            temp_double_v = splitdouble(line,',');
+            this->PickupList[i].setPickPenalty(temp_double_v);
         }else{
-            nodetype = 2;
+            this->DropoffList[i - this->RequestSize/2].setDropoff(stod(temp_string_v[0]),stod(temp_string_v[3]),stod(temp_string_v[4]),stoi(temp_string_v[5]),stoi(temp_string_v[6]));
+            getline(file,line);
+            temp_double_v = splitdouble(line,',');
+            this->DropoffList[i - this->RequestSize/2].setDropPenalty(temp_double_v);
         }
-        this->RequestList[i].setRequest(stoi(temp_string_v[0]),stoi(temp_string_v[3]),stoi(temp_string_v[4]),stoi(temp_string_v[5]),stoi(temp_string_v[6]),nodetype);
         temp_string_v.clear();
+        temp_double_v.clear();
     }
 
 }
@@ -83,3 +88,4 @@ int InputData::getVehicleCapacity() {
 Location* InputData::getLocationPointer(int index){
     return &this->locationList[index];
 }
+

@@ -1,6 +1,8 @@
 using namespace std;
 #include <iostream>
+#include <vector>
 #include"Request.hpp"
+#include "PLF.hpp"
 
 Request::Request(){
 	// cout << "Requestのコンストラクタ" << endl;
@@ -19,8 +21,21 @@ int Request::getRequestdemand(){
 }
 
 Pickup::Pickup(){
-
 }
+void Pickup::setPickPenalty(const vector<double> &temp){
+	int i, n;
+	if ((int)temp.size()%3 != 0) {
+		cerr << "始点、傾き、切片のどれかが足りてない" << endl;
+		exit(1);
+	}
+	n = (int)temp.size() / 3;
+	PLF temp_plf;
+	for (i = 0;i < n;i++) {
+		temp_plf.setPLF(temp[3 * i], temp[3 * i + 1], temp[3 * i + 2]);
+	}
+	this->pickpnal.push_back(temp_plf);
+}
+
 void Pickup::setPickup(int locationIdx, int servicetime, int demand,int earliest,int latest){
 	this->locationIdx = locationIdx;
 	this->demand = demand;
@@ -31,6 +46,24 @@ void Pickup::setPickup(int locationIdx, int servicetime, int demand,int earliest
 }
 
 Dropoff::Dropoff(){
+	
+}
+
+void Dropoff::setDropPenalty(const vector<double> &temp){
+	int i, n;
+	if ((int)temp.size()%3 != 0) {
+		cerr << "始点、傾き、切片のどれかが足りてない" << endl;
+		exit(1);
+	}
+	n = (int)temp.size() / 3;
+	PLF temp_plf;
+	for (i = 0;i < n;i++) {
+		temp_plf.setPLF(temp[3 * i], temp[3 * i + 1], temp[3 * i + 2]);
+	}
+	this->droppnal.push_back(temp_plf);
+}
+
+void Dropoff::setRidePenalty(vector<double> &temp){
 	
 }
 
