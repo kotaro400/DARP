@@ -68,8 +68,8 @@ void Dropoff::setDropPenalty(const vector<double> &temp){
 	PLF temp_plf;
 	for (i = 0;i < n;i++) {
 		temp_plf.setPLF(temp[3 * i], temp[3 * i + 1], temp[3 * i + 2]);
+		this->droppnal.push_back(temp_plf);
 	}
-	this->droppnal.push_back(temp_plf);
 }
 
 void Dropoff::setRidePenalty(vector<double> &temp){
@@ -83,4 +83,10 @@ void Dropoff::setDropoff(int locationIdx, int servicetime, int demand,int earlie
 	this->earliest = earliest;
 	this->latest = latest;
 	this->nodetype = nodetype;
+}
+
+int Dropoff::getDropPenalty(){
+	// return (int)this->pickpnal[0].getSlope();
+	return this->droppnal.size();
+	
 }

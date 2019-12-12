@@ -40,6 +40,7 @@ class Dropoff :public Request{
         void setDropPenalty(const vector<double> &temp);
         void setRidePenalty(vector<double> &temp);
         void setDropoff(int locationIdx, int servicetime, int demand,int earliest,int latest);
+        int getDropPenalty();
 };
 // class Depot :public Request{
 // };
