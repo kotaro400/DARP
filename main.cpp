@@ -41,9 +41,14 @@ int main(int argc, char *argv[]){
         }
     }
     // 乗車時間のペナルティ関数をここでいれる
+    // vector<double> vec;
     for(int i=1;i<=inputdata.getRequestSize()/2;i++){
+        // cout << "i:" << i << endl;
         // cout << cost.getCost(i,i+inputdata.getRequestSize()/2) << endl;
+        vector<double> vec{ 0.0, 0.0, 0.0,cost.getCost(i,i+inputdata.getRequestSize()/2),5,cost.getCost(i,i+inputdata.getRequestSize()/2)*(-5)};
+        inputdata.setRideTimePenalty(i-1,vec);
     }
+    cout << inputdata.getRideInfo(0) << endl;
 
 
 

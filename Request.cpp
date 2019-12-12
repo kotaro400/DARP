@@ -73,7 +73,18 @@ void Dropoff::setDropPenalty(const vector<double> &temp){
 }
 
 void Dropoff::setRidePenalty(vector<double> &temp){
-	
+	int i,n;
+	cout << temp[5] << endl;
+	if ((int)temp.size()%3 != 0) {
+		cout << "始点、傾き、切片のどれかが足りてない" << endl;
+		exit(1);
+	}
+	n = (int)temp.size() / 3;
+	PLF temp_plf;
+	for (i = 0;i < n;i++) {
+		temp_plf.setPLF(temp[3 * i], temp[3 * i + 1], temp[3 * i + 2]);
+		this->ridepnal.push_back(temp_plf);
+	}
 }
 
 void Dropoff::setDropoff(int locationIdx, int servicetime, int demand,int earliest,int latest){
@@ -88,5 +99,10 @@ void Dropoff::setDropoff(int locationIdx, int servicetime, int demand,int earlie
 int Dropoff::getDropPenalty(){
 	// return (int)this->pickpnal[0].getSlope();
 	return this->droppnal.size();
-	
+}
+
+double Dropoff::getRidePenalty(){
+	cout << "RidePenalty" << endl;
+	cout << this->ridepnal[1].getIntercept() << endl;
+	return this->ridepnal[1].getIntercept();
 }

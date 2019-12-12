@@ -68,8 +68,8 @@ void InputData::setInputData(string inputfile){
         temp_double_v.clear();
     }
 
-    cout << this->PickupList[21].getPickPenalty() << endl;
-    cout << this->DropoffList[21].getDropPenalty() << endl;
+    // cout << this->PickupList[21].getPickPenalty() << endl;
+    // cout << this->DropoffList[21].getDropPenalty() << endl;
 
 }
 
@@ -92,3 +92,10 @@ Location* InputData::getLocationPointer(int index){
     return &this->locationList[index];
 }
 
+void InputData::setRideTimePenalty(int i,vector<double> &temp){
+    this->DropoffList[i].setRidePenalty(temp);
+}
+
+double InputData::getRideInfo(int i){
+    return this->DropoffList[i].getRidePenalty();
+}

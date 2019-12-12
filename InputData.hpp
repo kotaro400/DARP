@@ -27,6 +27,8 @@ class InputData{
         int getRequestSize();
         int getMaximumRouteDuration();
         int getVehicleCapacity();
+        void setRideTimePenalty(int i,vector<double> &temp);
         Location* getLocationPointer(int index);
+        double getRideInfo(int i);
 
 };

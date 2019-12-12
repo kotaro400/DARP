@@ -41,6 +41,6 @@ class Dropoff :public Request{
         void setRidePenalty(vector<double> &temp);
         void setDropoff(int locationIdx, int servicetime, int demand,int earliest,int latest);
         int getDropPenalty();
+        double getRidePenalty();
 };
-// class Depot :public Request{
-// };
+
