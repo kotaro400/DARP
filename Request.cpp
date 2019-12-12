@@ -74,7 +74,6 @@ void Dropoff::setDropPenalty(const vector<double> &temp){
 
 void Dropoff::setRidePenalty(vector<double> &temp){
 	int i,n;
-	cout << temp[5] << endl;
 	if ((int)temp.size()%3 != 0) {
 		cout << "始点、傾き、切片のどれかが足りてない" << endl;
 		exit(1);
@@ -102,7 +101,5 @@ int Dropoff::getDropPenalty(){
 }
 
 double Dropoff::getRidePenalty(){
-	cout << "RidePenalty" << endl;
-	cout << this->ridepnal[1].getIntercept() << endl;
 	return this->ridepnal[1].getIntercept();
 }
