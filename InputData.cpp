@@ -61,7 +61,6 @@ void InputData::setInputData(string inputfile){
             temp_double_v = splitdouble(line,',');
             this->PickupList[i].setPickPenalty(temp_double_v);
         }else{
-            cout << "i:" << i << endl;
             this->DropoffList[i - this->RequestSize/2].setDropoff(stod(temp_string_v[0]),stod(temp_string_v[3]),stod(temp_string_v[4]),stoi(temp_string_v[5]),stoi(temp_string_v[6]));
             getline(file,line);
             temp_double_v = splitdouble(line,',');
@@ -71,8 +70,8 @@ void InputData::setInputData(string inputfile){
         temp_double_v.clear();
     }
 
-    cout << this->PickupList[24].getPickPenalty() << endl;
-    cout << this->DropoffList[24].getDropPenalty() << endl;
+    // cout << this->PickupList[24].getPickPenalty() << endl;
+    // cout << this->DropoffList[2].getDropPenalty() << endl;
 
 }
 

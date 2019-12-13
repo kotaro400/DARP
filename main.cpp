@@ -48,7 +48,7 @@ int main(int argc, char *argv[]){
         inputdata.setRideTimePenalty(i,vec);
         vec.clear();
     }
-    cout << inputdata.getRideInfo(24) << endl;
+    // cout << inputdata.getRideInfo(24) << endl;
 
 
 
