@@ -28,6 +28,9 @@ for file in files:
                             f.write(subitem)
             line.pop(0)
             for item in line:
+                print(item)
+                if item == ['', '']:
+                    exit(1)
                 for subitem in item:
                     if  subitem.find(' ') == -1:
                         if subitem == "":

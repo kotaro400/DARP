@@ -36,10 +36,12 @@ void InputData::setInputData(string inputfile){
 
     this->locationList.reserve(this->RequestSize);
 	this->locationList.resize(this->RequestSize);
-    this->PickupList.reserve(this->RequestSize/2);
-    this->PickupList.resize(this->RequestSize/2);
-    this->DropoffList.reserve(this->RequestSize/2);
-    this->DropoffList.resize(this->RequestSize/2);
+    this->PickupList.reserve(this->RequestSize/2+1);
+    this->PickupList.resize(this->RequestSize/2+1);
+    this->DropoffList.reserve(this->RequestSize/2+1);
+    this->DropoffList.resize(this->RequestSize/2+1);
+
+    // danger: pickuplistとdropofflistのインデックス0はなにもはいらない
     
     // depot
     getline(file,line);
@@ -54,22 +56,23 @@ void InputData::setInputData(string inputfile){
         temp_string_v = splitstring(line,',');
         this->locationList[i].setLocation(stoi(temp_string_v[0]),stod(temp_string_v[1]),stod(temp_string_v[2]));
         if (i<= RequestSize/2){
-            this->PickupList[i-1].setPickup(stod(temp_string_v[0]),stod(temp_string_v[3]),stod(temp_string_v[4]),stoi(temp_string_v[5]),stoi(temp_string_v[6]));
+            this->PickupList[i].setPickup(stod(temp_string_v[0]),stod(temp_string_v[3]),stod(temp_string_v[4]),stoi(temp_string_v[5]),stoi(temp_string_v[6]));
             getline(file,line);
             temp_double_v = splitdouble(line,',');
-            this->PickupList[i-1].setPickPenalty(temp_double_v);
+            this->PickupList[i].setPickPenalty(temp_double_v);
         }else{
-            this->DropoffList[i - this->RequestSize/2-1].setDropoff(stod(temp_string_v[0]),stod(temp_string_v[3]),stod(temp_string_v[4]),stoi(temp_string_v[5]),stoi(temp_string_v[6]));
+            cout << "i:" << i << endl;
+            this->DropoffList[i - this->RequestSize/2].setDropoff(stod(temp_string_v[0]),stod(temp_string_v[3]),stod(temp_string_v[4]),stoi(temp_string_v[5]),stoi(temp_string_v[6]));
             getline(file,line);
             temp_double_v = splitdouble(line,',');
-            this->DropoffList[i - this->RequestSize/2-1].setDropPenalty(temp_double_v);
+            this->DropoffList[i - this->RequestSize/2].setDropPenalty(temp_double_v);
         }
         temp_string_v.clear();
         temp_double_v.clear();
     }
 
-    // cout << this->PickupList[21].getPickPenalty() << endl;
-    // cout << this->DropoffList[21].getDropPenalty() << endl;
+    cout << this->PickupList[24].getPickPenalty() << endl;
+    cout << this->DropoffList[24].getDropPenalty() << endl;
 
 }
 

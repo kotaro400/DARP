@@ -45,10 +45,10 @@ int main(int argc, char *argv[]){
         // cout << "i:" << i << endl;
         // cout << cost.getCost(i,i+inputdata.getRequestSize()/2) << endl;
         vector<double> vec{ 0.0, 0.0, 0.0,cost.getCost(i,i+inputdata.getRequestSize()/2),5,cost.getCost(i,i+inputdata.getRequestSize()/2)*(-5)};
-        inputdata.setRideTimePenalty(i-1,vec);
+        inputdata.setRideTimePenalty(i,vec);
         vec.clear();
     }
-    cout << inputdata.getRideInfo(0) << endl;
+    cout << inputdata.getRideInfo(24) << endl;
 
 
 
