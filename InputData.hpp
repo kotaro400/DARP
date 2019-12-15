@@ -5,7 +5,6 @@ using namespace std;
 #include <string>
 #include <vector>
 #include"Location.hpp"
-#include "Node.hpp"
 #include "Request.hpp"
 class InputData{
     private:
