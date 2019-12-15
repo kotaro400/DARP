@@ -3,6 +3,8 @@
         "string": "cpp",
         "ostream": "cpp",
         "iostream": "cpp",
-        "*.tcc": "cpp"
-    }
+        "*.tcc": "cpp",
+        "cmath": "cpp"
+    },
+    "python.pythonPath": "/Users/takedakiyoshi/opt/anaconda3/bin/python"
 }

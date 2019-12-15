@@ -5,8 +5,8 @@ using namespace std;
 RouteList::RouteList(int VehicleNum){
     cout << "RouteListのコンストラクタ" << endl;
     this->VehicleNum = VehicleNum;
-    this->Route.reserve(VehicleNum);
-	this->Route.resize(VehicleNum);
+    this->Routelist.reserve(VehicleNum);
+	this->Routelist.resize(VehicleNum);
 }
 
 void RouteList::makeInitialRoute(int RequestSize){
@@ -16,14 +16,18 @@ void RouteList::makeInitialRoute(int RequestSize){
     while(i<=CustomerSize){
         int amari=  i % this->VehicleNum;
         if (amari == 0){
-            this->Route[this->VehicleNum-1].push_back(i);
-            this->Route[this->VehicleNum-1].push_back(i+CustomerSize);
+            this->Routelist[this->VehicleNum-1].push_back(i);
+            this->Routelist[this->VehicleNum-1].push_back(i+CustomerSize);
         }else{
-            this->Route[amari-1].push_back(i);
-            this->Route[amari-1].push_back(i+CustomerSize);
+            this->Routelist[amari-1].push_back(i);
+            this->Routelist[amari-1].push_back(i+CustomerSize);
         }
         i++;
     }
     cout <<"初期解生成おわり"<< endl;
+}
+
+int RouteList::getRouteSize(int number){
+    return this->Routelist[number].size();
 }
 

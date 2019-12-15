@@ -7,9 +7,10 @@
 class RouteList {
 private:
     int VehicleNum;
-    vector<vector<int> > Route;
+    vector<vector<int> > Routelist;
 
 public:
 	RouteList(int VehicleNum);
     void makeInitialRoute(int RequestSize);
+    int getRouteSize(int number);
 };

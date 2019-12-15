@@ -5,6 +5,7 @@
 #include "Location.hpp"
 #include "Cost.hpp"
 #include "myfunction.hpp"
+#include "Solution.hpp"
 #include <gurobi_c++.h>
 using namespace std;
 
@@ -50,21 +51,12 @@ int main(int argc, char *argv[]){
     }
     // cout << inputdata.getRideInfo(24) << endl;
 
-
-
-    // vector<Route> RouteList;
-    // RouteList.reserve((inputdata.getVehicleNum()));
-    // RouteList.resize((inputdata.getVehicleNum()));
-    // for(i=0;i<inputdata.getVehicleNum();i++) {
-    //     RouteList[i].setRouteNumber(i);
-    // }
-
     // RouteListクラス:複数のルートをまとめて保持するクラス 
     // Routeクラスよりも初期解生成とか近傍探索がしやすそう
     RouteList RouteList(inputdata.getVehicleNum());
     RouteList.makeInitialRoute(inputdata.getRequestSize());
-
-
-
+    cout << RouteList.getRouteSize(1) << endl;
+    Solution solution(&RouteList);
+    solution.test();
   
 }
