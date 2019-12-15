@@ -31,3 +31,10 @@ int RouteList::getRouteSize(int number){
     return this->Routelist[number].size();
 }
 
+int RouteList::getVehicleNum(){
+    return this->VehicleNum;
+}
+
+int RouteList::getRoute(int RouteNumber,int RouteOrder){
+    return this->Routelist[RouteNumber][RouteOrder];
+}

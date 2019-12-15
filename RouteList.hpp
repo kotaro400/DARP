@@ -10,7 +10,9 @@ private:
     vector<vector<int> > Routelist;
 
 public:
+    int getVehicleNum();
 	RouteList(int VehicleNum);
     void makeInitialRoute(int RequestSize);
     int getRouteSize(int number);
+    int getRoute(int RouteNumber,int RouteOrder);
 };

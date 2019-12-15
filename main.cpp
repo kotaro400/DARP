@@ -58,5 +58,6 @@ int main(int argc, char *argv[]){
     cout << RouteList.getRouteSize(1) << endl;
     Solution solution(&RouteList);
     solution.test();
+    solution.CalcRouteDistance(&RouteList);
   
 }
