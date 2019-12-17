@@ -10,9 +10,13 @@ RouteList::RouteList(int VehicleNum){
 }
 
 void RouteList::makeInitialRoute(int RequestSize){
+    int i;
     cout << "初期解生成スタート" << endl;
     int CustomerSize=RequestSize/2;
-    int i=1;
+    for(i=0;i<this->VehicleNum;i++){
+        this->Routelist[i].push_back(0);
+    }
+    i=1;
     while(i<=CustomerSize){
         int amari=  i % this->VehicleNum;
         if (amari == 0){
@@ -23,6 +27,9 @@ void RouteList::makeInitialRoute(int RequestSize){
             this->Routelist[amari-1].push_back(i+CustomerSize);
         }
         i++;
+    }
+    for(i=0;i<this->VehicleNum;i++){
+        this->Routelist[i].push_back(0);
     }
     cout <<"初期解生成おわり"<< endl;
 }
