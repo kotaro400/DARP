@@ -100,6 +100,10 @@ Pickup* InputData::getPickupPointer(int index){
     return &this->PickupList[index];
 }
 
+Dropoff* InputData::getDropoffPointer(int index){
+    return &this->DropoffList[index];
+}
+
 void InputData::setRideTimePenalty(int i,vector<double> &temp){
     this->DropoffList[i].setRidePenalty(temp);
 }

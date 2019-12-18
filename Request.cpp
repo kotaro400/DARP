@@ -57,19 +57,16 @@ double Pickup::getPickupPenaltyYValue(int index){
 Dropoff::Dropoff(){
 	vector<double> xvec;
 	vector<double> yvec;
-	this->dropoffpenalty.push_back(xvec);
-	this->dropoffpenalty.push_back(yvec);
 	this->ridetimepenalty.push_back(xvec);
 	this->ridetimepenalty.push_back(yvec);
-	
 }
 
 void Dropoff::setDropOffPenalty(const vector<double> &temp){
 	for(int i=0;i<temp.size();i++){
 		if (i%2==0){
-			this->dropoffpenalty[0].push_back(temp[i]);
+			this->dropoffXpenalty.push_back(temp[i]);
 		}else{
-			this->dropoffpenalty[1].push_back(temp[i]);
+			this->dropoffYpenalty.push_back(temp[i]);
 		}
 	}
 }
@@ -93,4 +90,14 @@ void Dropoff::setDropoff(int locationIdx, int servicetime, int demand,int earlie
 	this->earliest = earliest;
 	this->latest = latest;
 	this->nodetype = nodetype;
+}
+
+vector<double>* Dropoff::getDropoffPenaltyX(){
+	return &this->dropoffXpenalty;
+}
+double Dropoff::getDropoffPenaltyXValue(int index){
+	return this->dropoffXpenalty[index];
+}
+double Dropoff::getDropoffPenaltyYValue(int index){
+	return this->dropoffYpenalty[index];
 }
