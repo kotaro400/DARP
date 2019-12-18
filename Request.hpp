@@ -32,7 +32,7 @@ class Pickup : public Request{
 };
 class Dropoff :public Request{
     private:
-        vector<PLF> droppnal;		//penalty func about drop off time
+        // vector<PLF> droppnal;		//penalty func about drop off time
         vector<PLF> ridepnal;		//penalty func about riding time
         vector<vector<double> > dropoffpenalty;
         vector<vector<double> > ride;
