@@ -126,17 +126,12 @@ int main(int argc, char *argv[]){
             tmp = "rt"+to_string(i);
             VarName[i] = tmp;
         }
-        RideTime = model.addVars(lblist,ublist,objlist,typelist,VarName,2*m);
+        RideTime = model.addVars(lblist,ublist,objlist,typelist,VarName,n+1);
         delete[] lblist;
         delete[] ublist;
         delete[] objlist;
         delete[] typelist;
         delete[] VarName;
-        GRBLinExpr siki;
-        siki = DepartureTime[1] + DepartureTime[2] + DepartureTime[3] + DepartureTime[4] + DepartureTime[5] + DepartureTime[6];
-        // model.setObjective(DepartureTime[1] + DepartureTime[2] + t3 + DepartureTime[4] + DepartureTime[5] + DepartureTime[6] + rt1 + rt2 + rt3, GRB_MINIMIZE);
-        model.setObjective(siki, GRB_MINIMIZE);
-        // model.optimize();
 
         // ここ以降にコードを追加
         
@@ -166,8 +161,37 @@ int main(int argc, char *argv[]){
                 yvec[i].push_back(inputdata.getDropoffPointer(i-n)->getDropoffPenaltyYValue(j));
             }
         }
+        // 区分線形関数を追加
+
+        // vectorを配列に変換
+        for(i=1;i<=2*n;i++){
+            double *xpointer;
+            double *ypointer;
+            xpointer = new double[xvec[i].size()];
+            ypointer = new double[yvec[i].size()];
+            for(j=0;j<xvec[i].size();j++){
+                xpointer[j]=xvec[i][j];
+                ypointer[j]=yvec[i][j];
+            }
+            model.setPWLObj(DepartureTime[i],4,xpointer,ypointer);
+            delete[] xpointer;
+            delete[] ypointer;
+        }
+
+        // TODO 目的関数を追加
+        GRBLinExpr objection;
+        for(i=1;i<=2*n;i++){
+            objection += DepartureTime[i];
+        }
+        for(i=1;i<=n;i++){
+            objection += RideTime[i];
+        }
+        model.setObjective(objection, GRB_MINIMIZE);
+        // TODO ridetimeの定義 rt_i = t_i+n -t_i
+
+        // TODO 乗車時間の区分線形関数を追加
         
-        
+        // model.optimize();
         
     } catch (GRBException e) {
         cout << "Error code = " << e.getErrorCode() << endl;
