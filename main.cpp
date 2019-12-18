@@ -65,7 +65,7 @@ int main(int argc, char *argv[]){
         for(int i=0;i<=2*n;i++) lblist[i] = 0.0;
         double *ublist; //上限
         ublist = new double[2*n+1];
-        for(int i=0;i<=2*n;i++) ublist[i]=inputdata.getMaximumRouteDuration(); 
+        for(int i=0;i<=2*n;i++) ublist[i]=inputdata.getLatestArrivalDepotTime();
         double *objlist;
         objlist = new double[2*n+1];//係数(とりあえず1にした)
         for(int i=0;i<=2*n;i++) objlist[i] = 1.0;
@@ -90,7 +90,7 @@ int main(int argc, char *argv[]){
         lblist = new double[2*m];
         for(int i=0;i<2*m;i++) lblist[i] = 0.0;
         ublist = new double[2*m];
-        for(int i=0;i<2*m;i++) ublist[i]=inputdata.getMaximumRouteDuration(); 
+        for(int i=0;i<2*m;i++) ublist[i]=inputdata.getLatestArrivalDepotTime();
         objlist = new double[2*m];//係数(とりあえず1にした)
         for(int i=0;i<2*m;i++) objlist[i] = 1.0;
         typelist = new char[2*m];
@@ -115,7 +115,7 @@ int main(int argc, char *argv[]){
         lblist = new double[n+1];
         for(int i=0;i<=n;i++) lblist[i] = 0.0;
         ublist = new double[n+1];
-        for(int i=0;i<=n;i++) ublist[i]=inputdata.getMaximumRouteDuration(); 
+        for(int i=0;i<=n;i++) ublist[i]=inputdata.getLatestArrivalDepotTime(); 
         objlist = new double[n+1];//係数(とりあえず1にした)
         for(int i=0;i<=n;i++) objlist[i] = 1.0;
         typelist = new char[n+1];

@@ -2,7 +2,6 @@ using namespace std;
 #include <iostream>
 #include <vector>
 #include"Request.hpp"
-#include "PLF.hpp"
 
 Request::Request(){
 	// cout << "Requestのコンストラクタ" << endl;

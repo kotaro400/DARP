@@ -47,7 +47,10 @@ void InputData::setInputData(string inputfile){
     temp_string_v = splitstring(line,',');
     this->locationList[0].setLocation(stoi(temp_string_v[0]),stod(temp_string_v[1]),stod(temp_string_v[2]));
     temp_string_v.clear();
-    getline(file,line); //デポのペナルティ関数だから無視
+    getline(file,line);
+    temp_string_v = splitstring(line,',');
+    this->LatestArrivalDepotTime = stoi(temp_string_v[2]);
+
 
     
     for(int i=1;i <= this->RequestSize; i++){
@@ -84,6 +87,10 @@ int InputData::getMaximumRouteDuration() {
 int InputData::getVehicleCapacity() {
     return VehicleCapacity;
 }
+int InputData::getLatestArrivalDepotTime() {
+    return LatestArrivalDepotTime;
+}
+
 
 Location* InputData::getLocationPointer(int index){
     return &this->locationList[index];
