@@ -139,8 +139,31 @@ int main(int argc, char *argv[]){
         // model.optimize();
 
         // ここ以降にコードを追加
-    
-
+        
+        // xvecとyvecはpick,drop,rideで使い回す
+        vector<vector<double> > xvec;
+        vector<vector<double> > yvec;
+        xvec.push_back({0.0}); //ダミー index0は使わない
+        yvec.push_back({0.0}); //ダミー
+        // 乗車時間の区分線形関数を設定
+        vector<double> tempvec;
+        for (i=1;i<=n;i++){
+            xvec.push_back(tempvec);
+            yvec.push_back(tempvec);
+            for (j=0;j<inputdata.getPickupPointer(i)->getPickupPenaltyX()->size();j++){
+                xvec[i].push_back(inputdata.getPickupPointer(i)->getPickupPenaltyXValue(j));
+                yvec[i].push_back(inputdata.getPickupPointer(i)->getPickupPenaltyYValue(j));
+            }
+            // cout << xvec[i].size() << " " << yvec[i].size() <<  endl;
+        }
+        // for(i=n+1;i<=2*n;i++){
+            // cout << "dropoff" << endl;
+        // }
+        // for (i = 0;i<inputdata.getPickupPointer(23)->getPickupPenaltyX()->size();i++){
+        //     cout << inputdata.getPickupPointer(23)->getPickupPenaltyXValue(i) << endl;
+        // }
+        
+        
     } catch (GRBException e) {
         cout << "Error code = " << e.getErrorCode() << endl;
         cout << e.getMessage() << endl;

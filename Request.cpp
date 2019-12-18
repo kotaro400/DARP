@@ -20,19 +20,14 @@ int Request::getRequestdemand(){
 }
 
 Pickup::Pickup(){
-	vector<double> xvec;
-	vector<double> yvec;
-	this->pickuppenalty.push_back(xvec);
-	this->pickuppenalty.push_back(yvec);
-
 }
 
 void Pickup::setPickupPenalty(const vector<double> &temp){
 	for(int i=0;i<temp.size();i++){
 		if (i%2==0){
-			this->pickuppenalty[0].push_back(temp[i]);
+			this->pickupXpenalty.push_back(temp[i]);
 		}else{
-			this->pickuppenalty[1].push_back(temp[i]);
+			this->pickupYpenalty.push_back(temp[i]);
 		}
 	}
 }
@@ -46,6 +41,17 @@ void Pickup::setPickup(int locationIdx, int servicetime, int demand,int earliest
 	this->latest = latest;
 	this->nodetype = nodetype;
 }
+
+vector<double>* Pickup::getPickupPenaltyX(){
+	return &this->pickupXpenalty;
+}
+double Pickup::getPickupPenaltyXValue(int index){
+	return this->pickupXpenalty[index];
+}
+double Pickup::getPickupPenaltyYValue(int index){
+	return this->pickupYpenalty[index];
+}
+
 
 
 Dropoff::Dropoff(){

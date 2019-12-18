@@ -21,11 +21,15 @@ public:
 
 class Pickup : public Request{
     private:
-        vector<vector<double> > pickuppenalty;
+        vector<double> pickupXpenalty;
+        vector<double> pickupYpenalty;
     public:
         Pickup();
         void setPickupPenalty(const vector<double> &temp);
         void setPickup(int locationIdx, int servicetime, int demand,int earliest,int latest);
+        vector<double>* getPickupPenaltyX();
+        double getPickupPenaltyXValue(int index);
+        double getPickupPenaltyYValue(int index);
 
 
 };

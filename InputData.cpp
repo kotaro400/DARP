@@ -96,6 +96,10 @@ Location* InputData::getLocationPointer(int index){
     return &this->locationList[index];
 }
 
+Pickup* InputData::getPickupPointer(int index){
+    return &this->PickupList[index];
+}
+
 void InputData::setRideTimePenalty(int i,vector<double> &temp){
     this->DropoffList[i].setRidePenalty(temp);
 }

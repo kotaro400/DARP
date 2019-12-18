@@ -6,7 +6,8 @@
         "*.tcc": "cpp",
         "cmath": "cpp",
         "vector": "cpp",
-        "new": "cpp"
+        "new": "cpp",
+        "deque": "cpp"
     },
     "python.pythonPath": "/Users/takedakiyoshi/opt/anaconda3/bin/python"
 }

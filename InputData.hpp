@@ -26,6 +26,7 @@ class InputData{
         int getLatestArrivalDepotTime();
         void setRideTimePenalty(int i,vector<double> &temp);
         Location* getLocationPointer(int index);
+        Pickup* getPickupPointer(int index);
         double getRideInfo(int i);
 
 };
