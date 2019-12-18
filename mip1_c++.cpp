@@ -42,7 +42,7 @@ main(int   argc,
   GRBVar* DepotTime = 0;
   GRBVar* RideTime = 0;
 
-  
+  // ここはおそらく実際も同じ
   double lblist[2*n+1] = {0.0};
   double ublist[2*n+1];
   for(int i=0;i<=2*n;i++) ublist[i]=480.0;
@@ -57,12 +57,11 @@ main(int   argc,
     DepartureTimeName[i] = tmp;
   }
 
+  // 各ノードの出発時刻の変数を追加
   DepartureTime = model.addVars(lblist,ublist,objlist,typelist,DepartureTimeName,2*n+1);
-    GRBVar* timelist = 0;
-    // timelist = model.addVars(lblist,ublist,objlist,typelist,nodetime,6);
-    // cout << timelist[0].get(GRB_StringAttr_VarName) << endl;
 
-    // Create variables
+
+    // Create variables デポの出発時刻と乗車時間
     GRBVar t0s = model.addVar(0.0, 480.0,1.0, GRB_CONTINUOUS);
     GRBVar t0e = model.addVar(0.0, 480.0,1.0, GRB_CONTINUOUS, "x");
     GRBVar t1s = model.addVar(0.0, 480.0,1.0, GRB_CONTINUOUS, "x");
@@ -71,21 +70,50 @@ main(int   argc,
     GRBVar rt1 = model.addVar(0.0, 480.0,1.0, GRB_CONTINUOUS, "rt1");
     GRBVar rt2 = model.addVar(0.0, 480.0,1.0, GRB_CONTINUOUS, "rt2");
     GRBVar rt3 = model.addVar(0.0, 480.0,1.0, GRB_CONTINUOUS, "rt3");
-    double tes[4] = {0.0,1.0,3.0,4.0};
-    double tes2[4] ={5.0,0.0,0.0,4.0};
+
+    // ここから区分線形関数を設定
+    vector<double> x = {0.0,1.0,3.0,4.0};
+    vector<double> y = {5.0,0.0,0.0,4.0};
+    
+    vector<vector<double> > xvec; //xvecのsizeは2n+1 中のvectorのサイズは可変
+    vector<vector<double> > yvec;
+    xvec.push_back({0.0}); //ダミー index0は使わない
+    yvec.push_back({0.0}); //ダミー
+    for(int i=1;i<=2*n;i++){
+      xvec.push_back(x); // いまはとりあえず同じvectorを追加
+      yvec.push_back(y); // いまはとりあえず同じvectorを追加
+    } 
+    // ここまでは受け取り
+
+    // ここから区分線形関数を追加
     for (i=1;i<=2*n;i++){
       // 区分線形関数を設定
-      model.setPWLObj(DepartureTime[i],4,tes,tes2);
+      double *xpointer;
+      double *ypointer;
+      xpointer = new double[xvec[i].size()];
+      ypointer = new double[yvec[i].size()];
+      for(int j=0;j<xvec[i].size();j++){
+        xpointer[j] = xvec[i][j];
+        ypointer[j] = yvec[i][j];
+      }
+      model.setPWLObj(DepartureTime[i],4,xpointer,ypointer);
+      delete[] xpointer;
+      delete[] ypointer;
     }
+// ここまで区分線形関数を追加
+
+//目的関数を追加
     GRBLinExpr siki;
     siki = DepartureTime[1] + DepartureTime[2] + DepartureTime[3] + DepartureTime[4] + DepartureTime[5] + DepartureTime[6] + rt1 + rt2 + rt3;
     // model.setObjective(DepartureTime[1] + DepartureTime[2] + t3 + DepartureTime[4] + DepartureTime[5] + DepartureTime[6] + rt1 + rt2 + rt3, GRB_MINIMIZE);
      model.setObjective(siki, GRB_MINIMIZE);
 
-    GRBTempConstr c1 = t0s + 1.0 <= DepartureTime[1];
+    // 制約を追加
+
+    // GRBTempConstr c1 = t0s + 1.0 <= DepartureTime[1]; これまちが
+    // model.addConstr(c1,"c1");
     GRBTempConstr tempconstr;
     string constrname;
-    model.addConstr(c1,"c1");
     for (int i=1;i<2*n;i++){
       tempconstr = DepartureTime[i] + 1.0 <= DepartureTime[i+1];
       constrname = "constr"+to_string(i);
