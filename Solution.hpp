@@ -6,8 +6,8 @@
 class Solution {
 private:
     RouteList* routelist;
-    vector<vector<double> > timelist;
     // routelistから、LPを解いてtimelistを作成っていう流れかなあ
+    // timelistはいらない
     double RouteDistance;
 public:
     Solution(RouteList* routelist);
