@@ -21,26 +21,22 @@ int Request::getRequestdemand(){
 }
 
 Pickup::Pickup(){
-}
-void Pickup::setPickPenalty(const vector<double> &temp){
-	int i, n;
-	if ((int)temp.size()%3 != 0) {
-		cerr << "始点、傾き、切片のどれかが足りてない" << endl;
-		exit(1);
-	}
-	n = (int)temp.size() / 3;
-	PLF temp_plf;
-	for (i = 0;i < n;i++) {
-		temp_plf.setPLF(temp[3 * i], temp[3 * i + 1], temp[3 * i + 2]);
-		this->pickpnal.push_back(temp_plf);
-	}
-	// cout << this->pickpnal.size() << endl;
+	vector<double> xvec;
+	vector<double> yvec;
+	this->pickuppenalty.push_back(xvec);
+	this->pickuppenalty.push_back(yvec);
+
 }
 
-int Pickup::getPickPenalty(){
-	// return (int)this->pickpnal[0].getSlope();
-	return this->pickpnal.size();
-	
+void Pickup::setPickupPenalty(const vector<double> &temp){
+	cout << "setpickuppena" << endl;
+	for(int i=0;i<temp.size();i++){
+		if (i%2==0){
+			this->pickuppenalty[0].push_back(temp[i]);
+		}else{
+			this->pickuppenalty[1].push_back(temp[i]);
+		}
+	}
 }
 
 
@@ -55,7 +51,22 @@ void Pickup::setPickup(int locationIdx, int servicetime, int demand,int earliest
 
 
 Dropoff::Dropoff(){
+	vector<double> xvec;
+	vector<double> yvec;
+	this->dropoffpenalty.push_back(xvec);
+	this->dropoffpenalty.push_back(yvec);
 	
+}
+
+void Dropoff::setDropOffPenalty(const vector<double> &temp){
+	cout << "drop" << endl;
+	for(int i=0;i<temp.size();i++){
+		if (i%2==0){
+			this->dropoffpenalty[0].push_back(temp[i]);
+		}else{
+			this->dropoffpenalty[1].push_back(temp[i]);
+		}
+	}
 }
 
 void Dropoff::setDropPenalty(const vector<double> &temp){

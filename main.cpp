@@ -149,7 +149,7 @@ int main(int argc, char *argv[]){
     siki = DepartureTime[1] + DepartureTime[2] + DepartureTime[3] + DepartureTime[4] + DepartureTime[5] + DepartureTime[6];
     // model.setObjective(DepartureTime[1] + DepartureTime[2] + t3 + DepartureTime[4] + DepartureTime[5] + DepartureTime[6] + rt1 + rt2 + rt3, GRB_MINIMIZE);
     model.setObjective(siki, GRB_MINIMIZE);
-    model.optimize();
+    // model.optimize();
 
 
 

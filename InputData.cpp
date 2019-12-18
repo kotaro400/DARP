@@ -33,7 +33,6 @@ void InputData::setInputData(string inputfile){
     this->MaximumRouteDuration = temp_int_v[2];
     this->VehicleCapacity = temp_int_v[3];
     temp_int_v.clear();
-
     this->locationList.reserve(this->RequestSize);
 	this->locationList.resize(this->RequestSize);
     this->PickupList.reserve(this->RequestSize/2+1);
@@ -59,12 +58,14 @@ void InputData::setInputData(string inputfile){
             this->PickupList[i].setPickup(stod(temp_string_v[0]),stod(temp_string_v[3]),stod(temp_string_v[4]),stoi(temp_string_v[5]),stoi(temp_string_v[6]));
             getline(file,line);
             temp_double_v = splitdouble(line,',');
-            this->PickupList[i].setPickPenalty(temp_double_v);
+            // this->PickupList[i].setPickPenalty(temp_double_v);
+            this->PickupList[i].setPickupPenalty(temp_double_v);
         }else{
             this->DropoffList[i - this->RequestSize/2].setDropoff(stod(temp_string_v[0]),stod(temp_string_v[3]),stod(temp_string_v[4]),stoi(temp_string_v[5]),stoi(temp_string_v[6]));
             getline(file,line);
             temp_double_v = splitdouble(line,',');
-            this->DropoffList[i - this->RequestSize/2].setDropPenalty(temp_double_v);
+            // this->DropoffList[i - this->RequestSize/2].setDropPenalty(temp_double_v);
+            this->DropoffList[i-this->RequestSize/2].setDropOffPenalty(temp_double_v);
         }
         temp_string_v.clear();
         temp_double_v.clear();
