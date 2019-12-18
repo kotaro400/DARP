@@ -29,7 +29,6 @@ Pickup::Pickup(){
 }
 
 void Pickup::setPickupPenalty(const vector<double> &temp){
-	cout << "setpickuppena" << endl;
 	for(int i=0;i<temp.size();i++){
 		if (i%2==0){
 			this->pickuppenalty[0].push_back(temp[i]);
@@ -59,7 +58,6 @@ Dropoff::Dropoff(){
 }
 
 void Dropoff::setDropOffPenalty(const vector<double> &temp){
-	cout << "drop" << endl;
 	for(int i=0;i<temp.size();i++){
 		if (i%2==0){
 			this->dropoffpenalty[0].push_back(temp[i]);
