@@ -2,14 +2,12 @@
 using namespace std;
 #include <iostream>
 
-Solution::Solution(RouteList* routelist){
+Solution::Solution(int CustomerSize,int VehicleNum){
     cout << "solutionのコンストラクタ" << endl;
-    this->routelist = routelist;
 }
 
 int Solution::test() {
     cout << "solution::test" << endl;
-    cout << this->routelist->getRouteSize(2) << endl;
     return 1;
 }
 

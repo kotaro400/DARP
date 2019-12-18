@@ -112,16 +112,23 @@ main(int   argc,
 
     // GRBTempConstr c1 = t0s + 1.0 <= DepartureTime[1]; これまちが
     // model.addConstr(c1,"c1");
-    GRBTempConstr tempconstr;
-    string constrname;
+
+
+    // ここから乗車時間の変数の定義
+    model.addConstr(rt1 == DepartureTime[4]-DepartureTime[1], "c0");
+    model.addConstr(rt2 == DepartureTime[5]-DepartureTime[2], "c1");
+    model.addConstr(rt3 == DepartureTime[6]-DepartureTime[3], "c2");
+
+    // ルートが決まったらルートの制約をつける
+    GRBTempConstr tempconstr; //ルートが決まった
+    string constrname; //制約の名前付け これは重要じゃない
     for (int i=1;i<2*n;i++){
       tempconstr = DepartureTime[i] + 1.0 <= DepartureTime[i+1];
       constrname = "constr"+to_string(i);
       model.addConstr(tempconstr,constrname);
     }
-    model.addConstr(rt1 == DepartureTime[4]-DepartureTime[1], "c0");
-    model.addConstr(rt2 == DepartureTime[5]-DepartureTime[2], "c1");
-    model.addConstr(rt3 == DepartureTime[6]-DepartureTime[3], "c2");
+
+    
     // Optimize model
     model.set(GRB_IntParam_OutputFlag, 0); //ログの出力をoff
     model.optimize();

@@ -56,8 +56,37 @@ int main(int argc, char *argv[]){
     RouteList RouteList(inputdata.getVehicleNum());
     RouteList.makeInitialRoute(inputdata.getRequestSize());
     cout << RouteList.getRouteSize(1) << endl;
+    
+// クラスでenvとmodelを保持できなさそうだからmainの中で宣言する
+    GRBEnv env=GRBEnv(true);
+    env.set("LogFile", "mip1.log");
+    env.start();
+    GRBModel model = GRBModel(env);
 
-    // Solution solution(); 初期化 もっと前に初期化してもいいかも
+    int n=inputdata.getRequestSize()/2;
+    int m=inputdata.getVehicleNum();
+    GRBVar* DepartureTime = 0;
+    GRBVar* DepotTime = 0;
+    GRBVar* RideTime = 0;
+
+    // 各ノードの出発時刻の変数を追加
+    double lblist[2*n+1] = {0.0}; //下限
+    double ublist[2*n+1]; //上限
+    for(int i=0;i<=2*n;i++) ublist[i]=inputdata.getMaximumRouteDuration(); 
+    double objlist[2*n+1]; //係数(とりあえず1にした)
+    for(int i=0;i<=2*n;i++) objlist[i] = 1.0;
+    char typelist[2*n+1]; //type
+    for(int i=0;i<=2*n;i++) typelist[i] = GRB_CONTINUOUS;
+    string DepartureName[2*n+1]; //名前 ノードiの出発時刻をt_iとする
+    DepartureName[0] = "depot";
+    string tmp;
+    for(i=1;i<=2*n;i++){
+        tmp = "t_"+to_string(i);
+        DepartureName[i] = tmp;
+    }
+    DepartureTime = model.addVars(lblist,ublist,objlist,typelist,DepartureName,2*n+1);
+
+    Solution solution(n,m); //初期化 もっと前に初期化してもいいかも
     // for(i=0;i<10000;i++){
     //     RouteList.Change()
     //      distance = Cost.Calc(RouteList);
@@ -68,9 +97,7 @@ int main(int argc, char *argv[]){
     //     }
     // }
     
-
-    Solution solution(&RouteList);
     solution.test();
-    solution.CalcRouteDistance(&RouteList);
+    // solution.CalcRouteDistance(&RouteList);
   
 }

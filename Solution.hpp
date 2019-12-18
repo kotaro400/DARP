@@ -10,7 +10,7 @@ private:
     // timelistはいらない
     double RouteDistance;
 public:
-    Solution(RouteList* routelist);
+    Solution(int Customerize,int VehicleNum);
     int test();
     double CalcRouteDistance(RouteList* routelist);
 };
