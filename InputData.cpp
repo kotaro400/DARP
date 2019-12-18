@@ -58,22 +58,16 @@ void InputData::setInputData(string inputfile){
             this->PickupList[i].setPickup(stod(temp_string_v[0]),stod(temp_string_v[3]),stod(temp_string_v[4]),stoi(temp_string_v[5]),stoi(temp_string_v[6]));
             getline(file,line);
             temp_double_v = splitdouble(line,',');
-            // this->PickupList[i].setPickPenalty(temp_double_v);
             this->PickupList[i].setPickupPenalty(temp_double_v);
         }else{
             this->DropoffList[i - this->RequestSize/2].setDropoff(stod(temp_string_v[0]),stod(temp_string_v[3]),stod(temp_string_v[4]),stoi(temp_string_v[5]),stoi(temp_string_v[6]));
             getline(file,line);
             temp_double_v = splitdouble(line,',');
-            // this->DropoffList[i - this->RequestSize/2].setDropPenalty(temp_double_v);
             this->DropoffList[i-this->RequestSize/2].setDropOffPenalty(temp_double_v);
         }
         temp_string_v.clear();
         temp_double_v.clear();
     }
-
-    // cout << this->PickupList[24].getPickPenalty() << endl;
-    // cout << this->DropoffList[2].getDropPenalty() << endl;
-
 }
 
 
@@ -97,8 +91,4 @@ Location* InputData::getLocationPointer(int index){
 
 void InputData::setRideTimePenalty(int i,vector<double> &temp){
     this->DropoffList[i].setRidePenalty(temp);
-}
-
-double InputData::getRideInfo(int i){
-    return this->DropoffList[i].getRidePenalty();
 }

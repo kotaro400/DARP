@@ -54,6 +54,8 @@ Dropoff::Dropoff(){
 	vector<double> yvec;
 	this->dropoffpenalty.push_back(xvec);
 	this->dropoffpenalty.push_back(yvec);
+	this->ridetimepenalty.push_back(xvec);
+	this->ridetimepenalty.push_back(yvec);
 	
 }
 
@@ -70,16 +72,12 @@ void Dropoff::setDropOffPenalty(const vector<double> &temp){
 
 
 void Dropoff::setRidePenalty(vector<double> &temp){
-	int i,n;
-	if ((int)temp.size()%3 != 0) {
-		cout << "始点、傾き、切片のどれかが足りてない" << endl;
-		exit(1);
-	}
-	n = (int)temp.size() / 3;
-	PLF temp_plf;
-	for (i = 0;i < n;i++) {
-		temp_plf.setPLF(temp[3 * i], temp[3 * i + 1], temp[3 * i + 2]);
-		this->ridepnal.push_back(temp_plf);
+	for(int i=0;i<temp.size();i++){
+		if (i%2==0){
+			this->ridetimepenalty[0].push_back(temp[i]);
+		}else{
+			this->ridetimepenalty[1].push_back(temp[i]);
+		}
 	}
 }
 
@@ -90,10 +88,4 @@ void Dropoff::setDropoff(int locationIdx, int servicetime, int demand,int earlie
 	this->earliest = earliest;
 	this->latest = latest;
 	this->nodetype = nodetype;
-}
-
-
-
-double Dropoff::getRidePenalty(){
-	return this->ridepnal[1].getIntercept();
 }

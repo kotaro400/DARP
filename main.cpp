@@ -34,13 +34,10 @@ int main(int argc, char *argv[]){
     }
     // 乗車時間のペナルティ関数をここでいれる
     for(int i=1;i<=inputdata.getRequestSize()/2;i++){
-        // cout << "i:" << i << endl;
-        // cout << cost.getCost(i,i+inputdata.getRequestSize()/2) << endl;
-        vector<double> vec{ 0.0, 0.0, 0.0,cost.getCost(i,i+inputdata.getRequestSize()/2),5,cost.getCost(i,i+inputdata.getRequestSize()/2)*(-5)};
+        vector<double> vec{ 0.0, 0.0, cost.getCost(i,i+inputdata.getRequestSize()/2),0,cost.getCost(i,i+inputdata.getRequestSize()/2)+1.0,5};
         inputdata.setRideTimePenalty(i,vec);
         vec.clear();
     }
-    // cout << inputdata.getRideInfo(24) << endl;
 
     // RouteListクラス:複数のルートをまとめて保持するクラス 
     // Routeクラスよりも初期解生成とか近傍探索がしやすそう
@@ -140,6 +137,9 @@ int main(int argc, char *argv[]){
         // model.setObjective(DepartureTime[1] + DepartureTime[2] + t3 + DepartureTime[4] + DepartureTime[5] + DepartureTime[6] + rt1 + rt2 + rt3, GRB_MINIMIZE);
         model.setObjective(siki, GRB_MINIMIZE);
         // model.optimize();
+
+        // ここ以降にコードを追加
+    
 
     } catch (GRBException e) {
         cout << "Error code = " << e.getErrorCode() << endl;
