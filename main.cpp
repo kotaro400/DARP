@@ -56,6 +56,19 @@ int main(int argc, char *argv[]){
     RouteList RouteList(inputdata.getVehicleNum());
     RouteList.makeInitialRoute(inputdata.getRequestSize());
     cout << RouteList.getRouteSize(1) << endl;
+
+    // Solution solution(); 初期化 もっと前に初期化してもいいかも
+    // for(i=0;i<10000;i++){
+    //     RouteList.Change()
+    //      distance = Cost.Calc(RouteList);
+    //     penalty = solution.calc(RouteList);
+    //     if (distance + penalty is best){
+    //         bestsolution = solution;
+                // bestRouteList = RouteList
+    //     }
+    // }
+    
+
     Solution solution(&RouteList);
     solution.test();
     solution.CalcRouteDistance(&RouteList);
