@@ -5,7 +5,8 @@
         "iostream": "cpp",
         "*.tcc": "cpp",
         "cmath": "cpp",
-        "vector": "cpp"
+        "vector": "cpp",
+        "new": "cpp"
     },
     "python.pythonPath": "/Users/takedakiyoshi/opt/anaconda3/bin/python"
 }

@@ -68,23 +68,85 @@ int main(int argc, char *argv[]){
     GRBVar* DepartureTime = 0;
     GRBVar* DepotTime = 0;
     GRBVar* RideTime = 0;
-
-    // 各ノードの出発時刻の変数を追加
-    double lblist[2*n+1] = {0.0}; //下限
-    double ublist[2*n+1]; //上限
-    for(int i=0;i<=2*n;i++) ublist[i]=inputdata.getMaximumRouteDuration(); 
-    double objlist[2*n+1]; //係数(とりあえず1にした)
-    for(int i=0;i<=2*n;i++) objlist[i] = 1.0;
-    char typelist[2*n+1]; //type
-    for(int i=0;i<=2*n;i++) typelist[i] = GRB_CONTINUOUS;
-    string DepartureName[2*n+1]; //名前 ノードiの出発時刻をt_iとする
-    DepartureName[0] = "depot";
+    
     string tmp;
+    // 各ノードの出発時刻の変数を追加
+    double *lblist; //下限
+    lblist = new double[2*n+1];
+    for(int i=0;i<=2*n;i++) lblist[i] = 0.0;
+    double *ublist; //上限
+    ublist = new double[2*n+1];
+    for(int i=0;i<=2*n;i++) ublist[i]=inputdata.getMaximumRouteDuration(); 
+    double *objlist;
+    objlist = new double[2*n+1];//係数(とりあえず1にした)
+    for(int i=0;i<=2*n;i++) objlist[i] = 1.0;
+    char *typelist;//type
+    typelist = new char[2*n+1];
+    for(int i=0;i<=2*n;i++) typelist[i] = GRB_CONTINUOUS;
+    string *VarName;
+    VarName = new string[2*n+1];//名前 ノードiの出発時刻をt_iとする
+    VarName[0] = "dummy";
     for(i=1;i<=2*n;i++){
         tmp = "t_"+to_string(i);
-        DepartureName[i] = tmp;
+        VarName[i] = tmp;
     }
-    DepartureTime = model.addVars(lblist,ublist,objlist,typelist,DepartureName,2*n+1);
+    DepartureTime = model.addVars(lblist,ublist,objlist,typelist,VarName,2*n+1);
+    delete[] lblist;
+    delete[] ublist;
+    delete[] objlist;
+    delete[] typelist;
+    delete[] VarName;
+    
+    
+    // デポの出発と帰る時刻
+    lblist = new double[2*m];
+    for(int i=0;i<2*m;i++) lblist[i] = 0.0;
+    ublist = new double[2*m];
+    for(int i=0;i<2*m;i++) ublist[i]=inputdata.getMaximumRouteDuration(); 
+    objlist = new double[2*m];//係数(とりあえず1にした)
+    for(int i=0;i<2*m;i++) objlist[i] = 1.0;
+    typelist = new char[2*m];
+    for(int i=0;i<2*m;i++) typelist[i] = GRB_CONTINUOUS;
+    VarName = new string[2*m];//名前 ノードiの出発時刻をt_iとする
+    for(i=0;i<m;i++){
+        tmp = "ds_"+to_string(i);
+        VarName[i] = tmp;
+    }
+    for(i=m;i<2*m;i++){
+        tmp = "de_"+to_string(i);
+        VarName[i] = tmp;
+    }
+    DepotTime = model.addVars(lblist,ublist,objlist,typelist,VarName,2*m);
+    delete[] lblist;
+    delete[] ublist;
+    delete[] objlist;
+    delete[] typelist;
+    delete[] VarName;
+
+    //乗車時間
+    lblist = new double[n+1];
+    for(int i=0;i<=n;i++) lblist[i] = 0.0;
+    ublist = new double[n+1];
+    for(int i=0;i<=n;i++) ublist[i]=inputdata.getMaximumRouteDuration(); 
+    objlist = new double[n+1];//係数(とりあえず1にした)
+    for(int i=0;i<=n;i++) objlist[i] = 1.0;
+    typelist = new char[n+1];
+    for(int i=0;i<=n;i++) typelist[i] = GRB_CONTINUOUS;
+    VarName = new string[n+1];//名前 ノードiの出発時刻をt_iとする
+    VarName[0] = "dummy";
+    for(i=1;i<=m;i++){
+        tmp = "rt"+to_string(i);
+        VarName[i] = tmp;
+    }
+    RideTime = model.addVars(lblist,ublist,objlist,typelist,VarName,2*m);
+    delete[] lblist;
+    delete[] ublist;
+    delete[] objlist;
+    delete[] typelist;
+    delete[] VarName;
+
+
+
 
     Solution solution(n,m); //初期化 もっと前に初期化してもいいかも
     // for(i=0;i<10000;i++){
