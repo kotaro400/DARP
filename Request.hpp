@@ -35,10 +35,10 @@ class Pickup : public Request{
 };
 class Dropoff :public Request{
     private:
-        // vector<vector<double> > dropoffpenalty;
         vector<double> dropoffXpenalty;
         vector<double> dropoffYpenalty;
-        vector<vector<double> > ridetimepenalty;
+        vector<double> ritetimeXpenalty;
+        vector<double> ridetimeYpenalty;
     public:
         Dropoff();
         void setDropOffPenalty(const vector<double> &temp);
