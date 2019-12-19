@@ -72,10 +72,8 @@ void Dropoff::setDropOffPenalty(const vector<double> &temp){
 void Dropoff::setRidePenalty(vector<double> &temp){
 	for(int i=0;i<temp.size();i++){
 		if (i%2==0){
-			// this->ridetimepenalty[0].push_back(temp[i]);
-			this->ritetimeXpenalty.push_back(temp[i]);
+			this->ridetimeXpenalty.push_back(temp[i]);
 		}else{
-			// this->ridetimepenalty[1].push_back(temp[i]);
 			this->ridetimeYpenalty.push_back(temp[i]);
 		}
 	}
@@ -98,4 +96,14 @@ double Dropoff::getDropoffPenaltyXValue(int index){
 }
 double Dropoff::getDropoffPenaltyYValue(int index){
 	return this->dropoffYpenalty[index];
+}
+
+vector<double>* Dropoff::getRidetimePenaltyX(){
+	return &this->ridetimeXpenalty;
+}
+double Dropoff::getRidetimePenaltyXValue(int index){
+	return this->ridetimeXpenalty[index];
+}
+double Dropoff::getRidetimePenaltyYValue(int index){
+	return this->ridetimeYpenalty[index];
 }

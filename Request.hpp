@@ -37,7 +37,7 @@ class Dropoff :public Request{
     private:
         vector<double> dropoffXpenalty;
         vector<double> dropoffYpenalty;
-        vector<double> ritetimeXpenalty;
+        vector<double> ridetimeXpenalty;
         vector<double> ridetimeYpenalty;
     public:
         Dropoff();
@@ -47,5 +47,8 @@ class Dropoff :public Request{
         vector<double>* getDropoffPenaltyX();
         double getDropoffPenaltyXValue(int index);
         double getDropoffPenaltyYValue(int index);
+        vector<double>* getRidetimePenaltyX();
+        double getRidetimePenaltyXValue(int index);
+        double getRidetimePenaltyYValue(int index);
 };
 

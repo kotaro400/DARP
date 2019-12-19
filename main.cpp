@@ -178,8 +178,11 @@ int main(int argc, char *argv[]){
         }
         xvec.clear();
         yvec.clear();
+        tempvec.clear();
 
-        // TODO 目的関数を追加
+
+
+        // 目的関数を追加
         GRBLinExpr objection;
         for(i=1;i<=2*n;i++){
             objection += DepartureTime[i];
@@ -189,14 +192,45 @@ int main(int argc, char *argv[]){
         }
         model.setObjective(objection, GRB_MINIMIZE);
 
-        // TODO 乗車時間の定義 rt_i = t_i+n -t_i （制約として追加)
+        // 乗車時間の定義 rt_i = t_i+n -t_i （制約として追加)
         for (i=1;i<=n;i++){
             tmp = "RideConst"+to_string(i);
             model.addConstr(RideTime[i] == DepartureTime[i+n]-DepartureTime[i],tmp);
         }
 
+        // 乗車時間の区分線形関数を追加
+        // 区分数は3つ
+        xvec.push_back({0.0}); //ダミー index0は使わない
+        yvec.push_back({0.0}); //ダミー
+        for(i=1;i<=n;i++){
+            xvec.push_back(tempvec);
+            yvec.push_back(tempvec);
+            for(j=0;j<inputdata.getDropoffPointer(i)->getRidetimePenaltyX()->size();j++){
+                xvec[i].push_back(inputdata.getDropoffPointer(i)->getRidetimePenaltyXValue(j));
+                yvec[i].push_back(inputdata.getDropoffPointer(i)->getRidetimePenaltyYValue(j));
+            }
+        }
+        // ここまででxvecとyvecに乗車時間のペナルティを追加
 
-        // TODO 乗車時間の区分線形関数を追加
+        // 区分線形関数を追加
+
+        // vectorを配列に変換
+        for(i=1;i<=n;i++){
+            double *xpointer;
+            double *ypointer;
+            xpointer = new double[xvec[i].size()];
+            ypointer = new double[yvec[i].size()];
+            for(j=0;j<xvec[i].size();j++){
+                xpointer[j]=xvec[i][j];
+                ypointer[j]=yvec[i][j];
+            }
+            model.setPWLObj(RideTime[i],3,xpointer,ypointer);
+            delete[] xpointer;
+            delete[] ypointer;
+        }
+        xvec.clear();
+        yvec.clear();
+        tempvec.clear();
 
 
         // TODO ここでルートを受け取って、ルートの順番の制約を追加する
