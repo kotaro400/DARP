@@ -7,7 +7,11 @@
         "cmath": "cpp",
         "vector": "cpp",
         "new": "cpp",
-        "deque": "cpp"
+        "deque": "cpp",
+        "array": "cpp",
+        "istream": "cpp",
+        "tuple": "cpp",
+        "utility": "cpp"
     },
     "python.pythonPath": "/Users/takedakiyoshi/opt/anaconda3/bin/python"
 }
