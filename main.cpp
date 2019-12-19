@@ -232,12 +232,28 @@ int main(int argc, char *argv[]){
 
 
         // TODO ここでルートを受け取って、ルートの順番の制約を追加する
+        GRBTempConstr tempconstr;
+        string constrname; //制約の名前付け これは重要じゃない
+        double RouteDistance;
+        double tmp_double; 
+        for(i=0;i<RouteList.getRouteListSize();i++){
+            for(j=0;j<RouteList.getRouteSize(i)-1;j++){
+                // cout << RouteList.getRoute(i,j) << " " << RouteList.getRoute(i,j+1) << " ";
+                tmp_double = cost.getCost(RouteList.getRoute(i,j),RouteList.getRoute(i,j+1));
+                RouteDistance += tmp_double;
+                tempconstr = DepartureTime[i] + 10.0 + tmp_double <= DepartureTime[i+1];
+                constrname = "constr"+to_string(i)+ "_" + to_string(j);
+                model.addConstr(tempconstr,constrname);
+            }
+        }
+        cout << RouteDistance << endl;
+        cout << RouteList.getRouteListSize() << endl;
+
+
         // デポの時刻DepotTimeとの制約も追加
         
         // model.optimize();
-        double RouteDistance;
-        RouteDistance = cost.CalcDistance(&RouteList); //ルートの総距離
-        
+        // RouteDistance = cost.CalcDistance(&RouteList); //ルートの総距離
     } catch (GRBException e) {
         cout << "Error code = " << e.getErrorCode() << endl;
         cout << e.getMessage() << endl;
