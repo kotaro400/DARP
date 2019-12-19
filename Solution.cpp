@@ -5,12 +5,6 @@ using namespace std;
 Solution::Solution(int CustomerSize,int VehicleNum){
     cout << "solutionのコンストラクタ" << endl;
 }
-
-int Solution::test() {
-    cout << "solution::test" << endl;
-    return 1;
-}
-
 double Solution::CalcRouteDistance(RouteList* routelist){
     double total=0;
     for(int i=0;i<this->routelist->getVehicleNum();i++){

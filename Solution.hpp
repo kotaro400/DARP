@@ -11,6 +11,5 @@ private:
     double RouteDistance;
 public:
     Solution(int Customerize,int VehicleNum);
-    int test();
     double CalcRouteDistance(RouteList* routelist);
 };

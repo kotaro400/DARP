@@ -43,10 +43,11 @@ int main(int argc, char *argv[]){
     // Routeクラスよりも初期解生成とか近傍探索がしやすそう
     RouteList RouteList(inputdata.getVehicleNum());
     RouteList.makeInitialRoute(inputdata.getRequestSize());
-    cout << RouteList.getRouteSize(1) << endl;
     
 // クラスでenvとmodelを保持できなさそうだからmainの中で宣言する
 
+    // n:カスタマーサイズ 
+    // m:車両数
     int n=inputdata.getRequestSize()/2;
     int m=inputdata.getVehicleNum();
     try{
@@ -210,8 +211,6 @@ int main(int argc, char *argv[]){
                 // bestRouteList = RouteList
     //     }
     // }
-    
-    solution.test();
     // solution.CalcRouteDistance(&RouteList);
   
 }
