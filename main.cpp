@@ -188,9 +188,18 @@ int main(int argc, char *argv[]){
             objection += RideTime[i];
         }
         model.setObjective(objection, GRB_MINIMIZE);
-        // TODO ridetimeの定義 rt_i = t_i+n -t_i
+
+        // TODO 乗車時間の定義 rt_i = t_i+n -t_i （制約として追加)
+        for (i=1;i<=n;i++){
+            tmp = "RideConst"+to_string(i);
+            model.addConstr(RideTime[i] == DepartureTime[i+n]-DepartureTime[i],tmp);
+        }
+
 
         // TODO 乗車時間の区分線形関数を追加
+
+        // TODO ここでルートを受け取って、ルートの順番の制約を追加する
+        // デポの時刻DepotTimeとの制約も追加
         
         // model.optimize();
         
