@@ -211,9 +211,7 @@ int main(int argc, char *argv[]){
             }
         }
         // ここまででxvecとyvecに乗車時間のペナルティを追加
-
         // 区分線形関数を追加
-
         // vectorを配列に変換
         for(i=1;i<=n;i++){
             double *xpointer;
@@ -237,6 +235,8 @@ int main(int argc, char *argv[]){
         // デポの時刻DepotTimeとの制約も追加
         
         // model.optimize();
+
+        cost.CalcDistance(&RouteList);
         
     } catch (GRBException e) {
         cout << "Error code = " << e.getErrorCode() << endl;

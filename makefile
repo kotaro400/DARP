@@ -10,7 +10,7 @@ Location.o : Location.hpp Location.cpp
 	g++ -c Location.cpp -o Location.o
 Request.o : Request.hpp Request.cpp
 	g++ -c Request.cpp -o Request.o
-Cost.o : Cost.cpp Cost.hpp
+Cost.o : Cost.cpp Cost.hpp RouteList.hpp
 	g++ -c Cost.cpp -o Cost.o
 RouteList.o : RouteList.hpp RouteList.cpp 
 	g++ -c RouteList.cpp -o RouteList.o

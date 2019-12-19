@@ -14,5 +14,7 @@ public:
 	RouteList(int VehicleNum);
     void makeInitialRoute(int RequestSize);
     int getRouteSize(int number);
+    vector<int>* getRoutePointerByIndex(int index);
+    int getRouteListSize();
     int getRoute(int RouteNumber,int RouteOrder);
 };

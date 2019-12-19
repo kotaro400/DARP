@@ -1,11 +1,11 @@
 using namespace std;
 #include"Cost.hpp"
+#include "RouteList.hpp"
 #include <string>
 #include <iostream>
 #include <cmath>
 
 Cost::Cost(int RequestSize){
-	cout << "Costのコンストラクタ" << endl;
 	this->cost.reserve(RequestSize+1);
 	this->cost.resize(RequestSize+1);
 	for(int i=0;i<=RequestSize;i++){
@@ -25,3 +25,14 @@ double Cost::getCost(int indexI,int indexJ){
 	return this->cost[indexI][indexJ];	
 }
 
+double Cost::CalcDistance(RouteList *routelist){
+	double distance=0.0;
+	for(int i=0;i<routelist->getRouteListSize();i++){
+		// 車両ごと
+		for(int j=0;j<routelist->getRoutePointerByIndex(i)->size()-1;j++){
+			//順番
+			distance += this->cost[routelist->getRoute(i,j)][routelist->getRoute(i,j+1)];
+		}
+	}
+	return distance;
+}

@@ -38,6 +38,14 @@ int RouteList::getRouteSize(int number){
     return this->Routelist[number].size();
 }
 
+vector<int>* RouteList::getRoutePointerByIndex(int index){
+    return &this->Routelist[index];
+}
+
+int RouteList::getRouteListSize(){
+    return this->Routelist.size();
+}
+
 int RouteList::getVehicleNum(){
     return this->VehicleNum;
 }

@@ -3,6 +3,7 @@
 using namespace std;
 #include <string>
 #include <vector>
+#include "RouteList.hpp"
 class Cost{
     private:
         vector<vector<double> > cost;
@@ -11,5 +12,6 @@ class Cost{
         Cost(int RequestSize);
         void setCost(int Xindex,double Xlat,double Xlng,int Yindex,double Ylat,double Ylng);
         double getCost(int indexI,int indexJ);
+        double CalcDistance(RouteList *routelist);
 };
 
