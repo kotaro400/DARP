@@ -39,7 +39,6 @@ int main(int argc, char *argv[]){
     }
 
     // RouteListクラス:複数のルートをまとめて保持するクラス 
-    // Routeクラスよりも初期解生成とか近傍探索がしやすそう
     RouteList RouteList(inputdata.getVehicleNum());
     RouteList.makeInitialRoute(inputdata.getRequestSize());
     
@@ -133,8 +132,6 @@ int main(int argc, char *argv[]){
         delete[] typelist;
         delete[] VarName;
 
-        // ここ以降にコードを追加
-        
         // xvecとyvecはpick,drop,rideで使い回す
         vector<vector<double> > xvec;
         vector<vector<double> > yvec;
@@ -161,9 +158,11 @@ int main(int argc, char *argv[]){
                 yvec[i].push_back(inputdata.getDropoffPointer(i-n)->getDropoffPenaltyYValue(j));
             }
         }
+        // ここまででxvecとyvecに乗降のペナルティを追加
         // 区分線形関数を追加
 
         // vectorを配列に変換
+        // gurobiの入力がvectorをうけとらないため
         for(i=1;i<=2*n;i++){
             double *xpointer;
             double *ypointer;
@@ -177,6 +176,8 @@ int main(int argc, char *argv[]){
             delete[] xpointer;
             delete[] ypointer;
         }
+        xvec.clear();
+        yvec.clear();
 
         // TODO 目的関数を追加
         GRBLinExpr objection;
@@ -196,6 +197,7 @@ int main(int argc, char *argv[]){
 
 
         // TODO 乗車時間の区分線形関数を追加
+
 
         // TODO ここでルートを受け取って、ルートの順番の制約を追加する
         // デポの時刻DepotTimeとの制約も追加
