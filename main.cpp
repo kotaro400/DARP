@@ -235,8 +235,8 @@ int main(int argc, char *argv[]){
         // デポの時刻DepotTimeとの制約も追加
         
         // model.optimize();
-
-        cost.CalcDistance(&RouteList);
+        double RouteDistance;
+        RouteDistance = cost.CalcDistance(&RouteList); //ルートの総距離
         
     } catch (GRBException e) {
         cout << "Error code = " << e.getErrorCode() << endl;
@@ -255,6 +255,5 @@ int main(int argc, char *argv[]){
                 // bestRouteList = RouteList
     //     }
     // }
-    // solution.CalcRouteDistance(&RouteList);
   
 }
