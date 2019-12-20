@@ -53,84 +53,53 @@ int main(int argc, char *argv[]){
         env.set("LogFile", "mip1.log");
         env.start();
         GRBModel model = GRBModel(env);
-        GRBVar* DepartureTime = 0;
-        GRBVar* DepotTime = 0;
-        GRBVar* RideTime = 0;
+        GRBVar DepartureTime[2*n+1];
+        GRBVar DepotTime[2*m];
+        GRBVar RideTime[n+1];
+        GRBVar DepartureTimePenalty[2*n+1];
+        GRBVar DepotTimePenalty[2*m];
+        GRBVar RideTimePenalty[n+1];
 
         string tmp;
         // 各ノードの出発時刻の変数を追加
-        double *lblist; //下限
-        lblist = new double[2*n+1];
-        for(int i=0;i<=2*n;i++) lblist[i] = 0.0;
-        double *ublist; //上限
-        ublist = new double[2*n+1];
-        for(int i=0;i<=2*n;i++) ublist[i]=inputdata.getLatestArrivalDepotTime();
-        double *objlist;
-        objlist = new double[2*n+1];//係数(とりあえず1にした)
-        for(int i=0;i<=2*n;i++) objlist[i] = 1.0;
-        char *typelist;//type
-        typelist = new char[2*n+1];
-        for(int i=0;i<=2*n;i++) typelist[i] = GRB_CONTINUOUS;
-        string *VarName;
-        VarName = new string[2*n+1];//名前 ノードiの出発時刻をt_iとする
-        VarName[0] = "dummy";
-        for(i=1;i<=2*n;i++){
-            tmp = "t_"+to_string(i);
-            VarName[i] = tmp;
+        for(i=0;i<=2*n;i++){
+            tmp = "t_"+to_string(i); //ノードiの出発時刻をt_iとする
+            DepartureTime[i] = model.addVar(0.0,(double)inputdata.getLatestArrivalDepotTime(),0.0,GRB_CONTINUOUS,tmp);
         }
-        DepartureTime = model.addVars(lblist,ublist,objlist,typelist,VarName,2*n+1);
-        delete[] lblist;
-        delete[] ublist;
-        delete[] objlist;
-        delete[] typelist;
-        delete[] VarName;
+        for(i=0;i<=2*n;i++){
+            tmp = "p_t_"+to_string(i); //ノードiの出発時刻をt_iとする
+            DepartureTimePenalty[i] = model.addVar(0.0,(double)inputdata.getLatestArrivalDepotTime(),0.0,GRB_CONTINUOUS,tmp);
+        }
 
         // デポの出発と帰る時刻
-        lblist = new double[2*m];
-        for(int i=0;i<2*m;i++) lblist[i] = 0.0;
-        ublist = new double[2*m];
-        for(int i=0;i<2*m;i++) ublist[i]=inputdata.getLatestArrivalDepotTime();
-        objlist = new double[2*m];//係数(とりあえず1にした)
-        for(int i=0;i<2*m;i++) objlist[i] = 1.0;
-        typelist = new char[2*m];
-        for(int i=0;i<2*m;i++) typelist[i] = GRB_CONTINUOUS;
-        VarName = new string[2*m];//名前 ノードiの出発時刻をt_iとする
         for(i=0;i<m;i++){
             tmp = "ds_"+to_string(i);
-            VarName[i] = tmp;
+            DepotTime[i] = model.addVar(0.0,(double)inputdata.getLatestArrivalDepotTime(),0.0,GRB_CONTINUOUS,tmp);
         }
         for(i=m;i<2*m;i++){
             tmp = "de_"+to_string(i);
-            VarName[i] = tmp;
+            DepotTime[i] = model.addVar(0.0,(double)inputdata.getLatestArrivalDepotTime(),0.0,GRB_CONTINUOUS,tmp);
         }
-        DepotTime = model.addVars(lblist,ublist,objlist,typelist,VarName,2*m);
-        delete[] lblist;
-        delete[] ublist;
-        delete[] objlist;
-        delete[] typelist;
-        delete[] VarName;
+        for(i=0;i<m;i++){
+            tmp = "p_ds_"+to_string(i);
+            DepotTimePenalty[i] = model.addVar(0.0,(double)inputdata.getLatestArrivalDepotTime(),0.0,GRB_CONTINUOUS,tmp);
+        }
+        for(i=m;i<2*m;i++){
+            tmp = "p_de_"+to_string(i);
+            DepotTimePenalty[i] = model.addVar(0.0,(double)inputdata.getLatestArrivalDepotTime(),0.0,GRB_CONTINUOUS,tmp);
+        }
 
         //乗車時間
-        lblist = new double[n+1];
-        for(int i=0;i<=n;i++) lblist[i] = 0.0;
-        ublist = new double[n+1];
-        for(int i=0;i<=n;i++) ublist[i]=inputdata.getLatestArrivalDepotTime(); 
-        objlist = new double[n+1];//係数(とりあえず1にした)
-        for(int i=0;i<=n;i++) objlist[i] = 1.0;
-        typelist = new char[n+1];
-        for(int i=0;i<=n;i++) typelist[i] = GRB_CONTINUOUS;
-        VarName = new string[n+1];//名前 ノードiの出発時刻をt_iとする
-        VarName[0] = "dummy";
-        for(i=1;i<=m;i++){
+        for (i=0;i<=n;i++){
             tmp = "rt"+to_string(i);
-            VarName[i] = tmp;
+            RideTime[i] = model.addVar(0.0,(double)inputdata.getLatestArrivalDepotTime(),0.0,GRB_CONTINUOUS,tmp);
         }
-        RideTime = model.addVars(lblist,ublist,objlist,typelist,VarName,n+1);
-        delete[] lblist;
-        delete[] ublist;
-        delete[] objlist;
-        delete[] typelist;
-        delete[] VarName;
+        for (i=0;i<=n;i++){
+            tmp = "p_rt"+to_string(i);
+            RideTimePenalty[i] = model.addVar(0.0,(double)inputdata.getLatestArrivalDepotTime(),0.0,GRB_CONTINUOUS,tmp);
+        }
+        // ここまで変数とペナルティ変数を定義
+
 
         // xvecとyvecはpick,drop,rideで使い回す
         vector<vector<double> > xvec;
@@ -172,7 +141,7 @@ int main(int argc, char *argv[]){
                 xpointer[j]=xvec[i][j];
                 ypointer[j]=yvec[i][j];
             }
-            model.setPWLObj(DepartureTime[i],4,xpointer,ypointer);
+            // model.setPWLObj(DepartureTime[i],4,xpointer,ypointer);
             delete[] xpointer;
             delete[] ypointer;
         }
@@ -185,10 +154,10 @@ int main(int argc, char *argv[]){
         // 目的関数を追加
         GRBLinExpr objection;
         for(i=1;i<=2*n;i++){
-            objection += DepartureTime[i];
+            objection += DepartureTimePenalty[i];
         }
         for(i=1;i<=n;i++){
-            objection += RideTime[i];
+            objection += RideTimePenalty[i];
         }
         model.setObjective(objection, GRB_MINIMIZE);
 
@@ -222,7 +191,7 @@ int main(int argc, char *argv[]){
                 xpointer[j]=xvec[i][j];
                 ypointer[j]=yvec[i][j];
             }
-            model.setPWLObj(RideTime[i],3,xpointer,ypointer);
+            // model.setPWLObj(RideTime[i],3,xpointer,ypointer);
             delete[] xpointer;
             delete[] ypointer;
         }
@@ -232,27 +201,28 @@ int main(int argc, char *argv[]){
 
 
         // TODO ここでルートを受け取って、ルートの順番の制約を追加する
-        GRBTempConstr tempconstr;
-        string constrname; //制約の名前付け これは重要じゃない
-        double RouteDistance;
-        double tmp_double; 
-        for(i=0;i<RouteList.getRouteListSize();i++){
-            for(j=0;j<RouteList.getRouteSize(i)-1;j++){
-                // cout << RouteList.getRoute(i,j) << " " << RouteList.getRoute(i,j+1) << " ";
-                tmp_double = cost.getCost(RouteList.getRoute(i,j),RouteList.getRoute(i,j+1));
-                RouteDistance += tmp_double;
-                tempconstr = DepartureTime[i] + 10.0 + tmp_double <= DepartureTime[i+1];
-                constrname = "constr"+to_string(i)+ "_" + to_string(j);
-                model.addConstr(tempconstr,constrname);
-            }
-        }
-        cout << RouteDistance << endl;
-        cout << RouteList.getRouteListSize() << endl;
+        // GRBTempConstr tempconstr;
+        // string constrname; //制約の名前付け これは重要じゃない
+        // double RouteDistance;
+        // double tmp_double; 
+        // for(i=0;i<RouteList.getRouteListSize();i++){
+        //     for(j=0;j<RouteList.getRouteSize(i)-1;j++){
+        //         // cout << RouteList.getRoute(i,j) << " " << RouteList.getRoute(i,j+1) << " ";
+        //         tmp_double = cost.getCost(RouteList.getRoute(i,j),RouteList.getRoute(i,j+1));
+        //         RouteDistance += tmp_double;
+        //         tempconstr = DepartureTime[i] + 10.0 + tmp_double <= DepartureTime[i+1];
+        //         constrname = "constr"+to_string(i)+ "_" + to_string(j);
+        //         model.addConstr(tempconstr,constrname);
+        //     }
+        // }
+        // cout << RouteDistance << endl;
+        // cout << RouteList.getRouteListSize() << endl;
 
 
         // デポの時刻DepotTimeとの制約も追加
         
-        // model.optimize();
+        model.optimize();
+        cout << "Obj: " << model.get(GRB_DoubleAttr_ObjVal) << endl;
         // RouteDistance = cost.CalcDistance(&RouteList); //ルートの総距離
     } catch (GRBException e) {
         cout << "Error code = " << e.getErrorCode() << endl;
