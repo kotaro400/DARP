@@ -118,21 +118,8 @@ int main(int argc, char *argv[]){
         }
 
         // 区分線形関数を追加
-        double xpointer[4];
-        double ypointer[4];
         for(i=1;i<=2*n;i++){
-            cout << "i:" << i << " ";
-            for(j=0;j<4;j++){
-                // cout << departureX[i][j] <<"," << departureY[i][j] << " ";
-                xpointer[j] = departureX[i][j];
-                ypointer[j] = departureY[i][j];
-            }
-            for(j=0;j<4;j++){
-                cout << xpointer[j] << "," << ypointer[j] <<  " ";
-            }
-            cout << endl;
-            model.addGenConstrPWL(DepartureTime[i],DepartureTimePenalty[i],4,xpointer,ypointer,"c1");
-            // model.addGenConstrPWL(DepartureTime[i],DepartureTimePenalty[i],4,departureX[i],departureY[i],"c1");
+            model.addGenConstrPWL(DepartureTime[i],DepartureTimePenalty[i],4,departureX[i],departureY[i],"c1");
         }
 
 
