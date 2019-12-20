@@ -43,13 +43,18 @@ main(int   argc,
 
 
     // Set objective: maximize x + y + 2 z
+
     model.setObjective(fx[0]+fx[1], GRB_MAXIMIZE);
 
     // Add constraint: x + 2 y + 3 z <= 4
     // model.addConstr(x + 2 * y + 3 * z <= 4, "c0");
 
     // Add constraint: x + y >= 1
-    // model.addConstr(x + y >= 1, "c1");
+//     model.addConstr(x[0] + x[1] == 1, "c1");
+    GRBConstr c[2];
+    c[1] =  model.addConstr(x[0] + x[1] == 1, "c1");
+    model.remove(c[1]);
+    
 
     // Optimize model
     model.optimize();
