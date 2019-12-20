@@ -100,32 +100,25 @@ int main(int argc, char *argv[]){
         }
         // ここまで変数とペナルティ変数を定義
 
-
         // 出発時刻のペナルティを取得 区分数は4
         double departureX[2*n+1][4];
         double departureY[2*n+1][4];
-        for (i=1;i<=n;i++){
+        for (i=1;i<=n;i++){ //pickup
             for(j=0;j<4;j++){
                 departureX[i][j] = inputdata.getPickupPointer(i)->getPickupPenaltyXValue(j);
                 departureY[i][j] =  inputdata.getPickupPointer(i)->getPickupPenaltyYValue(j);
             }
         }
-        for(i=n+1;i<=2*n;i++){
+        for(i=n+1;i<=2*n;i++){ //dropoff
             for(j=0;j<4;j++){
                 departureX[i][j] = inputdata.getDropoffPointer(i-n)->getDropoffPenaltyXValue(j);
                 departureY[i][j] = inputdata.getDropoffPointer(i-n)->getDropoffPenaltyYValue(j);
             }
         }
-
-        // 区分線形関数を追加
+        // 出発時刻に関する区分線形関数を追加
         for(i=1;i<=2*n;i++){
-            model.addGenConstrPWL(DepartureTime[i],DepartureTimePenalty[i],4,departureX[i],departureY[i],"c1");
+            model.addGenConstrPWL(DepartureTime[i],DepartureTimePenalty[i],4,departureX[i],departureY[i],"pwl");
         }
-
-
-
-
-        
         
         // 目的関数を追加
         GRBLinExpr objection;
@@ -137,7 +130,6 @@ int main(int argc, char *argv[]){
         }
         model.setObjective(objection, GRB_MINIMIZE);
 
-        
         
         // 乗車時間の定義 rt_i = t_i+n -t_i （制約として追加)
         for (i=1;i<=n;i++){
@@ -199,9 +191,15 @@ int main(int argc, char *argv[]){
 
         // デポの時刻DepotTimeとの制約も追加
         
+
+        // optimize
         model.optimize();
         cout << "Obj: " << model.get(GRB_DoubleAttr_ObjVal) << endl;
+
+
         // RouteDistance = cost.CalcDistance(&RouteList); //ルートの総距離
+
+        
     } catch (GRBException e) {
         cout << "Error code = " << e.getErrorCode() << endl;
         cout << e.getMessage() << endl;
