@@ -110,40 +110,69 @@ int main(int argc, char *argv[]){
         yvec.push_back({0.0}); //ダミー
         // 乗車時間の区分線形関数を設定
         vector<double> tempvec;
+        // for (i=1;i<=n;i++){
+        //     xvec.push_back(tempvec);
+        //     yvec.push_back(tempvec);
+        //     for (j=0;j<inputdata.getPickupPointer(i)->getPickupPenaltyX()->size();j++){
+        //         xvec[i].push_back(inputdata.getPickupPointer(i)->getPickupPenaltyXValue(j));
+        //         yvec[i].push_back(inputdata.getPickupPointer(i)->getPickupPenaltyYValue(j));
+        //     }
+        // }
+        // for(i=n+1;i<=2*n;i++){
+        //     xvec.push_back(tempvec);
+        //     yvec.push_back(tempvec);
+        //     for(j=0;j<inputdata.getDropoffPointer(i-n)->getDropoffPenaltyX()->size();j++){
+        //         xvec[i].push_back(inputdata.getDropoffPointer(i-n)->getDropoffPenaltyXValue(j));
+        //         yvec[i].push_back(inputdata.getDropoffPointer(i-n)->getDropoffPenaltyYValue(j));
+        //     }
+        // }
+        double departureX[2*n+1][4];
+        double departureY[2*n+1][4];
         for (i=1;i<=n;i++){
-            xvec.push_back(tempvec);
-            yvec.push_back(tempvec);
-            for (j=0;j<inputdata.getPickupPointer(i)->getPickupPenaltyX()->size();j++){
-                xvec[i].push_back(inputdata.getPickupPointer(i)->getPickupPenaltyXValue(j));
-                yvec[i].push_back(inputdata.getPickupPointer(i)->getPickupPenaltyYValue(j));
+            for(j=0;j<4;j++){
+                departureX[i][j] = inputdata.getPickupPointer(i)->getPickupPenaltyXValue(j);
+                departureY[i][j] =  inputdata.getPickupPointer(i)->getPickupPenaltyYValue(j);
             }
         }
         for(i=n+1;i<=2*n;i++){
-            xvec.push_back(tempvec);
-            yvec.push_back(tempvec);
-            // cout << inputdata.getDropoffPointer(i-n)->getDropoffPenaltyX()->size() << endl; //ここがずっと0になってる
-            for(j=0;j<inputdata.getDropoffPointer(i-n)->getDropoffPenaltyX()->size();j++){
-                xvec[i].push_back(inputdata.getDropoffPointer(i-n)->getDropoffPenaltyXValue(j));
-                yvec[i].push_back(inputdata.getDropoffPointer(i-n)->getDropoffPenaltyYValue(j));
+            for(j=0;j<4;j++){
+                departureX[i][j] = inputdata.getDropoffPointer(i-n)->getDropoffPenaltyXValue(j);
+                departureY[i][j] = inputdata.getDropoffPointer(i-n)->getDropoffPenaltyYValue(j);
             }
+        }
+
+
+        for (i=1;i<=n;i++){
+            cout << "i:" << i << " ";
+            for(j=0;j<4;j++){
+                cout << departureX[i][j] << "," << departureY[i][j] << " ";
+            }
+            cout << endl;
+        }
+        for(i=n+1;i<=2*n;i++){
+            cout << "i:" << i << " ";
+            for(j=0;j<4;j++){
+                cout << departureX[i][j] << "," << departureY[i][j] << " ";
+            }
+            cout << endl;
         }
         // ここまででxvecとyvecに乗降のペナルティを追加
         // 区分線形関数を追加
-
         // vectorを配列に変換
         // gurobiの入力がvectorをうけとらないため
+        // double xpointer[4] = {0,0,0,1430};
+        // double ypointer[4] = {10,10,10,10};
+        double tx[2]= {2,3};
+        double ty[2] = {5,6};
+        double xpointer[4];
+        double ypointer[4];
         for(i=1;i<=2*n;i++){
-            double *xpointer;
-            double *ypointer;
-            xpointer = new double[xvec[i].size()];
-            ypointer = new double[yvec[i].size()];
-            for(j=0;j<xvec[i].size();j++){
-                xpointer[j]=xvec[i][j];
-                ypointer[j]=yvec[i][j];
+            for(j=0;j<4;j++){
+                xpointer[j] = j;
+                ypointer[j] = i+j;
             }
-            // model.setPWLObj(DepartureTime[i],4,xpointer,ypointer);
-            delete[] xpointer;
-            delete[] ypointer;
+            model.addGenConstrPWL(DepartureTime[i],DepartureTimePenalty[i],4,xpointer,ypointer,"c1");
+            // model.addGenConstrPWL(DepartureTime[i],DepartureTimePenalty[i],4,departureX[i],departureY[i],"c1");
         }
         xvec.clear();
         yvec.clear();
