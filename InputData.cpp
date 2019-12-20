@@ -49,7 +49,7 @@ void InputData::setInputData(string inputfile){
     temp_string_v.clear();
     getline(file,line);
     temp_string_v = splitstring(line,',');
-    this->LatestArrivalDepotTime = stoi(temp_string_v[2]);
+    this->LatestArrivalDepotTime = stoi(temp_string_v[6]);
 
 
     
@@ -88,7 +88,7 @@ int InputData::getVehicleCapacity() {
     return VehicleCapacity;
 }
 int InputData::getLatestArrivalDepotTime() {
-    return LatestArrivalDepotTime;
+    return this->LatestArrivalDepotTime;
 }
 
 
