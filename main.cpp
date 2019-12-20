@@ -140,14 +140,16 @@ int main(int argc, char *argv[]){
         // }
         // for(i=n+1;i<=2*n;i++){
         //     for(j=0;j<4;j++){
-        //         departureX[i][j] = inputdata.getDropoffPointer(i-n)->getDropoffPenaltyXValue(j);
-        //         departureY[i][j] = inputdata.getDropoffPointer(i-n)->getDropoffPenaltyYValue(j);
+                // departureX[i][j] = inputdata.getDropoffPointer(i-n)->getDropoffPenaltyXValue(j);
+                // departureY[i][j] = inputdata.getDropoffPointer(i-n)->getDropoffPenaltyYValue(j);
+        //         departureX[i][j] = inputdata.getPickupPointer(i-n)->getPickupPenaltyXValue(j);
+        //         departureY[i][j] =  inputdata.getPickupPointer(i-n)->getPickupPenaltyYValue(j);
         //     }
         // }
         for(i=0;i<=2*n;i++){
             for(j=0;j<4;j++){
-                departureX[i][j] = j;
-                departureY[i][j] = i+j+1;
+                departureX[i][j] = inputdata.getPickupPointer(22)->getPickupPenaltyXValue(j);
+                departureY[i][j] = inputdata.getPickupPointer(22)->getPickupPenaltyYValue(j);
             }
         }
 
