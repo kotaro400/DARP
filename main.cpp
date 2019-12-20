@@ -128,6 +128,10 @@ int main(int argc, char *argv[]){
         // }
         double departureX[2*n+1][4];
         double departureY[2*n+1][4];
+        for(j=0;j<4;j++){
+            departureX[i][j] = 0;
+            departureY[i][j] = 0;
+        }
         for (i=1;i<=n;i++){
             for(j=0;j<4;j++){
                 departureX[i][j] = inputdata.getPickupPointer(i)->getPickupPenaltyXValue(j);
@@ -160,16 +164,16 @@ int main(int argc, char *argv[]){
         // 区分線形関数を追加
         // vectorを配列に変換
         // gurobiの入力がvectorをうけとらないため
-        // double xpointer[4] = {0,0,0,1430};
-        // double ypointer[4] = {10,10,10,10};
-        double tx[2]= {2,3};
-        double ty[2] = {5,6};
+        double tx[4]= {2,3,4,5};
+        double ty[4] = {4,5,8,9};
+        double tx2[2][4] = {{2,3,4,5},{2,3,4,5}};
+        double ty2[2][4] = {{4,5,8,9},{4,5,8,9}};
         double xpointer[4];
         double ypointer[4];
         for(i=1;i<=2*n;i++){
             for(j=0;j<4;j++){
-                xpointer[j] = j;
-                ypointer[j] = i+j;
+                xpointer[j] = departureX[1][j];
+                ypointer[j] = ty2[1][j];
             }
             model.addGenConstrPWL(DepartureTime[i],DepartureTimePenalty[i],4,xpointer,ypointer,"c1");
             // model.addGenConstrPWL(DepartureTime[i],DepartureTimePenalty[i],4,departureX[i],departureY[i],"c1");
@@ -180,6 +184,8 @@ int main(int argc, char *argv[]){
 
 
 
+        
+        
         // 目的関数を追加
         GRBLinExpr objection;
         for(i=1;i<=2*n;i++){
@@ -190,6 +196,8 @@ int main(int argc, char *argv[]){
         }
         model.setObjective(objection, GRB_MINIMIZE);
 
+        
+        
         // 乗車時間の定義 rt_i = t_i+n -t_i （制約として追加)
         for (i=1;i<=n;i++){
             tmp = "RideConst"+to_string(i);
@@ -198,35 +206,35 @@ int main(int argc, char *argv[]){
 
         // 乗車時間の区分線形関数を追加
         // 区分数は3つ
-        xvec.push_back({0.0}); //ダミー index0は使わない
-        yvec.push_back({0.0}); //ダミー
-        for(i=1;i<=n;i++){
-            xvec.push_back(tempvec);
-            yvec.push_back(tempvec);
-            for(j=0;j<inputdata.getDropoffPointer(i)->getRidetimePenaltyX()->size();j++){
-                xvec[i].push_back(inputdata.getDropoffPointer(i)->getRidetimePenaltyXValue(j));
-                yvec[i].push_back(inputdata.getDropoffPointer(i)->getRidetimePenaltyYValue(j));
-            }
-        }
+        // xvec.push_back({0.0}); //ダミー index0は使わない
+        // yvec.push_back({0.0}); //ダミー
+        // for(i=1;i<=n;i++){
+        //     xvec.push_back(tempvec);
+        //     yvec.push_back(tempvec);
+        //     for(j=0;j<inputdata.getDropoffPointer(i)->getRidetimePenaltyX()->size();j++){
+        //         xvec[i].push_back(inputdata.getDropoffPointer(i)->getRidetimePenaltyXValue(j));
+        //         yvec[i].push_back(inputdata.getDropoffPointer(i)->getRidetimePenaltyYValue(j));
+        //     }
+        // }
         // ここまででxvecとyvecに乗車時間のペナルティを追加
         // 区分線形関数を追加
         // vectorを配列に変換
-        for(i=1;i<=n;i++){
-            double *xpointer;
-            double *ypointer;
-            xpointer = new double[xvec[i].size()];
-            ypointer = new double[yvec[i].size()];
-            for(j=0;j<xvec[i].size();j++){
-                xpointer[j]=xvec[i][j];
-                ypointer[j]=yvec[i][j];
-            }
-            // model.setPWLObj(RideTime[i],3,xpointer,ypointer);
-            delete[] xpointer;
-            delete[] ypointer;
-        }
-        xvec.clear();
-        yvec.clear();
-        tempvec.clear();
+        // for(i=1;i<=n;i++){
+        //     double *xpointer;
+        //     double *ypointer;
+        //     xpointer = new double[xvec[i].size()];
+        //     ypointer = new double[yvec[i].size()];
+        //     for(j=0;j<xvec[i].size();j++){
+        //         xpointer[j]=xvec[i][j];
+        //         ypointer[j]=yvec[i][j];
+        //     }
+        //     // model.setPWLObj(RideTime[i],3,xpointer,ypointer);
+        //     delete[] xpointer;
+        //     delete[] ypointer;
+        // }
+        // xvec.clear();
+        // yvec.clear();
+        // tempvec.clear();
 
 
         // TODO ここでルートを受け取って、ルートの順番の制約を追加する
