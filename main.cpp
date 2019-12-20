@@ -128,25 +128,31 @@ int main(int argc, char *argv[]){
         // }
         double departureX[2*n+1][4];
         double departureY[2*n+1][4];
-        for(j=0;j<4;j++){
-            departureX[i][j] = 0;
-            departureY[i][j] = 0;
-        }
-        for (i=1;i<=n;i++){
+        // for(j=0;j<4;j++){
+        //     departureX[0][j] = j;
+        //     departureY[0][j] = j;
+        // }
+        // for (i=1;i<=n;i++){
+        //     for(j=0;j<4;j++){
+        //         departureX[i][j] = inputdata.getPickupPointer(i)->getPickupPenaltyXValue(j);
+        //         departureY[i][j] =  inputdata.getPickupPointer(i)->getPickupPenaltyYValue(j);
+        //     }
+        // }
+        // for(i=n+1;i<=2*n;i++){
+        //     for(j=0;j<4;j++){
+        //         departureX[i][j] = inputdata.getDropoffPointer(i-n)->getDropoffPenaltyXValue(j);
+        //         departureY[i][j] = inputdata.getDropoffPointer(i-n)->getDropoffPenaltyYValue(j);
+        //     }
+        // }
+        for(i=0;i<=2*n;i++){
             for(j=0;j<4;j++){
-                departureX[i][j] = inputdata.getPickupPointer(i)->getPickupPenaltyXValue(j);
-                departureY[i][j] =  inputdata.getPickupPointer(i)->getPickupPenaltyYValue(j);
-            }
-        }
-        for(i=n+1;i<=2*n;i++){
-            for(j=0;j<4;j++){
-                departureX[i][j] = inputdata.getDropoffPointer(i-n)->getDropoffPenaltyXValue(j);
-                departureY[i][j] = inputdata.getDropoffPointer(i-n)->getDropoffPenaltyYValue(j);
+                departureX[i][j] = j;
+                departureY[i][j] = i+j+1;
             }
         }
 
 
-        for (i=1;i<=n;i++){
+        for (i=0;i<=n;i++){
             cout << "i:" << i << " ";
             for(j=0;j<4;j++){
                 cout << departureX[i][j] << "," << departureY[i][j] << " ";
@@ -168,13 +174,16 @@ int main(int argc, char *argv[]){
         double ty[4] = {4,5,8,9};
         double tx2[2][4] = {{2,3,4,5},{2,3,4,5}};
         double ty2[2][4] = {{4,5,8,9},{4,5,8,9}};
-        double xpointer[4];
-        double ypointer[4];
-        for(i=1;i<=2*n;i++){
+        for(i=0;i<=2*n;i++){
+            double xpointer[4];
+            double ypointer[4];
+            cout << "i:" << i << " ";
             for(j=0;j<4;j++){
-                xpointer[j] = departureX[1][j];
-                ypointer[j] = ty2[1][j];
+                cout << departureX[i][j] <<"," << departureY[i][j] << " ";
+                xpointer[j] = departureX[i][j];
+                ypointer[j] = departureY[i][j];
             }
+            cout << endl;
             model.addGenConstrPWL(DepartureTime[i],DepartureTimePenalty[i],4,xpointer,ypointer,"c1");
             // model.addGenConstrPWL(DepartureTime[i],DepartureTimePenalty[i],4,departureX[i],departureY[i],"c1");
         }
