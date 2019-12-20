@@ -101,97 +101,40 @@ int main(int argc, char *argv[]){
         // ここまで変数とペナルティ変数を定義
 
 
-        // xvecとyvecはpick,drop,rideで使い回す
-        vector<vector<double> > xvec;
-        vector<vector<double> > yvec;
-        // xvec:区分線形関数のx座標
-        // yvec:区分線形関数のy座標
-        xvec.push_back({0.0}); //ダミー index0は使わない
-        yvec.push_back({0.0}); //ダミー
-        // 乗車時間の区分線形関数を設定
-        vector<double> tempvec;
-        // for (i=1;i<=n;i++){
-        //     xvec.push_back(tempvec);
-        //     yvec.push_back(tempvec);
-        //     for (j=0;j<inputdata.getPickupPointer(i)->getPickupPenaltyX()->size();j++){
-        //         xvec[i].push_back(inputdata.getPickupPointer(i)->getPickupPenaltyXValue(j));
-        //         yvec[i].push_back(inputdata.getPickupPointer(i)->getPickupPenaltyYValue(j));
-        //     }
-        // }
-        // for(i=n+1;i<=2*n;i++){
-        //     xvec.push_back(tempvec);
-        //     yvec.push_back(tempvec);
-        //     for(j=0;j<inputdata.getDropoffPointer(i-n)->getDropoffPenaltyX()->size();j++){
-        //         xvec[i].push_back(inputdata.getDropoffPointer(i-n)->getDropoffPenaltyXValue(j));
-        //         yvec[i].push_back(inputdata.getDropoffPointer(i-n)->getDropoffPenaltyYValue(j));
-        //     }
-        // }
+        // 出発時刻のペナルティを取得 区分数は4
         double departureX[2*n+1][4];
         double departureY[2*n+1][4];
-        // for(j=0;j<4;j++){
-        //     departureX[0][j] = j;
-        //     departureY[0][j] = j;
-        // }
-        // for (i=1;i<=n;i++){
-        //     for(j=0;j<4;j++){
-        //         departureX[i][j] = inputdata.getPickupPointer(i)->getPickupPenaltyXValue(j);
-        //         departureY[i][j] =  inputdata.getPickupPointer(i)->getPickupPenaltyYValue(j);
-        //     }
-        // }
-        // for(i=n+1;i<=2*n;i++){
-        //     for(j=0;j<4;j++){
-                // departureX[i][j] = inputdata.getDropoffPointer(i-n)->getDropoffPenaltyXValue(j);
-                // departureY[i][j] = inputdata.getDropoffPointer(i-n)->getDropoffPenaltyYValue(j);
-        //         departureX[i][j] = inputdata.getPickupPointer(i-n)->getPickupPenaltyXValue(j);
-        //         departureY[i][j] =  inputdata.getPickupPointer(i-n)->getPickupPenaltyYValue(j);
-        //     }
-        // }
-        for(i=0;i<=2*n;i++){
+        for (i=1;i<=n;i++){
             for(j=0;j<4;j++){
-                departureX[i][j] = inputdata.getPickupPointer(22)->getPickupPenaltyXValue(j);
-                departureY[i][j] = inputdata.getPickupPointer(22)->getPickupPenaltyYValue(j);
+                departureX[i][j] = inputdata.getPickupPointer(i)->getPickupPenaltyXValue(j);
+                departureY[i][j] =  inputdata.getPickupPointer(i)->getPickupPenaltyYValue(j);
             }
-        }
-
-
-        for (i=0;i<=n;i++){
-            cout << "i:" << i << " ";
-            for(j=0;j<4;j++){
-                cout << departureX[i][j] << "," << departureY[i][j] << " ";
-            }
-            cout << endl;
         }
         for(i=n+1;i<=2*n;i++){
-            cout << "i:" << i << " ";
             for(j=0;j<4;j++){
-                cout << departureX[i][j] << "," << departureY[i][j] << " ";
+                departureX[i][j] = inputdata.getDropoffPointer(i-n)->getDropoffPenaltyXValue(j);
+                departureY[i][j] = inputdata.getDropoffPointer(i-n)->getDropoffPenaltyYValue(j);
             }
-            cout << endl;
         }
-        // ここまででxvecとyvecに乗降のペナルティを追加
+
         // 区分線形関数を追加
-        // vectorを配列に変換
-        // gurobiの入力がvectorをうけとらないため
-        double tx[4]= {2,3,4,5};
-        double ty[4] = {4,5,8,9};
-        double tx2[2][4] = {{2,3,4,5},{2,3,4,5}};
-        double ty2[2][4] = {{4,5,8,9},{4,5,8,9}};
-        for(i=0;i<=2*n;i++){
-            double xpointer[4];
-            double ypointer[4];
+        double xpointer[4];
+        double ypointer[4];
+        for(i=1;i<=2*n;i++){
             cout << "i:" << i << " ";
             for(j=0;j<4;j++){
-                cout << departureX[i][j] <<"," << departureY[i][j] << " ";
+                // cout << departureX[i][j] <<"," << departureY[i][j] << " ";
                 xpointer[j] = departureX[i][j];
                 ypointer[j] = departureY[i][j];
+            }
+            for(j=0;j<4;j++){
+                cout << xpointer[j] << "," << ypointer[j] <<  " ";
             }
             cout << endl;
             model.addGenConstrPWL(DepartureTime[i],DepartureTimePenalty[i],4,xpointer,ypointer,"c1");
             // model.addGenConstrPWL(DepartureTime[i],DepartureTimePenalty[i],4,departureX[i],departureY[i],"c1");
         }
-        xvec.clear();
-        yvec.clear();
-        tempvec.clear();
+
 
 
 

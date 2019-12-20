@@ -41,10 +41,10 @@ for file in files:
                         else:
                             f.write(subitem)
                 if (int(item[-1].strip("\n")) >= MaximuRouteDuraion) and (int(item[-2]) == 0):
-                    f.write("0,0,0,0,"+str(item[-2])+",0,"+str(item[-1].strip("\n"))+",0\n")
+                    f.write("0,0,1,0,2,0,"+str(item[-1].strip("\n"))+",0\n")
                 elif int(item[-1].strip("\n")) >= MaximuRouteDuraion:
-                    f.write(str(int(item[-2])-1)+",5,"+str(item[-2])+",0,"+str(item[-1].strip("\n"))+",0,"+str(item[-1].strip("\n"))+",0\n")
+                    f.write(str(int(item[-2])-1)+",5,"+str(item[-2])+",0,"+str(int(item[-1].strip("\n"))-1)+",0,"+str(item[-1].strip("\n"))+",0\n")
                 elif int(item[-2]) == 0:
-                    f.write("0,0,"+str(item[-2])+",0,"+str(item[-1].strip("\n"))+",0,"+str(int(item[-1].strip("\n"))+1)+",5\n")
+                    f.write("0,0,1,0,"+str(item[-1].strip("\n"))+",0,"+str(int(item[-1].strip("\n"))+1)+",5\n")
                 else:
                     f.write(str(int(item[-2])-1)+",5,"+str(item[-2])+",0,"+str(item[-1].strip("\n"))+",0,"+str(int(item[-1].strip("\n"))+1)+",5\n")
