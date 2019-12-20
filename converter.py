@@ -43,7 +43,7 @@ for file in files:
                 if (int(item[-1].strip("\n")) >= MaximuRouteDuraion) and (int(item[-2]) == 0):
                     f.write("0,0,0,0,"+str(item[-2])+",0,"+str(item[-1].strip("\n"))+",0\n")
                 elif int(item[-1].strip("\n")) >= MaximuRouteDuraion:
-                    f.write(str(int(item[-2])-1)+",5,"+str(item[-2])+",0,"+str(item[-1].strip("\n"))+",0"+str(item[-1].strip("\n"))+",0\n")
+                    f.write(str(int(item[-2])-1)+",5,"+str(item[-2])+",0,"+str(item[-1].strip("\n"))+",0,"+str(item[-1].strip("\n"))+",0\n")
                 elif int(item[-2]) == 0:
                     f.write("0,0,"+str(item[-2])+",0,"+str(item[-1].strip("\n"))+",0,"+str(int(item[-1].strip("\n"))+1)+",5\n")
                 else:
