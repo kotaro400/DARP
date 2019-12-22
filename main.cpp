@@ -4,7 +4,6 @@
 #include "Location.hpp"
 #include "Cost.hpp"
 #include "myfunction.hpp"
-#include "Solution.hpp"
 #include <gurobi_c++.h>
 using namespace std;
 
