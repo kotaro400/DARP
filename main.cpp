@@ -194,7 +194,7 @@ int main(int argc, char *argv[]){
                 constrname = to_string(i) + "constr_last_depot";
                 RouteOrderConstr[RouteList.getRouteListSize()].push_back(model.addConstr(tempconstr,constrname));
             }
-        cout << RouteDistance << endl;
+        cout << "RouteDistance:" <<RouteDistance << endl;
 
         
         // optimize
@@ -223,10 +223,17 @@ int main(int argc, char *argv[]){
         //     << RideTime[i].get(GRB_DoubleAttr_X) << endl;
         // }
 
-        cout << "Obj: " << model.get(GRB_DoubleAttr_ObjVal) << endl;
+        cout << "penalty: " << model.get(GRB_DoubleAttr_ObjVal) << endl;
 
+        // for(i=0;i<10000;i++){
+        //     RouteList.Change();
+        //     ルートの制約を追加
+        //     penaltyとdistanceを計算
+        //     if (distance + penalty is best){
+        //         bestroutelist = routelist;
+        //     }
+        // }
 
-        // RouteDistance = cost.CalcDistance(&RouteList); //ルートの総距離
 
         
     } catch (GRBException e) {
@@ -235,16 +242,5 @@ int main(int argc, char *argv[]){
     } catch (...) {
         cout << "Error during optimization" << endl;
     }
-    
-    Solution solution(n,m); //初期化 もっと前に初期化してもいいかも
-    // for(i=0;i<10000;i++){
-    //     RouteList.Change()
-    //      distance = Cost.Calc(RouteList);
-    //     penalty = solution.calc(RouteList);
-    //     if (distance + penalty is best){
-    //         bestsolution = solution;
-                // bestRouteList = RouteList
-    //     }
-    // }
   
 }
