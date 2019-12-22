@@ -194,6 +194,10 @@ int main(int argc, char *argv[]){
 
         // optimize
         model.optimize();
+        for(i=1;i<=2*n;i++){
+             cout << DepartureTime[i].get(GRB_StringAttr_VarName) << " "
+         << DepartureTime[i].get(GRB_DoubleAttr_X) << endl;
+        }
         cout << "Obj: " << model.get(GRB_DoubleAttr_ObjVal) << endl;
 
 
