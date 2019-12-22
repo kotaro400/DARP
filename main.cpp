@@ -137,38 +137,23 @@ int main(int argc, char *argv[]){
             model.addConstr(RideTime[i] == DepartureTime[i+n]-DepartureTime[i],tmp);
         }
 
-        // 乗車時間の区分線形関数を追加
-        // 区分数は3つ
-        // xvec.push_back({0.0}); //ダミー index0は使わない
-        // yvec.push_back({0.0}); //ダミー
-        // for(i=1;i<=n;i++){
-        //     xvec.push_back(tempvec);
-        //     yvec.push_back(tempvec);
-        //     for(j=0;j<inputdata.getDropoffPointer(i)->getRidetimePenaltyX()->size();j++){
-        //         xvec[i].push_back(inputdata.getDropoffPointer(i)->getRidetimePenaltyXValue(j));
-        //         yvec[i].push_back(inputdata.getDropoffPointer(i)->getRidetimePenaltyYValue(j));
-        //     }
-        // }
-        // ここまででxvecとyvecに乗車時間のペナルティを追加
-        // 区分線形関数を追加
-        // vectorを配列に変換
-        // for(i=1;i<=n;i++){
-        //     double *xpointer;
-        //     double *ypointer;
-        //     xpointer = new double[xvec[i].size()];
-        //     ypointer = new double[yvec[i].size()];
-        //     for(j=0;j<xvec[i].size();j++){
-        //         xpointer[j]=xvec[i][j];
-        //         ypointer[j]=yvec[i][j];
-        //     }
-        //     // model.setPWLObj(RideTime[i],3,xpointer,ypointer);
-        //     delete[] xpointer;
-        //     delete[] ypointer;
-        // }
-        // xvec.clear();
-        // yvec.clear();
-        // tempvec.clear();
+        // 乗車時間の区分線形関数を取得 区分数は3つ
+        double ridetimeX[n+1][3];
+        double ridetimeY[n+1][3];
+        for(i=1;i<=n;i++){
+            ridetimeX[i][0] = 0;
+            ridetimeX[i][1] = cost.getCost(i,i+n);
+            ridetimeX[i][2] = cost.getCost(i,i+n)+1;
+            ridetimeY[i][0] = 0;
+            ridetimeY[i][1] = 0;
+            ridetimeY[i][2] = 5;
+        }
 
+        // 乗車時間の区分線形関数を追加  区分数は3つ
+        for(i=1;i<=n;i++){
+            model.addGenConstrPWL(RideTime[i],RideTimePenalty[i],3,ridetimeX[i],ridetimeY[i],"rtpwl");
+        }
+        
 
         // TODO ここでルートを受け取って、ルートの順番の制約を追加する
         // GRBTempConstr tempconstr;
