@@ -9,6 +9,7 @@ using namespace std;
 
 int main(int argc, char *argv[]){
     int i,j;
+    string tmp;
     // 入力を受け取り
     InputData inputdata;
     string inputfile = argv[1];
@@ -17,6 +18,11 @@ int main(int argc, char *argv[]){
     cout << "リクエスト数:" << inputdata.getRequestSize() << endl;
     cout << "ルートの最大長さ:" << inputdata.getMaximumRouteDuration() << endl;
     cout << "車両の容量:" << inputdata.getVehicleCapacity() << endl;
+
+    // n:カスタマーサイズ 
+    // m:車両数
+    int n=inputdata.getRequestSize()/2;
+    int m=inputdata.getVehicleNum();
 
     // 2店間の距離と時間を計算
     Location* loc1;
@@ -32,22 +38,17 @@ int main(int argc, char *argv[]){
     }
     // 乗車時間のペナルティ関数をここでいれる 
     // これおそらくいらない
-    for(int i=1;i<=inputdata.getRequestSize()/2;i++){
-        vector<double> vec{ 0.0, 0.0, cost.getCost(i,i+inputdata.getRequestSize()/2),0,cost.getCost(i,i+inputdata.getRequestSize()/2)+1.0,5};
+    for(int i=1;i<=n;i++){
+        vector<double> vec{ 0.0, 0.0, cost.getCost(i,i+n),0,cost.getCost(i,i+n)+1.0,5};
         inputdata.setRideTimePenalty(i,vec);
         vec.clear();
     }
 
     // RouteListクラス:複数のルートをまとめて保持するクラス 
-    RouteList RouteList(inputdata.getVehicleNum());
+    RouteList RouteList(m);
     RouteList.makeInitialRoute(inputdata.getRequestSize());
     
     // クラスをまたいでenvとmodelを保持できなさそうだからmainの中で宣言する
-
-    // n:カスタマーサイズ 
-    // m:車両数
-    int n=inputdata.getRequestSize()/2;
-    int m=inputdata.getVehicleNum();
     try{
         GRBEnv env=GRBEnv(true);
         env.set("LogFile", "mip1.log");
@@ -57,10 +58,8 @@ int main(int argc, char *argv[]){
         GRBVar DepotTime[2*m];
         GRBVar RideTime[n+1];
         GRBVar DepartureTimePenalty[2*n+1];
-        GRBVar DepotTimePenalty[2*m];
         GRBVar RideTimePenalty[n+1];
 
-        string tmp;
         // 各ノードの出発時刻の変数を追加
         for(i=0;i<=2*n;i++){
             tmp = "t_"+to_string(i); //ノードiの出発時刻をt_iとする
