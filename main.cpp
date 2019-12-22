@@ -30,7 +30,8 @@ int main(int argc, char *argv[]){
             cost.setCost(i,loc1->getLat(),loc1->getLng(),j,loc2->getLat(),loc2->getLng());
         }
     }
-    // 乗車時間のペナルティ関数をここでいれる
+    // 乗車時間のペナルティ関数をここでいれる 
+    // これおそらくいらない
     for(int i=1;i<=inputdata.getRequestSize()/2;i++){
         vector<double> vec{ 0.0, 0.0, cost.getCost(i,i+inputdata.getRequestSize()/2),0,cost.getCost(i,i+inputdata.getRequestSize()/2)+1.0,5};
         inputdata.setRideTimePenalty(i,vec);
@@ -41,7 +42,7 @@ int main(int argc, char *argv[]){
     RouteList RouteList(inputdata.getVehicleNum());
     RouteList.makeInitialRoute(inputdata.getRequestSize());
     
-// クラスでenvとmodelを保持できなさそうだからmainの中で宣言する
+    // クラスをまたいでenvとmodelを保持できなさそうだからmainの中で宣言する
 
     // n:カスタマーサイズ 
     // m:車両数
@@ -78,14 +79,6 @@ int main(int argc, char *argv[]){
         for(i=m;i<2*m;i++){
             tmp = "de_"+to_string(i);
             DepotTime[i] = model.addVar(0.0,(double)inputdata.getLatestArrivalDepotTime(),0.0,GRB_CONTINUOUS,tmp);
-        }
-        for(i=0;i<m;i++){
-            tmp = "p_ds_"+to_string(i);
-            DepotTimePenalty[i] = model.addVar(0.0,(double)inputdata.getLatestArrivalDepotTime(),0.0,GRB_CONTINUOUS,tmp);
-        }
-        for(i=m;i<2*m;i++){
-            tmp = "p_de_"+to_string(i);
-            DepotTimePenalty[i] = model.addVar(0.0,(double)inputdata.getLatestArrivalDepotTime(),0.0,GRB_CONTINUOUS,tmp);
         }
 
         //乗車時間
@@ -129,7 +122,6 @@ int main(int argc, char *argv[]){
         }
         model.setObjective(objection, GRB_MINIMIZE);
 
-        
         // 乗車時間の定義 rt_i = t_i+n -t_i （制約として追加)
         for (i=1;i<=n;i++){
             tmp = "RideConst"+to_string(i);
@@ -171,7 +163,7 @@ int main(int argc, char *argv[]){
                 // getRouteSize(i)-2なのはj→j+1を考えてるから
                 RouteDistance += cost.getCost(RouteList.getRoute(i,j),RouteList.getRoute(i,j+1));
                 // 論文の8の式
-                tempconstr = DepartureTime[RouteList.getRoute(i,j)] + 10.0 +  cost.getCost(RouteList.getRoute(i,j),RouteList.getRoute(i,j+1)) <= DepartureTime[RouteList.getRoute(i,j+1)];
+                tempconstr = DepartureTime[RouteList.getRoute(i,j)] + 10.0 +  cost.getCost(RouteList.getRoute(i,j),RouteList.getRoute(i,j+1)) == DepartureTime[RouteList.getRoute(i,j+1)];
                 constrname = "constr"+to_string(i)+ "_" + to_string(j);
                 RouteOrderConstr[i].push_back(model.addConstr(tempconstr,constrname));
             }
@@ -185,11 +177,11 @@ int main(int argc, char *argv[]){
                 RouteDistance += cost.getCost(0,RouteList.getRoute(i,1)); //i番目の車両の1番目
                 RouteDistance += cost.getCost(RouteList.getRoute(i,RouteList.getRouteSize(i)-2),0);//i番目の車両のデポを除く最後
                 // デポと1番目の制約
-                tempconstr = DepotTime[i] + 10.0 +  cost.getCost(0,RouteList.getRoute(i,1)) <= DepartureTime[RouteList.getRoute(i,1)];
+                tempconstr = DepotTime[i] + 10.0 +  cost.getCost(0,RouteList.getRoute(i,1)) == DepartureTime[RouteList.getRoute(i,1)];
                 constrname = to_string(i) + "constr_depot_1";
                 RouteOrderConstr[RouteList.getRouteListSize()].push_back(model.addConstr(tempconstr,constrname));
                 // 最後とデポの制約
-                tempconstr = DepartureTime[RouteList.getRoute(i,RouteList.getRouteSize(i)-2)] + 10.0 +  cost.getCost(RouteList.getRoute(i,RouteList.getRouteSize(i)-2),0) <= DepotTime[i+m];
+                tempconstr = DepartureTime[RouteList.getRoute(i,RouteList.getRouteSize(i)-2)] + 10.0 +  cost.getCost(RouteList.getRoute(i,RouteList.getRouteSize(i)-2),0) == DepotTime[i+m];
                 constrname = to_string(i) + "constr_last_depot";
                 RouteOrderConstr[RouteList.getRouteListSize()].push_back(model.addConstr(tempconstr,constrname));
             }
@@ -211,12 +203,15 @@ int main(int argc, char *argv[]){
         vector<vector<GRBConstr> >().swap(RouteOrderConstr);
 
 
-        // for(i=1;i<=2*n;i++){
-        //      cout << DepartureTime[i].get(GRB_StringAttr_VarName) << " "
-        //     << DepartureTime[i].get(GRB_DoubleAttr_X) << " "
-        //     << DepartureTimePenalty[i].get(GRB_DoubleAttr_X) << endl;
-
-        // }
+        for(i=1;i<=2*n;i++){
+             cout << DepartureTime[i].get(GRB_StringAttr_VarName) << " "
+            << DepartureTime[i].get(GRB_DoubleAttr_X) << " "
+            << DepartureTimePenalty[i].get(GRB_DoubleAttr_X) << endl;
+        }
+        for(i=0;i<2*m;i++){
+             cout << DepotTime[i].get(GRB_StringAttr_VarName) << " "
+            << DepotTime[i].get(GRB_DoubleAttr_X) << endl;
+        }
         // for(i=1;i<=n;i++){
         //      cout << RideTime[i].get(GRB_StringAttr_VarName) << " "
         //     << RideTime[i].get(GRB_DoubleAttr_X) << endl;
@@ -227,6 +222,8 @@ int main(int argc, char *argv[]){
         // for(i=0;i<10000;i++){
         //     RouteList.Change();
         //     ルートの制約を追加
+        //     routedistanceを計算
+        // 
         //     penaltyとdistanceを計算
         //     if (distance + penalty is best){
         //         bestroutelist = routelist;
