@@ -168,23 +168,21 @@ int main(int argc, char *argv[]){
                 RouteOrderConstr[i].push_back(model.addConstr(tempconstr,constrname));
             }
         }
-
         // RouteOrderConstrのサイズは、車両数+1 最後の1つはデポ関連
-
         // デポの時刻DepotTimeとの制約も追加
         RouteOrderConstr.push_back(tempvec);
-            for(i=0;i<RouteList.getRouteListSize();i++){
-                RouteDistance += cost.getCost(0,RouteList.getRoute(i,1)); //i番目の車両の1番目
-                RouteDistance += cost.getCost(RouteList.getRoute(i,RouteList.getRouteSize(i)-2),0);//i番目の車両のデポを除く最後
-                // デポと1番目の制約
-                tempconstr = DepotTime[i] + 10.0 +  cost.getCost(0,RouteList.getRoute(i,1)) == DepartureTime[RouteList.getRoute(i,1)];
-                constrname = to_string(i) + "constr_depot_1";
-                RouteOrderConstr[RouteList.getRouteListSize()].push_back(model.addConstr(tempconstr,constrname));
-                // 最後とデポの制約
-                tempconstr = DepartureTime[RouteList.getRoute(i,RouteList.getRouteSize(i)-2)] + 10.0 +  cost.getCost(RouteList.getRoute(i,RouteList.getRouteSize(i)-2),0) == DepotTime[i+m];
-                constrname = to_string(i) + "constr_last_depot";
-                RouteOrderConstr[RouteList.getRouteListSize()].push_back(model.addConstr(tempconstr,constrname));
-            }
+        for(i=0;i<RouteList.getRouteListSize();i++){
+            RouteDistance += cost.getCost(0,RouteList.getRoute(i,1)); //i番目の車両の1番目
+            RouteDistance += cost.getCost(RouteList.getRoute(i,RouteList.getRouteSize(i)-2),0);//i番目の車両のデポを除く最後
+            // デポと1番目の制約
+            tempconstr = DepotTime[i] + 10.0 +  cost.getCost(0,RouteList.getRoute(i,1)) == DepartureTime[RouteList.getRoute(i,1)];
+            constrname = to_string(i) + "constr_depot_1";
+            RouteOrderConstr[RouteList.getRouteListSize()].push_back(model.addConstr(tempconstr,constrname));
+            // 最後とデポの制約
+            tempconstr = DepartureTime[RouteList.getRoute(i,RouteList.getRouteSize(i)-2)] + 10.0 +  cost.getCost(RouteList.getRoute(i,RouteList.getRouteSize(i)-2),0) == DepotTime[i+m];
+            constrname = to_string(i) + "constr_last_depot";
+            RouteOrderConstr[RouteList.getRouteListSize()].push_back(model.addConstr(tempconstr,constrname));
+        }
         cout << "RouteDistance:" <<RouteDistance << endl;
 
         // 計算開始時間
@@ -195,7 +193,7 @@ int main(int argc, char *argv[]){
         model.optimize();
 
 
-        // ここでルートの順番の制約をremoveしたい
+        // ここでルートの順番の制約をremove
         for(i=0;i<RouteOrderConstr.size();i++){
             for(j=0;j<RouteOrderConstr[i].size();j++){
                 model.remove(RouteOrderConstr[i][j]);
