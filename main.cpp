@@ -5,6 +5,7 @@
 #include "Cost.hpp"
 #include "myfunction.hpp"
 #include <gurobi_c++.h>
+#include "cpu_time.c"
 using namespace std;
 
 int main(int argc, char *argv[]){
@@ -186,7 +187,9 @@ int main(int argc, char *argv[]){
             }
         cout << "RouteDistance:" <<RouteDistance << endl;
 
-        
+        // 計算開始時間
+        double starttime = cpu_time();
+
         // optimize
         model.set(GRB_IntParam_OutputFlag, 0); //ログの出力をoff
         model.optimize();
@@ -228,6 +231,11 @@ int main(int argc, char *argv[]){
         //         bestroutelist = routelist;
         //     }
         // }
+
+        // 計算終了の時間
+        double endtime = cpu_time();
+
+        cout << "時間:" << endtime -starttime << endl;
 
 
         
