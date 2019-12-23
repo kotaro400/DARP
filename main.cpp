@@ -8,6 +8,9 @@
 #include "cpu_time.c"
 using namespace std;
 
+
+void removeElement(vector<int> &vector, int index); //vectorの指定したインデックスの要素を削除する関数
+
 int main(int argc, char *argv[]){
     int i,j;
     string tmp;
@@ -244,4 +247,9 @@ int main(int argc, char *argv[]){
         cout << "Error during optimization" << endl;
     }
   
+}
+
+
+void removeElement(vector<int> &vector, int index) {
+    vector.erase(vector.begin()+index);
 }
