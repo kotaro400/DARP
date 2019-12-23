@@ -11,7 +11,8 @@
         "array": "cpp",
         "istream": "cpp",
         "tuple": "cpp",
-        "utility": "cpp"
+        "utility": "cpp",
+        "type_traits": "cpp"
     },
     "python.pythonPath": "/Users/takedakiyoshi/opt/anaconda3/bin/python"
 }
