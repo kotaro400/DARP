@@ -73,6 +73,10 @@ void RouteList::InnerRouteChange_requestSet(){
 
     // 挿入
     int afterIndex = abs((int)mt64()) % RequestSize;
+    while(beforeIndex == afterIndex){
+        afterIndex = abs((int)mt64()) % RequestSize;
+        // 変える前と変える後が一緒の場合はやり直す
+    }
     auto it = this->Routelist[index].begin();
     it += (1+2*afterIndex);
     it = this->Routelist[index].insert(it,first);
