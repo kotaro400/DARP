@@ -12,6 +12,7 @@ private:
 public:
     int getVehicleNum();
 	RouteList(int VehicleNum);
+    ~RouteList();
     void makeInitialRoute(int RequestSize);
     int getRouteSize(int number);
     vector<int>* getRoutePointerByIndex(int index);

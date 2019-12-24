@@ -12,6 +12,10 @@ RouteList::RouteList(int VehicleNum){
 	this->Routelist.resize(VehicleNum);
 }
 
+RouteList::~RouteList(){
+    cout  << "RouteListのデストラクタ" << endl;
+}
+
 void RouteList::makeInitialRoute(int RequestSize){
     int i;
     cout << "初期解生成スタート" << endl;
