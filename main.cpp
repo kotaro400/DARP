@@ -153,13 +153,11 @@ int main(int argc, char *argv[]){
         // ここでルートを受け取って、ルートの順番の制約を追加する
         // ルートの長さもここで計算する
         double RouteDistance=0; //RouteDistanceはイテレーション毎に0で初期化
-        vector<vector<GRBConstr> > RouteOrderConstr;
-        vector<GRBConstr> tempvec; //空のvector
+        vector<GRBConstr> RouteOrderConstr;
         GRBTempConstr tempconstr;
         string constrname; //制約の名前付け これは重要じゃない
         double tmp_double;
         for(i=0;i<routelist.getRouteListSize();i++){
-            RouteOrderConstr.push_back(tempvec);
             for(j=1;j<routelist.getRouteSize(i)-2;j++){ 
                 // 1から始めるのは最初のデポは別で設定するから 
                 // getRouteSize(i)-2なのはj→j+1を考えてるから
@@ -167,29 +165,26 @@ int main(int argc, char *argv[]){
                 // 論文の8の式
                 tempconstr = DepartureTime[routelist.getRoute(i,j)] + 10.0 +  cost.getCost(routelist.getRoute(i,j),routelist.getRoute(i,j+1)) == DepartureTime[routelist.getRoute(i,j+1)];
                 constrname = "constr"+to_string(i)+ "_" + to_string(j);
-                RouteOrderConstr[i].push_back(model.addConstr(tempconstr,constrname));
+                RouteOrderConstr.push_back(model.addConstr(tempconstr,constrname));
             }
         }
-        // RouteOrderConstrのサイズは、車両数+1 最後の1つはデポ関連
         // デポの時刻DepotTimeとの制約も追加
-        RouteOrderConstr.push_back(tempvec);
         for(i=0;i<routelist.getRouteListSize();i++){
             RouteDistance += cost.getCost(0,routelist.getRoute(i,1)); //i番目の車両の1番目
             RouteDistance += cost.getCost(routelist.getRoute(i,routelist.getRouteSize(i)-2),0);//i番目の車両のデポを除く最後
             // デポと1番目の制約
             tempconstr = DepotTime[i] + 10.0 +  cost.getCost(0,routelist.getRoute(i,1)) == DepartureTime[routelist.getRoute(i,1)];
             constrname = to_string(i) + "constr_depot_1";
-            RouteOrderConstr[routelist.getRouteListSize()].push_back(model.addConstr(tempconstr,constrname));
+            RouteOrderConstr.push_back(model.addConstr(tempconstr,constrname));
             // 最後とデポの制約
             tempconstr = DepartureTime[routelist.getRoute(i,routelist.getRouteSize(i)-2)] + 10.0 +  cost.getCost(routelist.getRoute(i,routelist.getRouteSize(i)-2),0) == DepotTime[i+m];
             constrname = to_string(i) + "constr_last_depot";
-            RouteOrderConstr[routelist.getRouteListSize()].push_back(model.addConstr(tempconstr,constrname));
+            RouteOrderConstr.push_back(model.addConstr(tempconstr,constrname));
         }
         cout << "RouteDistance:" <<RouteDistance << endl;
 
         // 計算開始時間
         double starttime = cpu_time();
-
         // optimize
         model.set(GRB_IntParam_OutputFlag, 0); //ログの出力をoff
         model.optimize();
@@ -197,12 +192,10 @@ int main(int argc, char *argv[]){
 
         // ここでルートの順番の制約をremove
         for(i=0;i<RouteOrderConstr.size();i++){
-            for(j=0;j<RouteOrderConstr[i].size();j++){
-                model.remove(RouteOrderConstr[i][j]);
-            }
+            model.remove(RouteOrderConstr[i]);
         }
         //RouteOrderConstrのメモリ解放
-        vector<vector<GRBConstr> >().swap(RouteOrderConstr);
+        vector<GRBConstr>().swap(RouteOrderConstr);
 
 
         // for(i=1;i<=2*n;i++){
@@ -221,7 +214,7 @@ int main(int argc, char *argv[]){
 
         cout << "penalty: " << model.get(GRB_DoubleAttr_ObjVal) << endl;
 
-        for(int k=0;k<10;k++){
+        for(int k=0;k<2;k++){
             RouteList *TmpRouteList;
             TmpRouteList = new RouteList(m); //メモリの確保
             *TmpRouteList = routelist;
@@ -236,15 +229,19 @@ int main(int argc, char *argv[]){
             // TODO ルートの制約を追加
             // ここでdistanceは計算しちゃう
             RouteDistance=0;
+            GRBTempConstr temp2constr;
             for(i=0;i<TmpRouteList->getRouteListSize();i++){
-                RouteOrderConstr.push_back(tempvec);
                 for(j=1;j<TmpRouteList->getRouteSize(i)-2;j++){
                     RouteDistance += cost.getCost(TmpRouteList->getRoute(i,j),TmpRouteList->getRoute(i,j+1));
+                    // 論文8の式
+                    temp2constr = DepartureTime[TmpRouteList->getRoute(i,j)] + 10.0 + cost.getCost(TmpRouteList->getRoute(i,j),TmpRouteList->getRoute(i,j+1)) == DepartureTime[TmpRouteList->getRoute(i,j)];
+                    constrname = "constr"+to_string(i)+ "_" + to_string(j);
+                    // RouteOrderConstr.push_back(model.addConstr(DepartureTime[j]+10==DepartureTime[j+1],"test"));
                 }
             }
 
             // TODO デポの時刻DepotTimeとの制約も追加
-            RouteOrderConstr.push_back(tempvec);
+            // RouteOrderConstr.push_back(tempvec);
             for(i=0;i<TmpRouteList->getRouteListSize();i++){
                 // cout << TmpRouteList->getRoute(i,TmpRouteList->getRouteSize(i)-2) << endl;
                 RouteDistance += cost.getCost(0,TmpRouteList->getRoute(i,1));
@@ -258,13 +255,17 @@ int main(int argc, char *argv[]){
             // TODO ペナルティを計算 
 
             // 解を比較(optimize)
+            model.optimize();
+            cout << "penalty: " << model.get(GRB_DoubleAttr_ObjVal) << endl;
             // 良い解ならroutelist = TmpRouteList;
             // 悪い解ならなにもしない
 
             // ルートの制約をremove
+            cout << "成約数:" << RouteOrderConstr.size() << endl;
 
              //RouteOrderConstrのメモリ解放
-            vector<vector<GRBConstr> >().swap(RouteOrderConstr);
+            vector<GRBConstr>().swap(RouteOrderConstr);
+            cout << "成約数:" << RouteOrderConstr.size() << endl;
 
 
             delete TmpRouteList; //メモリの解放
