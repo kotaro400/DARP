@@ -6,14 +6,14 @@ using namespace std;
 void removeElement(vector<int> &vector, int index); //vectorの指定したインデックスの要素を削除する関数
 
 RouteList::RouteList(int VehicleNum){
-    cout << "RouteListのコンストラクタ" << endl;
+    // cout << "RouteListのコンストラクタ" << endl;
     this->VehicleNum = VehicleNum;
     this->Routelist.reserve(VehicleNum);
 	this->Routelist.resize(VehicleNum);
 }
 
 RouteList::~RouteList(){
-    cout  << "RouteListのデストラクタ" << endl;
+    // cout  << "RouteListのデストラクタ" << endl;
 }
 
 void RouteList::makeInitialRoute(int RequestSize){
@@ -64,19 +64,15 @@ int RouteList::getRoute(int RouteNumber,int RouteOrder){
 void RouteList::InnerRouteChange_requestSet(){
     mt19937_64 mt64(rand());
     int index= abs((int)mt64()) % this->Routelist.size();
-    cout << "index:" << index << endl;
     int RequestSize = (this->Routelist[index].size()-2) / 2;
     int beforeIndex = abs((int)mt64()) % RequestSize;
-    cout << "beforeindex:" << beforeIndex << endl;
     int first = this->Routelist[index].at(1+2*(beforeIndex));
     int second = this->Routelist[index].at(1+2*(beforeIndex)+1);
-    cout << first << " " << second << endl;
     removeElement(this->Routelist[index],1+2*(beforeIndex));
     removeElement(this->Routelist[index],1+2*(beforeIndex));
 
     // 挿入
     int afterIndex = abs((int)mt64()) % RequestSize;
-    cout << "afterindex: "<< afterIndex << endl;
     auto it = this->Routelist[index].begin();
     it += (1+2*afterIndex);
     it = this->Routelist[index].insert(it,first);
