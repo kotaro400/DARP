@@ -253,14 +253,10 @@ int main(int argc, char *argv[]){
 
             }
 
-
-            cout << k << "のときのRouteDistance:" << RouteDistance << endl;
-
-
             // TODO ペナルティを計算 
             // 解を比較(optimize)
             model.optimize();
-            cout << "penalty: " << model.get(GRB_DoubleAttr_ObjVal) << endl;
+            cout << k << "回目のRouteDistance: " << RouteDistance  << " penalty: " << model.get(GRB_DoubleAttr_ObjVal) << endl;
             // 良い解ならroutelist = TmpRouteList;
             // 悪い解ならなにもしない
 
@@ -272,8 +268,8 @@ int main(int argc, char *argv[]){
             vector<GRBConstr>().swap(RouteOrderConstr);
             delete tempconstr;
 
-
-            delete TmpRouteList; //メモリの解放
+            //TmpRouteListクラスのメモリ解放
+            delete TmpRouteList; 
         }
         // 計算終了の時間
         double endtime = cpu_time();
