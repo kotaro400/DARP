@@ -17,4 +17,5 @@ public:
     vector<int>* getRoutePointerByIndex(int index);
     int getRouteListSize();
     int getRoute(int RouteNumber,int RouteOrder);
+    void InnerRouteChange_requestSet();
 };

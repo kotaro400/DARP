@@ -9,7 +9,6 @@
 using namespace std;
 
 
-void removeElement(vector<int> &vector, int index); //vectorの指定したインデックスの要素を削除する関数
 
 int main(int argc, char *argv[]){
     int i,j;
@@ -206,22 +205,38 @@ int main(int argc, char *argv[]){
         vector<vector<GRBConstr> >().swap(RouteOrderConstr);
 
 
-        for(i=1;i<=2*n;i++){
-             cout << DepartureTime[i].get(GRB_StringAttr_VarName) << " "
-            << DepartureTime[i].get(GRB_DoubleAttr_X) << " "
-            << DepartureTimePenalty[i].get(GRB_DoubleAttr_X) << endl;
-        }
-        for(i=0;i<2*m;i++){
-             cout << DepotTime[i].get(GRB_StringAttr_VarName) << " "
-            << DepotTime[i].get(GRB_DoubleAttr_X) << endl;
-        }
+        // for(i=1;i<=2*n;i++){
+        //      cout << DepartureTime[i].get(GRB_StringAttr_VarName) << " "
+        //     << DepartureTime[i].get(GRB_DoubleAttr_X) << " "
+        //     << DepartureTimePenalty[i].get(GRB_DoubleAttr_X) << endl;
+        // }
+        // for(i=0;i<2*m;i++){
+        //      cout << DepotTime[i].get(GRB_StringAttr_VarName) << " "
+        //     << DepotTime[i].get(GRB_DoubleAttr_X) << endl;
+        // }
         // for(i=1;i<=n;i++){
         //      cout << RideTime[i].get(GRB_StringAttr_VarName) << " "
         //     << RideTime[i].get(GRB_DoubleAttr_X) << endl;
         // }
 
         cout << "penalty: " << model.get(GRB_DoubleAttr_ObjVal) << endl;
-
+        for(i=0;i<RouteList.getRouteListSize();i++){
+            for(j=0;j<RouteList.getRouteSize(i);j++){
+                cout << RouteList.getRoute(i,j) << " ";
+            }
+            cout << endl;
+        }
+        for(int k=0;k<10;k++){
+            cout << "k:" << k << endl;
+            RouteList.InnerRouteChange_requestSet();
+            for(i=0;i<RouteList.getRouteListSize();i++){
+                for(j=0;j<RouteList.getRouteSize(i);j++){
+                    cout << RouteList.getRoute(i,j) << " ";
+                }
+                cout << endl;
+            }
+            cout << "--------" << endl;
+        }
         // for(i=0;i<10000;i++){
         //     RouteList.Change();
         //     ルートの制約を追加
@@ -249,7 +264,3 @@ int main(int argc, char *argv[]){
   
 }
 
-
-void removeElement(vector<int> &vector, int index) {
-    vector.erase(vector.begin()+index);
-}
