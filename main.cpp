@@ -222,7 +222,8 @@ int main(int argc, char *argv[]){
             tempconstr = new GRBTempConstr;
             *TmpRouteList = routelist;
             TmpRouteList->InnerRouteChange_requestSet(); //近傍解
-            // TODO ルートの制約を追加
+
+            // ルートの制約を追加
             // ここでdistanceは計算しちゃう
             RouteDistance=0;
             for(i=0;i<TmpRouteList->getRouteListSize();i++){
@@ -246,7 +247,7 @@ int main(int argc, char *argv[]){
                 constrname = to_string(i) + "constr_depot_1";
                 RouteOrderConstr.push_back(model.addConstr(*tempconstr,constrname));
                 // 最後とデポの制約
-                *tempconstr = DepotTime[TmpRouteList->getRoute(i,TmpRouteList->getRouteSize(i)-2)] + 10.0 + cost.getCost(TmpRouteList->getRoute(i,TmpRouteList->getRouteSize(i)-2),0) == DepotTime[i+m];
+                *tempconstr = DepartureTime[TmpRouteList->getRoute(i,TmpRouteList->getRouteSize(i)-2)] + 10.0 + cost.getCost(TmpRouteList->getRoute(i,TmpRouteList->getRouteSize(i)-2),0) == DepotTime[i+m];
                 constrname = to_string(i) + "constr_last_depot";
                 RouteOrderConstr.push_back(model.addConstr(*tempconstr,constrname));
 
@@ -257,7 +258,6 @@ int main(int argc, char *argv[]){
 
 
             // TODO ペナルティを計算 
-
             // 解を比較(optimize)
             model.optimize();
             cout << "penalty: " << model.get(GRB_DoubleAttr_ObjVal) << endl;
