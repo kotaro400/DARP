@@ -154,7 +154,7 @@ int main(int argc, char *argv[]){
         // ルートの長さもここで計算する
         double RouteDistance=0; //RouteDistanceはイテレーション毎に0で初期化
         vector<vector<GRBConstr> > RouteOrderConstr;
-        vector<GRBConstr> tempvec;
+        vector<GRBConstr> tempvec; //空のvector
         GRBTempConstr tempconstr;
         string constrname; //制約の名前付け これは重要じゃない
         double tmp_double;
@@ -220,58 +220,55 @@ int main(int argc, char *argv[]){
         // }
 
         cout << "penalty: " << model.get(GRB_DoubleAttr_ObjVal) << endl;
-        for(i=0;i<routelist.getRouteListSize();i++){
-            for(j=0;j<routelist.getRouteSize(i);j++){
-                cout << routelist.getRoute(i,j) << " ";
-            }
-            cout << endl;
-        }
-        RouteList *TmpRouteList;
-        TmpRouteList = new RouteList(m);
-        *TmpRouteList = routelist;
-        for(i=0;i<TmpRouteList->getRouteListSize();i++){
-            for(j=0;j<TmpRouteList->getRouteSize(i);j++){
-                cout << TmpRouteList->getRoute(i,j) << " ";
-            }
-            cout << endl;
-        }
-        delete TmpRouteList;
 
         for(int k=0;k<10;k++){
-            cout << "k:" << k << endl;
             RouteList *TmpRouteList;
             TmpRouteList = new RouteList(m); //メモリの確保
             *TmpRouteList = routelist;
-            TmpRouteList->InnerRouteChange_requestSet();
-            for(i=0;i<TmpRouteList->getRouteListSize();i++){
-                for(j=0;j<TmpRouteList->getRouteSize(i);j++){
-                    cout << TmpRouteList->getRoute(i,j) << " ";
-                }
-                cout << endl;
-            }
+            TmpRouteList->InnerRouteChange_requestSet(); //近傍解
+            // for(i=0;i<TmpRouteList->getRouteListSize();i++){
+            //     for(j=0;j<TmpRouteList->getRouteSize(i);j++){
+            //         cout << TmpRouteList->getRoute(i,j) << " ";
+            //     }
+            //     cout << endl;
+            // }
+
             // TODO ルートの制約を追加
+            // ここでdistanceは計算しちゃう
             RouteDistance=0;
+            for(i=0;i<TmpRouteList->getRouteListSize();i++){
+                RouteOrderConstr.push_back(tempvec);
+                for(j=1;j<TmpRouteList->getRouteSize(i)-2;j++){
+                    RouteDistance += cost.getCost(TmpRouteList->getRoute(i,j),TmpRouteList->getRoute(i,j+1));
+                }
+            }
+
+            // TODO デポの時刻DepotTimeとの制約も追加
+            RouteOrderConstr.push_back(tempvec);
+            for(i=0;i<TmpRouteList->getRouteListSize();i++){
+                // cout << TmpRouteList->getRoute(i,TmpRouteList->getRouteSize(i)-2) << endl;
+                RouteDistance += cost.getCost(0,TmpRouteList->getRoute(i,1));
+                RouteDistance += cost.getCost(TmpRouteList->getRouteSize(i)-2,0);
+            }
+
+
+            cout << k << "のときのRouteDistance:" << RouteDistance << endl;
+
 
             // TODO ペナルティを計算 
 
-            // 解を比較
+            // 解を比較(optimize)
             // 良い解ならroutelist = TmpRouteList;
             // 悪い解ならなにもしない
+
+            // ルートの制約をremove
+
+             //RouteOrderConstrのメモリ解放
+            vector<vector<GRBConstr> >().swap(RouteOrderConstr);
 
 
             delete TmpRouteList; //メモリの解放
         }
-        // for(i=0;i<10000;i++){
-        //     RouteList.Change();
-        //     ルートの制約を追加
-        //     routedistanceを計算
-        // 
-        //     penaltyとdistanceを計算
-        //     if (distance + penalty is best){
-        //         bestroutelist = routelist;
-        //     }
-        // }
-
         // 計算終了の時間
         double endtime = cpu_time();
 
