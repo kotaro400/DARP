@@ -48,8 +48,8 @@ int main(int argc, char *argv[]){
     }
 
     // RouteListクラス:複数のルートをまとめて保持するクラス 
-    RouteList RouteList(m);
-    RouteList.makeInitialRoute(inputdata.getRequestSize());
+    RouteList routelist(m);
+    routelist.makeInitialRoute(inputdata.getRequestSize());
     
     // クラスをまたいでenvとmodelを保持できなさそうだからmainの中で宣言する
     try{
@@ -158,14 +158,14 @@ int main(int argc, char *argv[]){
         GRBTempConstr tempconstr;
         string constrname; //制約の名前付け これは重要じゃない
         double tmp_double;
-        for(i=0;i<RouteList.getRouteListSize();i++){
+        for(i=0;i<routelist.getRouteListSize();i++){
             RouteOrderConstr.push_back(tempvec);
-            for(j=1;j<RouteList.getRouteSize(i)-2;j++){ 
+            for(j=1;j<routelist.getRouteSize(i)-2;j++){ 
                 // 1から始めるのは最初のデポは別で設定するから 
                 // getRouteSize(i)-2なのはj→j+1を考えてるから
-                RouteDistance += cost.getCost(RouteList.getRoute(i,j),RouteList.getRoute(i,j+1));
+                RouteDistance += cost.getCost(routelist.getRoute(i,j),routelist.getRoute(i,j+1));
                 // 論文の8の式
-                tempconstr = DepartureTime[RouteList.getRoute(i,j)] + 10.0 +  cost.getCost(RouteList.getRoute(i,j),RouteList.getRoute(i,j+1)) == DepartureTime[RouteList.getRoute(i,j+1)];
+                tempconstr = DepartureTime[routelist.getRoute(i,j)] + 10.0 +  cost.getCost(routelist.getRoute(i,j),routelist.getRoute(i,j+1)) == DepartureTime[routelist.getRoute(i,j+1)];
                 constrname = "constr"+to_string(i)+ "_" + to_string(j);
                 RouteOrderConstr[i].push_back(model.addConstr(tempconstr,constrname));
             }
@@ -173,17 +173,17 @@ int main(int argc, char *argv[]){
         // RouteOrderConstrのサイズは、車両数+1 最後の1つはデポ関連
         // デポの時刻DepotTimeとの制約も追加
         RouteOrderConstr.push_back(tempvec);
-        for(i=0;i<RouteList.getRouteListSize();i++){
-            RouteDistance += cost.getCost(0,RouteList.getRoute(i,1)); //i番目の車両の1番目
-            RouteDistance += cost.getCost(RouteList.getRoute(i,RouteList.getRouteSize(i)-2),0);//i番目の車両のデポを除く最後
+        for(i=0;i<routelist.getRouteListSize();i++){
+            RouteDistance += cost.getCost(0,routelist.getRoute(i,1)); //i番目の車両の1番目
+            RouteDistance += cost.getCost(routelist.getRoute(i,routelist.getRouteSize(i)-2),0);//i番目の車両のデポを除く最後
             // デポと1番目の制約
-            tempconstr = DepotTime[i] + 10.0 +  cost.getCost(0,RouteList.getRoute(i,1)) == DepartureTime[RouteList.getRoute(i,1)];
+            tempconstr = DepotTime[i] + 10.0 +  cost.getCost(0,routelist.getRoute(i,1)) == DepartureTime[routelist.getRoute(i,1)];
             constrname = to_string(i) + "constr_depot_1";
-            RouteOrderConstr[RouteList.getRouteListSize()].push_back(model.addConstr(tempconstr,constrname));
+            RouteOrderConstr[routelist.getRouteListSize()].push_back(model.addConstr(tempconstr,constrname));
             // 最後とデポの制約
-            tempconstr = DepartureTime[RouteList.getRoute(i,RouteList.getRouteSize(i)-2)] + 10.0 +  cost.getCost(RouteList.getRoute(i,RouteList.getRouteSize(i)-2),0) == DepotTime[i+m];
+            tempconstr = DepartureTime[routelist.getRoute(i,routelist.getRouteSize(i)-2)] + 10.0 +  cost.getCost(routelist.getRoute(i,routelist.getRouteSize(i)-2),0) == DepotTime[i+m];
             constrname = to_string(i) + "constr_last_depot";
-            RouteOrderConstr[RouteList.getRouteListSize()].push_back(model.addConstr(tempconstr,constrname));
+            RouteOrderConstr[routelist.getRouteListSize()].push_back(model.addConstr(tempconstr,constrname));
         }
         cout << "RouteDistance:" <<RouteDistance << endl;
 
@@ -220,23 +220,35 @@ int main(int argc, char *argv[]){
         // }
 
         cout << "penalty: " << model.get(GRB_DoubleAttr_ObjVal) << endl;
-        for(i=0;i<RouteList.getRouteListSize();i++){
-            for(j=0;j<RouteList.getRouteSize(i);j++){
-                cout << RouteList.getRoute(i,j) << " ";
+        for(i=0;i<routelist.getRouteListSize();i++){
+            for(j=0;j<routelist.getRouteSize(i);j++){
+                cout << routelist.getRoute(i,j) << " ";
             }
             cout << endl;
         }
-        for(int k=0;k<10;k++){
-            cout << "k:" << k << endl;
-            RouteList.InnerRouteChange_requestSet();
-            for(i=0;i<RouteList.getRouteListSize();i++){
-                for(j=0;j<RouteList.getRouteSize(i);j++){
-                    cout << RouteList.getRoute(i,j) << " ";
-                }
-                cout << endl;
+        RouteList *TmpRouteList;
+        TmpRouteList = new RouteList(m);
+        *TmpRouteList = routelist;
+        for(i=0;i<TmpRouteList->getRouteListSize();i++){
+            for(j=0;j<TmpRouteList->getRouteSize(i);j++){
+                cout << TmpRouteList->getRoute(i,j) << " ";
             }
-            cout << "--------" << endl;
+            cout << endl;
         }
+        delete TmpRouteList;
+
+        // for(int k=0;k<10;k++){
+        //     cout << "k:" << k << endl;
+        //     routelist.InnerRouteChange_requestSet();
+        //     for(i=0;i<routelist.getRouteListSize();i++){
+        //         for(j=0;j<routelist.getRouteSize(i);j++){
+        //             cout << routelist.getRoute(i,j) << " ";
+        //         }
+        //         cout << endl;
+        //     }
+        //     // TODO ルートの制約を追加
+        //     RouteDistance=0; 
+        // }
         // for(i=0;i<10000;i++){
         //     RouteList.Change();
         //     ルートの制約を追加
