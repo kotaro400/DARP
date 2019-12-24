@@ -237,18 +237,30 @@ int main(int argc, char *argv[]){
         }
         delete TmpRouteList;
 
-        // for(int k=0;k<10;k++){
-        //     cout << "k:" << k << endl;
-        //     routelist.InnerRouteChange_requestSet();
-        //     for(i=0;i<routelist.getRouteListSize();i++){
-        //         for(j=0;j<routelist.getRouteSize(i);j++){
-        //             cout << routelist.getRoute(i,j) << " ";
-        //         }
-        //         cout << endl;
-        //     }
-        //     // TODO ルートの制約を追加
-        //     RouteDistance=0; 
-        // }
+        for(int k=0;k<10;k++){
+            cout << "k:" << k << endl;
+            RouteList *TmpRouteList;
+            TmpRouteList = new RouteList(m); //メモリの確保
+            *TmpRouteList = routelist;
+            TmpRouteList->InnerRouteChange_requestSet();
+            for(i=0;i<TmpRouteList->getRouteListSize();i++){
+                for(j=0;j<TmpRouteList->getRouteSize(i);j++){
+                    cout << TmpRouteList->getRoute(i,j) << " ";
+                }
+                cout << endl;
+            }
+            // TODO ルートの制約を追加
+            RouteDistance=0;
+
+            // TODO ペナルティを計算 
+
+            // 解を比較
+            // 良い解ならroutelist = TmpRouteList;
+            // 悪い解ならなにもしない
+
+
+            delete TmpRouteList; //メモリの解放
+        }
         // for(i=0;i<10000;i++){
         //     RouteList.Change();
         //     ルートの制約を追加
