@@ -205,7 +205,7 @@ int main(int argc, char *argv[]){
         vector<GRBConstr>().swap(RouteOrderConstr);
 
 
-
+        // イテレーション開始
         for(int k=0;k<100;k++){
             RouteList *TmpRouteList;
             TmpRouteList = new RouteList(m); //メモリの確保
