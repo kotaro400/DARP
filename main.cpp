@@ -130,7 +130,7 @@ int main(int argc, char *argv[]){
         // 乗車時間の定義 rt_i = t_i+n -t_i （制約として追加)
         for (i=1;i<=n;i++){
             tmp = "RideConst"+to_string(i);
-            model.addConstr(RideTime[i] == DepartureTime[i+n]-DepartureTime[i],tmp);
+            model.addConstr(RideTime[i] == DepartureTime[i+n]-DepartureTime[i]-10,tmp);
         }
 
         // 乗車時間の区分線形関数を取得 区分数は3つ
@@ -196,7 +196,6 @@ int main(int argc, char *argv[]){
         cout << "penalty: " << model.get(GRB_DoubleAttr_ObjVal) << endl;
 
         TotalPenalty = RouteDistance + model.get(GRB_DoubleAttr_ObjVal);
-        cout << TotalPenalty << endl;
         // ここでルートの順番の制約をremove
         for(i=0;i<RouteOrderConstr.size();i++){
             model.remove(RouteOrderConstr[i]);
@@ -211,13 +210,10 @@ int main(int argc, char *argv[]){
         //     << DepartureTime[i].get(GRB_DoubleAttr_X) << " "
         //     << DepartureTimePenalty[i].get(GRB_DoubleAttr_X) << endl;
         // }
-        // for(i=0;i<2*m;i++){
-        //      cout << DepotTime[i].get(GRB_StringAttr_VarName) << " "
-        //     << DepotTime[i].get(GRB_DoubleAttr_X) << endl;
-        // }
         // for(i=1;i<=n;i++){
-        //      cout << RideTime[i].get(GRB_StringAttr_VarName) << " "
-        //     << RideTime[i].get(GRB_DoubleAttr_X) << endl;
+        //      cout << cost.getCost(i,i+n) << " "
+        //     << RideTime[i].get(GRB_DoubleAttr_X) << " "
+        //     << RideTimePenalty[i].get(GRB_DoubleAttr_X) << endl;
         // }
 
         for(int k=0;k<10;k++){
@@ -258,10 +254,10 @@ int main(int argc, char *argv[]){
 
             }
 
-            // TODO ペナルティを計算 
-            // 解を比較(optimize)
+            // LP実行(optimize)
             model.optimize();
             cout << k << "回目のRouteDistance: " << RouteDistance  << " penalty: " << model.get(GRB_DoubleAttr_ObjVal) << endl;
+            // ペナルティを計算して比較
             // 良い解の場合
                 // routelist = TmpRouteList; 
                 // TotalPenalty=RouteDistance+model.get(GRB_DoubleAttr_ObjVal);
