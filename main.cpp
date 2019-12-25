@@ -206,7 +206,7 @@ int main(int argc, char *argv[]){
 
 
         // イテレーション開始
-        for(int k=0;k<500;k++){
+        for(int k=1;k<500;k++){
             RouteList *TmpRouteList;
             TmpRouteList = new RouteList(m); //メモリの確保
             GRBTempConstr *tempconstr;
@@ -298,13 +298,6 @@ int main(int argc, char *argv[]){
         double endtime = cpu_time();
 
         cout << "時間:" << endtime -starttime << endl;
-        for(i=0;i<routelist.getRouteListSize();i++){
-            for(j=0;j<routelist.getRouteSize(i);j++){
-                cout << routelist.getRoute(i,j) << " ";
-            }
-            cout << endl;
-        }
-        // routelist.OuterRouteChange_random(n);
         // for(i=0;i<routelist.getRouteListSize();i++){
         //     for(j=0;j<routelist.getRouteSize(i);j++){
         //         cout << routelist.getRoute(i,j) << " ";
