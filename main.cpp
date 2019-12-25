@@ -206,13 +206,25 @@ int main(int argc, char *argv[]){
 
 
         // イテレーション開始
-        for(int k=0;k<100;k++){
+        for(int k=0;k<500;k++){
             RouteList *TmpRouteList;
             TmpRouteList = new RouteList(m); //メモリの確保
             GRBTempConstr *tempconstr;
             tempconstr = new GRBTempConstr;
+            if (k%100 == 0){ 
+                cout << "100で割り切れる" << endl;
+                routelist.OuterRouteChange_random(n);
+                cout << routelist.getRouteSize(0) << ","<< routelist.getRouteSize(1) << ","<< routelist.getRouteSize(2) << endl;
+            }
             *TmpRouteList = routelist;
             TmpRouteList->InnerRouteChange_requestSet(); //近傍解
+
+            // for(i=0;i<TmpRouteList->getRouteListSize();i++){
+            //     for(j=0;j<TmpRouteList->getRouteSize(i);j++){
+            //         cout << TmpRouteList->getRoute(i,j) << " ";
+            //     }
+            //     cout << endl;
+            // }
 
             // ルートの制約を追加
             // ここでdistanceは計算しちゃう
@@ -292,13 +304,13 @@ int main(int argc, char *argv[]){
             }
             cout << endl;
         }
-        routelist.OuterRouteChange_random(n);
-        for(i=0;i<routelist.getRouteListSize();i++){
-            for(j=0;j<routelist.getRouteSize(i);j++){
-                cout << routelist.getRoute(i,j) << " ";
-            }
-            cout << endl;
-        }
+        // routelist.OuterRouteChange_random(n);
+        // for(i=0;i<routelist.getRouteListSize();i++){
+        //     for(j=0;j<routelist.getRouteSize(i);j++){
+        //         cout << routelist.getRoute(i,j) << " ";
+        //     }
+        //     cout << endl;
+        // }
 
         
     } catch (GRBException e) {
