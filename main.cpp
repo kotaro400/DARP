@@ -272,21 +272,33 @@ int main(int argc, char *argv[]){
         cout << "RouteDistance: " << RouteDistance << endl;
         cout << model.get(GRB_DoubleAttr_ObjVal) << endl;
 
-        for(i=1;i<=2*n;i++){
-             cout << DepartureTime[i].get(GRB_StringAttr_VarName) << " "
-            << DepartureTime[i].get(GRB_DoubleAttr_X) << " "
-            << DepartureTimePenalty[i].get(GRB_DoubleAttr_X) << endl;
-        }
-        for(i=1;i<=n;i++){
-            cout << RideTime[i].get(GRB_StringAttr_VarName) << " "
-            << RideTime[i].get(GRB_DoubleAttr_X) << " "
-            << RideTimePenalty[i].get(GRB_DoubleAttr_X) << endl;
-        }
+        // for(i=1;i<=2*n;i++){
+        //      cout << DepartureTime[i].get(GRB_StringAttr_VarName) << " "
+        //     << DepartureTime[i].get(GRB_DoubleAttr_X) << " "
+        //     << DepartureTimePenalty[i].get(GRB_DoubleAttr_X) << endl;
+        // }
+        // for(i=1;i<=n;i++){
+        //     cout << RideTime[i].get(GRB_StringAttr_VarName) << " "
+        //     << RideTime[i].get(GRB_DoubleAttr_X) << " "
+        //     << RideTimePenalty[i].get(GRB_DoubleAttr_X) << endl;
+        // }
         // 計算終了の時間
         double endtime = cpu_time();
 
         cout << "時間:" << endtime -starttime << endl;
-
+        for(i=0;i<routelist.getRouteListSize();i++){
+            for(j=0;j<routelist.getRouteSize(i);j++){
+                cout << routelist.getRoute(i,j) << " ";
+            }
+            cout << endl;
+        }
+        routelist.OuterRouteChange_random(n);
+        for(i=0;i<routelist.getRouteListSize();i++){
+            for(j=0;j<routelist.getRouteSize(i);j++){
+                cout << routelist.getRoute(i,j) << " ";
+            }
+            cout << endl;
+        }
 
         
     } catch (GRBException e) {

@@ -82,8 +82,40 @@ void RouteList::InnerRouteChange_requestSet(){
     it = this->Routelist[index].insert(it,first);
     it++;it = this->Routelist[index].insert(it,second);
     it++;
+}
 
+void RouteList::OuterRouteChange_random(int customerSize){
+    int first,second,beforeindex,afterindex,firstindex;
+    mt19937_64 mt64(rand());
+    beforeindex = abs((int)mt64())%this->Routelist.size();
+    firstindex =abs((int)mt64())%(this->Routelist[beforeindex].size()-2)+1;
+    first = this->Routelist[beforeindex][firstindex];
+    if (first <= customerSize){
+        second = first + customerSize;
+    }else{
+        second = first;
+        first = second -customerSize;
+    }
+    cout << beforeindex << " " << first << "," << second << endl;
+    removeElement(this->Routelist[beforeindex],firstindex);
+    for(auto itr=this->Routelist[beforeindex].begin();itr!=this->Routelist[beforeindex].end();){
+        if (*itr == second){
+            itr = this->Routelist[beforeindex].erase(itr);
+            break;
+        }else{
+            ++itr;
+        }
+    }
+    afterindex = abs((int)mt64())%this->Routelist.size();
+    while (beforeindex == afterindex){
+        afterindex = abs((int)mt64())%this->Routelist.size();
+    }
 
+    auto it = this->Routelist[afterindex].end()-1;
+    it = this->Routelist[afterindex].insert(it,first);
+    it++;
+    it = this->Routelist[afterindex].insert(it,second);
+    it++;
 }
 
 

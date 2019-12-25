@@ -19,4 +19,5 @@ public:
     int getRouteListSize();
     int getRoute(int RouteNumber,int RouteOrder);
     void InnerRouteChange_requestSet();
+    void OuterRouteChange_random(int customerSize);
 };
