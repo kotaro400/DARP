@@ -50,6 +50,9 @@ int main(int argc, char *argv[]){
     // RouteListクラス:複数のルートをまとめて保持するクラス 
     RouteList routelist(m);
     routelist.makeInitialRoute(inputdata.getRequestSize());
+
+    // ペナルティ
+    double TotalPenalty;
     
     // クラスをまたいでenvとmodelを保持できなさそうだからmainの中で宣言する
     try{
@@ -182,7 +185,6 @@ int main(int argc, char *argv[]){
             constrname = to_string(i) + "constr_last_depot";
             RouteOrderConstr.push_back(model.addConstr(*tempconstr,constrname));
         }
-        cout << "RouteDistance:" <<RouteDistance << endl;
 
         // 計算開始時間
         double starttime = cpu_time();
@@ -190,7 +192,11 @@ int main(int argc, char *argv[]){
         model.set(GRB_IntParam_OutputFlag, 0); //ログの出力をoff
         model.optimize();
 
+        cout << "RouteDistance:" <<RouteDistance << endl;
+        cout << "penalty: " << model.get(GRB_DoubleAttr_ObjVal) << endl;
 
+        TotalPenalty = RouteDistance + model.get(GRB_DoubleAttr_ObjVal);
+        cout << TotalPenalty << endl;
         // ここでルートの順番の制約をremove
         for(i=0;i<RouteOrderConstr.size();i++){
             model.remove(RouteOrderConstr[i]);
@@ -214,7 +220,6 @@ int main(int argc, char *argv[]){
         //     << RideTime[i].get(GRB_DoubleAttr_X) << endl;
         // }
 
-        cout << "penalty: " << model.get(GRB_DoubleAttr_ObjVal) << endl;
         for(int k=0;k<10;k++){
             RouteList *TmpRouteList;
             TmpRouteList = new RouteList(m); //メモリの確保
@@ -257,7 +262,9 @@ int main(int argc, char *argv[]){
             // 解を比較(optimize)
             model.optimize();
             cout << k << "回目のRouteDistance: " << RouteDistance  << " penalty: " << model.get(GRB_DoubleAttr_ObjVal) << endl;
-            // 良い解ならroutelist = TmpRouteList;
+            // 良い解の場合
+                // routelist = TmpRouteList; 
+                // TotalPenalty=RouteDistance+model.get(GRB_DoubleAttr_ObjVal);
             // 悪い解ならなにもしない
 
             // ルートの制約をremove
