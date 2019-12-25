@@ -42,7 +42,7 @@ int main(int argc, char *argv[]){
     // 乗車時間のペナルティ関数をここでいれる 
     // これおそらくいらない
     for(int i=1;i<=n;i++){
-        vector<double> vec{ 0.0, 0.0, cost.getCost(i,i+n),0,cost.getCost(i,i+n)+1.0,5};
+        vector<double> vec{ 0.0, 0.0, cost.getCost(i,i+n),0,cost.getCost(i,i+n)+1.0,1};
         inputdata.setRideTimePenalty(i,vec);
         vec.clear();
     }
