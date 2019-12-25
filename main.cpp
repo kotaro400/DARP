@@ -214,7 +214,7 @@ int main(int argc, char *argv[]){
 
 
         // **************************イテレーション開始************************************
-        for(int k=1;k<1000;k++){
+        for(int k=1;k<500;k++){
             RouteList *TmpRouteList;
             TmpRouteList = new RouteList(m); //メモリの確保
             GRBTempConstr *tempconstr;
@@ -248,9 +248,7 @@ int main(int argc, char *argv[]){
             }
 
             // TODO デポの時刻DepotTimeとの制約も追加
-            // RouteOrderConstr.push_back(tempvec);
             for(i=0;i<TmpRouteList->getRouteListSize();i++){
-                // cout << TmpRouteList->getRoute(i,TmpRouteList->getRouteSize(i)-2) << endl;
                 RouteDistance += cost.getCost(0,TmpRouteList->getRoute(i,1));
                 RouteDistance += cost.getCost(TmpRouteList->getRouteSize(i)-2,0);
                 // デポと1番目の制約
@@ -266,7 +264,6 @@ int main(int argc, char *argv[]){
 
             // LP実行(optimize)
             model.optimize();
-            // cout << k << "回目のRouteDistance: " << RouteDistance  << " penalty: " << model.get(GRB_DoubleAttr_ObjVal) << endl;
             // ペナルティを計算して比較
             // 良い解の場合
             if (RouteDistance + model.get(GRB_DoubleAttr_ObjVal) <= TotalPenalty){
@@ -303,6 +300,7 @@ int main(int argc, char *argv[]){
         //     << RideTime[i].get(GRB_DoubleAttr_X) << " "
         //     << RideTimePenalty[i].get(GRB_DoubleAttr_X) << endl;
         // }
+        
         // 計算終了の時間
         double endtime = cpu_time();
 
