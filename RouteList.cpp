@@ -96,12 +96,9 @@ void RouteList::OuterRouteChange_random(int customerSize){
         second = first;
         first = second -customerSize;
     }
-    cout << beforeindex << " " << first << "," << second << endl;
-    removeElement(this->Routelist[beforeindex],firstindex);
     for(auto itr=this->Routelist[beforeindex].begin();itr!=this->Routelist[beforeindex].end();){
-        if (*itr == second){
+        if (*itr == second || *itr == first){
             itr = this->Routelist[beforeindex].erase(itr);
-            break;
         }else{
             ++itr;
         }
