@@ -278,7 +278,7 @@ int main(int argc, char *argv[]){
             << DepartureTimePenalty[i].get(GRB_DoubleAttr_X) << endl;
         }
         for(i=1;i<=n;i++){
-             cout << cost.getCost(i,i+n) << " "
+            cout << RideTime[i].get(GRB_StringAttr_VarName) << " "
             << RideTime[i].get(GRB_DoubleAttr_X) << " "
             << RideTimePenalty[i].get(GRB_DoubleAttr_X) << endl;
         }
