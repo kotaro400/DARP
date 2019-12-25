@@ -52,7 +52,12 @@ int main(int argc, char *argv[]){
     routelist.makeInitialRoute(inputdata.getRequestSize());
 
     // ペナルティ
-    double TotalPenalty;
+    double TotalPenalty=0;
+
+    // 最適解
+    double BestTotalPenalty;
+    double BestRouteDistance;
+    double BestPenalty;
     
     // クラスをまたいでenvとmodelを保持できなさそうだからmainの中で宣言する
     try{
@@ -196,6 +201,9 @@ int main(int argc, char *argv[]){
         cout << "penalty: " << model.get(GRB_DoubleAttr_ObjVal) << endl;
 
         TotalPenalty = RouteDistance + model.get(GRB_DoubleAttr_ObjVal);
+        BestTotalPenalty = TotalPenalty;
+        BestRouteDistance = RouteDistance;
+        BestPenalty = model.get(GRB_DoubleAttr_ObjVal);
         // ここでルートの順番の制約をremove
         for(i=0;i<RouteOrderConstr.size();i++){
             model.remove(RouteOrderConstr[i]);
@@ -205,8 +213,8 @@ int main(int argc, char *argv[]){
         vector<GRBConstr>().swap(RouteOrderConstr);
 
 
-        // イテレーション開始
-        for(int k=1;k<500;k++){
+        // **************************イテレーション開始************************************
+        for(int k=1;k<1000;k++){
             RouteList *TmpRouteList;
             TmpRouteList = new RouteList(m); //メモリの確保
             GRBTempConstr *tempconstr;
@@ -265,9 +273,10 @@ int main(int argc, char *argv[]){
                 routelist = *TmpRouteList;
                 TotalPenalty = RouteDistance + model.get(GRB_DoubleAttr_ObjVal);
                 cout << "改善 " << TotalPenalty << endl;
+                BestTotalPenalty = TotalPenalty;
+                BestRouteDistance = RouteDistance;
+                BestPenalty = model.get(GRB_DoubleAttr_ObjVal);
             }
-                // routelist = TmpRouteList; 
-                // TotalPenalty=RouteDistance+model.get(GRB_DoubleAttr_ObjVal);
             // 悪い解ならなにもしない
 
             // ルートの制約をremove
@@ -281,8 +290,8 @@ int main(int argc, char *argv[]){
             //TmpRouteListクラスのメモリ解放
             delete TmpRouteList; 
         }
-        cout << "RouteDistance: " << RouteDistance << endl;
-        cout << model.get(GRB_DoubleAttr_ObjVal) << endl;
+        cout << "RouteDistance: " << BestRouteDistance << endl;
+        cout << "bestpena:"<<BestPenalty << endl;
 
         // for(i=1;i<=2*n;i++){
         //      cout << DepartureTime[i].get(GRB_StringAttr_VarName) << " "
