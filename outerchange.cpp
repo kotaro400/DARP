@@ -50,12 +50,10 @@ int main(){
     }
     cout <<"first:"<< first << ",second:" << second << endl;
     // firstを削除
-    removeElement(vec[index],firstindex);
     // secondを削除
     for(auto it = vec[index].begin();it!=vec[index].end();){
-        if (*it == second){
+        if (*it == second || *it == first){
             it = vec[index].erase(it);
-            break;
         }else{
             ++it;
         }
