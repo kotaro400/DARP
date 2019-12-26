@@ -220,7 +220,7 @@ int main(int argc, char *argv[]){
 
 
         // **************************イテレーション開始************************************
-        for(int k=1;k<1000;k++){
+        for(int k=1;k<500;k++){
             RouteList *TmpRouteList;
             TmpRouteList = new RouteList(m); //メモリの確保
             GRBTempConstr *tempconstr;
@@ -231,8 +231,8 @@ int main(int argc, char *argv[]){
                 // cout << routelist.getRouteSize(0) << ","<< routelist.getRouteSize(1) << ","<< routelist.getRouteSize(2) << endl;
             }
             *TmpRouteList = routelist;
-            TmpRouteList->InnerRouteChange_node(n);
-            // TmpRouteList->InnerRouteChange_requestSet(); //近傍解
+            // TmpRouteList->InnerRouteChange_node(n); //近傍解 ノードごとの交換近傍 ランダム
+            TmpRouteList->InnerRouteChange_requestSet(); //近傍解 リクエストごとの交換近傍 ランダム
 
             // for(i=0;i<TmpRouteList->getRouteListSize();i++){
             //     for(j=0;j<TmpRouteList->getRouteSize(i);j++){
@@ -303,16 +303,16 @@ int main(int argc, char *argv[]){
         cout << "RouteDistance: " << BestRouteDistance << endl;
         cout << "bestpena:"<<BestPenalty << endl;
 
-        // for(i=1;i<=2*n;i++){
-        //      cout << DepartureTime[i].get(GRB_StringAttr_VarName) << " "
-        //     << DepartureTime[i].get(GRB_DoubleAttr_X) << " "
-        //     << DepartureTimePenalty[i].get(GRB_DoubleAttr_X) << endl;
-        // }
-        // for(i=1;i<=n;i++){
-        //     cout << RideTime[i].get(GRB_StringAttr_VarName) << " "
-        //     << RideTime[i].get(GRB_DoubleAttr_X) << " "
-        //     << RideTimePenalty[i].get(GRB_DoubleAttr_X) << endl;
-        // }
+        for(i=1;i<=2*n;i++){
+             cout << DepartureTime[i].get(GRB_StringAttr_VarName) << " "
+            << DepartureTime[i].get(GRB_DoubleAttr_X) << " "
+            << DepartureTimePenalty[i].get(GRB_DoubleAttr_X) << endl;
+        }
+        for(i=1;i<=n;i++){
+            cout << RideTime[i].get(GRB_StringAttr_VarName) << " "
+            << RideTime[i].get(GRB_DoubleAttr_X) << " "
+            << RideTimePenalty[i].get(GRB_DoubleAttr_X) << endl;
+        }
         
         // 計算終了の時間
         double endtime = cpu_time();
