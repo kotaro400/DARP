@@ -220,7 +220,7 @@ int main(int argc, char *argv[]){
 
 
         // **************************イテレーション開始************************************
-        for(int k=1;k<10;k++){
+        for(int k=1;k<1000;k++){
             RouteList *TmpRouteList;
             TmpRouteList = new RouteList(m); //メモリの確保
             GRBTempConstr *tempconstr;
@@ -228,7 +228,7 @@ int main(int argc, char *argv[]){
             if (k%100 == 0){ 
                 cout << "100で割り切れる" << endl;
                 routelist.OuterRouteChange_random(n);
-                cout << routelist.getRouteSize(0) << ","<< routelist.getRouteSize(1) << ","<< routelist.getRouteSize(2) << endl;
+                // cout << routelist.getRouteSize(0) << ","<< routelist.getRouteSize(1) << ","<< routelist.getRouteSize(2) << endl;
             }
             *TmpRouteList = routelist;
             TmpRouteList->InnerRouteChange_node(n);
@@ -273,7 +273,7 @@ int main(int argc, char *argv[]){
             model.optimize();
             // ペナルティを計算して比較
             // 良い解の場合
-            if (RouteDistance + model.get(GRB_DoubleAttr_ObjVal) <= TotalPenalty){
+            if (RouteDistance + model.get(GRB_DoubleAttr_ObjVal) < TotalPenalty){
                 routelist = *TmpRouteList;
                 TotalPenalty = RouteDistance + model.get(GRB_DoubleAttr_ObjVal);
                 cout << "改善 " << TotalPenalty << endl;
@@ -281,12 +281,12 @@ int main(int argc, char *argv[]){
                 BestRouteDistance = RouteDistance;
                 BestPenalty = model.get(GRB_DoubleAttr_ObjVal);
             }
-            cout << model.get(GRB_DoubleAttr_ObjVal) << endl;
-            for(i=1;i<=n;i++){
-                cout << RideTime[i].get(GRB_StringAttr_VarName) << " "
-                << RideTime[i].get(GRB_DoubleAttr_X) << " "
-                << RideTimePenalty[i].get(GRB_DoubleAttr_X) << endl;
-            }
+            // cout << model.get(GRB_DoubleAttr_ObjVal) << endl;
+            // for(i=1;i<=n;i++){
+            //     cout << RideTime[i].get(GRB_StringAttr_VarName) << " "
+            //     << RideTime[i].get(GRB_DoubleAttr_X) << " "
+            //     << RideTimePenalty[i].get(GRB_DoubleAttr_X) << endl;
+            // }
             // 悪い解ならなにもしない
 
             // ルートの制約をremove
