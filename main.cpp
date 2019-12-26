@@ -191,6 +191,12 @@ int main(int argc, char *argv[]){
             RouteOrderConstr.push_back(model.addConstr(*tempconstr,constrname));
         }
 
+        // MaximumRouteDurationを設定
+        for(i=0;i<m;i++){
+            tmp = "MaximumRouteDutaion"+to_string(i);
+            model.addConstr(480 >= DepotTime[i+m]-DepotTime[i],tmp);
+        }
+
         // 計算開始時間
         double starttime = cpu_time();
         // optimize
@@ -290,16 +296,16 @@ int main(int argc, char *argv[]){
         cout << "RouteDistance: " << BestRouteDistance << endl;
         cout << "bestpena:"<<BestPenalty << endl;
 
-        // for(i=1;i<=2*n;i++){
-        //      cout << DepartureTime[i].get(GRB_StringAttr_VarName) << " "
-        //     << DepartureTime[i].get(GRB_DoubleAttr_X) << " "
-        //     << DepartureTimePenalty[i].get(GRB_DoubleAttr_X) << endl;
-        // }
-        // for(i=1;i<=n;i++){
-        //     cout << RideTime[i].get(GRB_StringAttr_VarName) << " "
-        //     << RideTime[i].get(GRB_DoubleAttr_X) << " "
-        //     << RideTimePenalty[i].get(GRB_DoubleAttr_X) << endl;
-        // }
+        for(i=1;i<=2*n;i++){
+             cout << DepartureTime[i].get(GRB_StringAttr_VarName) << " "
+            << DepartureTime[i].get(GRB_DoubleAttr_X) << " "
+            << DepartureTimePenalty[i].get(GRB_DoubleAttr_X) << endl;
+        }
+        for(i=1;i<=n;i++){
+            cout << RideTime[i].get(GRB_StringAttr_VarName) << " "
+            << RideTime[i].get(GRB_DoubleAttr_X) << " "
+            << RideTimePenalty[i].get(GRB_DoubleAttr_X) << endl;
+        }
         
         // 計算終了の時間
         double endtime = cpu_time();
@@ -307,7 +313,8 @@ int main(int argc, char *argv[]){
         cout << "時間:" << endtime -starttime << endl;
         for(i=0;i<m;i++){
                 cout << i << " " << DepotTime[i].get(GRB_DoubleAttr_X) << " "
-                << DepotTime[i+m].get(GRB_DoubleAttr_X) << endl;
+                << DepotTime[i+m].get(GRB_DoubleAttr_X) << " " << 
+                DepotTime[i+m].get(GRB_DoubleAttr_X)-DepotTime[i].get(GRB_DoubleAttr_X) << endl;
             }
         for(i=0;i<routelist.getRouteListSize();i++){
             for(j=0;j<routelist.getRouteSize(i);j++){
