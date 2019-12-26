@@ -84,6 +84,39 @@ void RouteList::InnerRouteChange_requestSet(){
     it++;
 }
 
+void RouteList::InnerRouteChange_node(int customerSize){
+    int index,firstindex,first,another,anotherindex,newindex;
+    bool ispick;
+    mt19937_64 mt64(rand());
+    index= abs((int)mt64()) % this->Routelist.size();
+    int RequestSize_inRoot = (this->Routelist[index].size()-2) / 2;
+    firstindex = abs((int)mt64())%(this->Routelist[index].size()-2)+1;
+    first = this->Routelist[index][firstindex];
+    if (first <= customerSize){
+        ispick = true;
+        another = first + customerSize;
+    }else{
+        ispick = false;
+        another = first - customerSize;
+    }
+    for(auto it = this->Routelist[index].begin();it!=this->Routelist[index].end();++it){
+        if (*it == another){
+            anotherindex =distance(this->Routelist[index].begin(),it);
+        }
+    }
+    removeElement(this->Routelist[index],firstindex);
+
+    // 挿入
+    auto it = this->Routelist[index].begin();
+    if(ispick){
+        newindex = abs((int)mt64())%(anotherindex-1)+1;
+    }else{
+        newindex = abs((int)mt64())%(2*RequestSize_inRoot -anotherindex) + (anotherindex+1);
+    }
+    it += newindex;
+    this->Routelist[index].insert(it,first);
+}
+
 void RouteList::OuterRouteChange_random(int customerSize){
     int first,second,beforeindex,afterindex,firstindex;
     mt19937_64 mt64(rand());
