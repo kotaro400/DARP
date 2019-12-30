@@ -110,8 +110,14 @@ void RouteList::InnerRouteChange_node(int customerSize){
     auto it = this->Routelist[index].begin();
     if(ispick){
         newindex = abs((int)mt64())%(anotherindex-1)+1;
+        if (newindex == firstindex){
+            newindex = abs((int)mt64())%(anotherindex-1)+1;
+        }
     }else{
         newindex = abs((int)mt64())%(2*RequestSize_inRoot -anotherindex) + (anotherindex+1);
+        if (newindex == firstindex){
+            newindex = abs((int)mt64())%(2*RequestSize_inRoot -anotherindex) + (anotherindex+1);
+        }
     }
     it += newindex;
     this->Routelist[index].insert(it,first);
