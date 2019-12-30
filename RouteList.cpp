@@ -166,7 +166,7 @@ void RouteList::InnerRouteChange_specified(int customerSize,int worst){
         ispick = false;
         another = worst - customerSize;
     }
-    cout << "worst: " << worst << " another: " << another << endl;
+    // cout << "worst: " << worst << " another: " << another << endl;
     for (int i=0;i<this->Routelist.size();i++){
         for (int j=0;j<this->Routelist[i].size();j++){
             if (this->Routelist[i][j] == worst){
@@ -177,9 +177,9 @@ void RouteList::InnerRouteChange_specified(int customerSize,int worst){
             }
         }
     }
-    cout << "i:" << index << " worstidnex: " << worstindex << " anotherindex: " << anotherindex << endl;
+    // cout << "i:" << index << " worstidnex: " << worstindex << " anotherindex: " << anotherindex << endl;
     int requestSize_inRoot = (this->Routelist[index].size()-2)/2;
-    cout << "リクエストの数: " << requestSize_inRoot << endl;
+    // cout << "リクエストの数: " << requestSize_inRoot << endl;
     removeElement(this->Routelist[index],worstindex);
     int newindex;
     auto it = this->Routelist[index].begin();
@@ -195,16 +195,16 @@ void RouteList::InnerRouteChange_specified(int customerSize,int worst){
             newindex = abs((int)mt64())%(2*requestSize_inRoot -anotherindex) + (anotherindex+1);
         }
     }
-    cout  << "newindex:" << newindex << endl;
+    // cout  << "newindex:" << newindex << endl;
     it += newindex;  
     this->Routelist[index].insert(it,worst);
-    cout << "------------------" << endl;
-    for(int i=0;i<this->Routelist.size();i++){
-        for (int j=0;j<this->Routelist[i].size();j++){
-            cout << this->Routelist[i][j] << " ";
-        }
-        cout << endl;
-    }
+    // cout << "------------------" << endl;
+    // for(int i=0;i<this->Routelist.size();i++){
+    //     for (int j=0;j<this->Routelist[i].size();j++){
+    //         cout << this->Routelist[i][j] << " ";
+    //     }
+    //     cout << endl;
+    // }
 }
 
 void removeElement(vector<int> &vector, int index) {
