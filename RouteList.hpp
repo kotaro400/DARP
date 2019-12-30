@@ -21,5 +21,5 @@ public:
     void InnerRouteChange_requestSet();
     void InnerRouteChange_node(int customerSize);
     void OuterRouteChange_random(int customerSize);
-    void InnerRouteChange_specified(int customerSize,int worst);
+    void InnerRouteChange_specified(int customerSize,int worst); //ペナルティの大きいノードを単体で違う場所に挿入
 };

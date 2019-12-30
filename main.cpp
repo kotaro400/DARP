@@ -227,7 +227,15 @@ int main(int argc, char *argv[]){
                 tmpPenalty = DepartureTimePenalty[i].get(GRB_DoubleAttr_X);
             }
         }
-        cout << "worstのノード "  << worstPosition << endl;
+        // cout << "worstのノード "  << worstPosition << endl;
+        for(i=0;i<routelist.getRouteListSize();i++){
+            for(j=0;j<routelist.getRouteSize(i);j++){
+                cout << routelist.getRoute(i,j) << " ";
+            }
+            cout << endl;
+        }
+
+        routelist.InnerRouteChange_specified(n,worstPosition);
 
 
         // **************************イテレーション開始************************************
@@ -242,9 +250,8 @@ int main(int argc, char *argv[]){
                 // cout << routelist.getRouteSize(0) << ","<< routelist.getRouteSize(1) << ","<< routelist.getRouteSize(2) << endl;
             }
             *TmpRouteList = routelist;
-            // TmpRouteList->InnerRouteChange_node(n); //近傍解 ノードごとの交換近傍 ランダム
-            TmpRouteList->InnerRouteChange_requestSet(); //近傍解 リクエストごとの交換近傍 ランダム
-
+            TmpRouteList->InnerRouteChange_node(n); //近傍解 ノードごとの交換近傍 ランダム
+            // TmpRouteList->InnerRouteChange_requestSet(); //近傍解 リクエストごとの交換近傍 ランダム
             // for(i=0;i<TmpRouteList->getRouteListSize();i++){
             //     for(j=0;j<TmpRouteList->getRouteSize(i);j++){
             //         cout << TmpRouteList->getRoute(i,j) << " ";
@@ -334,11 +341,11 @@ int main(int argc, char *argv[]){
         double endtime = cpu_time();
 
         cout << "時間:" << endtime -starttime << endl;
-        for(i=0;i<m;i++){
-                cout << i << " " << DepotTime[i].get(GRB_DoubleAttr_X) << " "
-                << DepotTime[i+m].get(GRB_DoubleAttr_X) << " " << 
-                DepotTime[i+m].get(GRB_DoubleAttr_X)-DepotTime[i].get(GRB_DoubleAttr_X) << endl;
-            }
+        // for(i=0;i<m;i++){
+        //     cout << i << " " << DepotTime[i].get(GRB_DoubleAttr_X) << " "
+        //     << DepotTime[i+m].get(GRB_DoubleAttr_X) << " " << 
+        //     DepotTime[i+m].get(GRB_DoubleAttr_X)-DepotTime[i].get(GRB_DoubleAttr_X) << endl;
+        // }
         for(i=0;i<routelist.getRouteListSize();i++){
             for(j=0;j<routelist.getRouteSize(i);j++){
                 cout << routelist.getRoute(i,j) << " ";
