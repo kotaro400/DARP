@@ -155,6 +155,10 @@ void RouteList::OuterRouteChange_random(int customerSize){
 }
 
 
+void RouteList::InnerRouteChange_specified(int customerSize,int worst){
+    cout << "specified" << endl;
+}
+
 void removeElement(vector<int> &vector, int index) {
     vector.erase(vector.begin()+index);
 }
