@@ -226,7 +226,6 @@ int main(int argc, char *argv[]){
                 worstPosition = i;
                 tmpPenalty = DepartureTimePenalty[i].get(GRB_DoubleAttr_X);
             }
-            cout << i << " " << DepartureTimePenalty[i].get(GRB_DoubleAttr_X) << endl;
         }
         cout << "worstのノード "  << worstPosition << endl;
 
@@ -293,12 +292,6 @@ int main(int argc, char *argv[]){
                 BestRouteDistance = RouteDistance;
                 BestPenalty = model.get(GRB_DoubleAttr_ObjVal);
             }
-            // cout << model.get(GRB_DoubleAttr_ObjVal) << endl;
-            // for(i=1;i<=n;i++){
-            //     cout << RideTime[i].get(GRB_StringAttr_VarName) << " "
-            //     << RideTime[i].get(GRB_DoubleAttr_X) << " "
-            //     << RideTimePenalty[i].get(GRB_DoubleAttr_X) << endl;
-            // }
             // 悪い解ならなにもしない
 
             // ルートの中で一番ペナルティが大きいノードを見つける
@@ -309,7 +302,6 @@ int main(int argc, char *argv[]){
                     worstPosition = i;
                     tmpPenalty = DepartureTimePenalty[i].get(GRB_DoubleAttr_X);
                 }
-                // cout << i << " " << DepartureTimePenalty[i].get(GRB_DoubleAttr_X) << endl;
             }
             cout << "worstのノード "  << worstPosition << endl;
 
@@ -327,16 +319,16 @@ int main(int argc, char *argv[]){
         cout << "RouteDistance: " << BestRouteDistance << endl;
         cout << "bestpena:"<<BestPenalty << endl;
 
-        // for(i=1;i<=2*n;i++){
-        //      cout << DepartureTime[i].get(GRB_StringAttr_VarName) << " "
-        //     << DepartureTime[i].get(GRB_DoubleAttr_X) << " "
-        //     << DepartureTimePenalty[i].get(GRB_DoubleAttr_X) << endl;
-        // }
-        // for(i=1;i<=n;i++){
-        //     cout << RideTime[i].get(GRB_StringAttr_VarName) << " "
-        //     << RideTime[i].get(GRB_DoubleAttr_X) << " "
-        //     << RideTimePenalty[i].get(GRB_DoubleAttr_X) << endl;
-        // }
+        for(i=1;i<=2*n;i++){
+             cout << DepartureTime[i].get(GRB_StringAttr_VarName) << " "
+            << DepartureTime[i].get(GRB_DoubleAttr_X) << " "
+            << DepartureTimePenalty[i].get(GRB_DoubleAttr_X) << endl;
+        }
+        for(i=1;i<=n;i++){
+            cout << RideTime[i].get(GRB_StringAttr_VarName) << " "
+            << RideTime[i].get(GRB_DoubleAttr_X) << " "
+            << RideTimePenalty[i].get(GRB_DoubleAttr_X) << endl;
+        }
         
         // 計算終了の時間
         double endtime = cpu_time();
