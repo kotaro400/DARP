@@ -207,6 +207,11 @@ void RouteList::InnerRouteChange_specified(int customerSize,int worst){
     // }
 }
 
+void RouteList::InnerOrderChange_requestset(int RouteIndex){
+    int RequestSize = (this->Routelist[RouteIndex].size()-2) / 2;
+    cout<<  RequestSize << endl;
+}
+
 void removeElement(vector<int> &vector, int index) {
     vector.erase(vector.begin()+index);
 }

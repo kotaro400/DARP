@@ -241,7 +241,7 @@ int main(int argc, char *argv[]){
 
 
         // **************************イテレーション開始************************************
-        for(int k=1;k<500;k++){
+        for(int k=1;k<10;k++){
             RouteList *TmpRouteList;
             TmpRouteList = new RouteList(m); //メモリの確保
             GRBTempConstr *tempconstr;
@@ -253,8 +253,9 @@ int main(int argc, char *argv[]){
             }
             *TmpRouteList = routelist;
             // TmpRouteList->InnerRouteChange_node(n); //近傍解 ノードごとの挿入近傍 ランダム
-            TmpRouteList->InnerRouteChange_requestSet(); //近傍解 リクエストごとの挿入近傍 ランダム
+            // TmpRouteList->InnerRouteChange_requestSet(); //近傍解 リクエストごとの挿入近傍 ランダム
             // TmpRouteList->InnerRouteChange_specified(n,worstPosition); //近傍解 ペナルティの大きいノードを挿入
+            TmpRouteList->InnerOrderChange_requestset(0);
 
             // for(i=0;i<TmpRouteList->getRouteListSize();i++){
             //     for(j=0;j<TmpRouteList->getRouteSize(i);j++){
