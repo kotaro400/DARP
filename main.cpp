@@ -319,7 +319,6 @@ int main(int argc, char *argv[]){
                         break;
                     }
                 }
-                cout << "search_count: " << search_count << endl;
                 cout << RouteIndex << "番目のペナルティ:" << PenaltyArray[RouteIndex] << endl;
                 cout << "----------------------------------" << endl;
                 if (search_count>=COUNT_MAX) break;
@@ -331,7 +330,7 @@ int main(int argc, char *argv[]){
             if (search_count>=COUNT_MAX) break;
             routelist.OuterRouteChange_random(n);
         }
-        cout << "カウント数:" << search_count << endl;
+        cout << "総カウント数:" << search_count << endl;
 
         // for(int k=1;k<10;k++){
         //     RouteList *TmpRouteList;
