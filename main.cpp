@@ -244,6 +244,7 @@ int main(int argc, char *argv[]){
         // **************************イテレーション開始************************************
 
         // ルートの数だけ、改善がなくなるまで局所探索
+        double PenaltyArray[routelist.getRouteListSize()];
         for (int RouteIndex=0;RouteIndex<routelist.getRouteListSize();RouteIndex++){
             cout << RouteIndex <<" " << pow((routelist.getRouteSize(RouteIndex)-2)/2,2) <<  endl;
             for (int neighborhood=0;neighborhood<pow((routelist.getRouteSize(RouteIndex)-2)/2,2)*4;neighborhood++){
@@ -291,6 +292,11 @@ int main(int argc, char *argv[]){
                         BestTotalPenalty = TotalPenalty;
                         BestRouteDistance = RouteDistance;
                         BestPenalty = model.get(GRB_DoubleAttr_ObjVal);
+                        double tmpPenalty = 0;
+                        for(int order=0; order<routelist.getRouteSize(RouteIndex);order++){
+                            tmpPenalty += DepartureTimePenalty[routelist.getRoute(RouteIndex,order)].get(GRB_DoubleAttr_X);
+                        }
+                        PenaltyArray[RouteIndex] = tmpPenalty;
                     }
                     // 悪い解ならなにもしない
                     // ルートの制約をremove
@@ -306,7 +312,8 @@ int main(int argc, char *argv[]){
                     delete TmpRouteList; 
                 }
             }
-            cout << RouteIndex << "番目おわり" << endl;
+            cout << RouteIndex << "番目のペナルティ:" << PenaltyArray[RouteIndex] << endl;
+            cout << "----------------------------------" << endl;
         }
 
         // for(int k=1;k<10;k++){
