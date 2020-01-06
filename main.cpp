@@ -243,11 +243,13 @@ int main(int argc, char *argv[]){
 
         // **************************イテレーション開始************************************
 
+        int search_count = 0;
+
         // ルートの数だけ、改善がなくなるまで局所探索
         double PenaltyArray[routelist.getRouteListSize()];
-        for (int RouteIndex=0;RouteIndex<routelist.getRouteListSize();RouteIndex++){
-            cout << RouteIndex <<" " << pow((routelist.getRouteSize(RouteIndex)-2)/2,2) <<  endl;
-            for (int neighborhood=0;neighborhood<pow((routelist.getRouteSize(RouteIndex)-2)/2,2)*4;neighborhood++){
+        for (int RouteIndex=0;RouteIndex<routelist.getRouteListSize();RouteIndex++){ //車両ごと
+            for (int neighborhood=0;neighborhood<pow((routelist.getRouteSize(RouteIndex)-2)/2,2)*4;neighborhood++){ //近傍サイズを探索
+                search_count++;
                 RouteList *TmpRouteList;
                 TmpRouteList = new RouteList(m); //メモリの確保
                 GRBTempConstr *tempconstr;
@@ -311,10 +313,15 @@ int main(int argc, char *argv[]){
                     //TmpRouteListクラスのメモリ解放
                     delete TmpRouteList; 
                 }
+                if (search_count == 700){
+                    break;
+                }
             }
+            cout << "search_count: " << search_count << endl;
             cout << RouteIndex << "番目のペナルティ:" << PenaltyArray[RouteIndex] << endl;
             cout << "----------------------------------" << endl;
         }
+        cout << "カウント数:" << search_count << endl;
 
         // for(int k=1;k<10;k++){
         //     RouteList *TmpRouteList;
