@@ -185,7 +185,7 @@ int main(int argc, char *argv[]){
             RouteDistance += cost.getCost(0,routelist.getRoute(i,1)); //i番目の車両の1番目
             RouteDistance += cost.getCost(routelist.getRoute(i,routelist.getRouteSize(i)-2),0);//i番目の車両のデポを除く最後
             // デポと1番目の制約
-            *tempconstr = DepotTime[i] + 10.0 +  cost.getCost(0,routelist.getRoute(i,1)) <= DepartureTime[routelist.getRoute(i,1)];
+            *tempconstr = DepotTime[i] +  cost.getCost(0,routelist.getRoute(i,1)) <= DepartureTime[routelist.getRoute(i,1)];
             constrname = to_string(i) + "constr_depot_1";
             RouteOrderConstr.push_back(model.addConstr(*tempconstr,constrname));
             // 最後とデポの制約
@@ -281,7 +281,7 @@ int main(int argc, char *argv[]){
                 RouteDistance += cost.getCost(0,TmpRouteList->getRoute(i,1));
                 RouteDistance += cost.getCost(TmpRouteList->getRouteSize(i)-2,0);
                 // デポと1番目の制約
-                *tempconstr = DepotTime[i] + 10.0 + cost.getCost(0,TmpRouteList->getRoute(i,1)) <= DepartureTime[TmpRouteList->getRoute(i,1)];
+                *tempconstr = DepotTime[i] + cost.getCost(0,TmpRouteList->getRoute(i,1)) <= DepartureTime[TmpRouteList->getRoute(i,1)];
                 constrname = to_string(i) + "constr_depot_1";
                 RouteOrderConstr.push_back(model.addConstr(*tempconstr,constrname));
                 // 最後とデポの制約
