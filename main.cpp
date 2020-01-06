@@ -246,7 +246,7 @@ int main(int argc, char *argv[]){
         // ルートの数だけ、改善がなくなるまで局所探索
         for (int RouteIndex=0;RouteIndex<routelist.getRouteListSize();RouteIndex++){
             cout << RouteIndex <<" " << pow((routelist.getRouteSize(RouteIndex)-2)/2,2) <<  endl;
-            for (int neighborhood=0;neighborhood<pow((routelist.getRouteSize(RouteIndex)-2)/2,2);neighborhood++){
+            for (int neighborhood=0;neighborhood<pow((routelist.getRouteSize(RouteIndex)-2)/2,2)*4;neighborhood++){
                 RouteList *TmpRouteList;
                 TmpRouteList = new RouteList(m); //メモリの確保
                 GRBTempConstr *tempconstr;
