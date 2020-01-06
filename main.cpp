@@ -323,10 +323,17 @@ int main(int argc, char *argv[]){
                 cout << "----------------------------------" << endl;
                 if (search_count>=COUNT_MAX) break;
             }
-            for(int kj=0;kj<3;kj++){
-                cout << PenaltyArray[kj] << " ";
+            int maxPenaltyIndex=0;
+            double TmpPenalty=-1;
+            for(int PA_i=0;PA_i<m;PA_i++){
+                cout << PenaltyArray[PA_i] << " ";
+                if (PenaltyArray[PA_i]>TmpPenalty) {
+                    TmpPenalty = PenaltyArray[PA_i];
+                    maxPenaltyIndex = PA_i;
+                }
             }
             cout << endl;
+            cout << "max_index: " << maxPenaltyIndex << endl; 
             if (search_count>=COUNT_MAX) break;
             routelist.OuterRouteChange_random(n);
         }
