@@ -208,8 +208,25 @@ void RouteList::InnerRouteChange_specified(int customerSize,int worst){
 }
 
 void RouteList::InnerOrderChange_requestset(int RouteIndex){
+    mt19937_64 mt64(rand());
     int RequestSize = (this->Routelist[RouteIndex].size()-2) / 2;
-    cout<<  RequestSize << endl;
+    int beforeIndex = abs((int)mt64()) % RequestSize;
+    int first = this->Routelist[RouteIndex].at(1+2*(beforeIndex));
+    int second = this->Routelist[RouteIndex].at(1+2*(beforeIndex)+1);
+    removeElement(this->Routelist[RouteIndex],1+2*(beforeIndex));
+    removeElement(this->Routelist[RouteIndex],1+2*(beforeIndex));
+
+     // 挿入
+     int afterIndex = abs((int)mt64()) % RequestSize;
+     while(beforeIndex == afterIndex){
+        afterIndex = abs((int)mt64()) % RequestSize;
+        // 変える前と変える後が一緒の場合はやり直す
+    }
+    auto it = this->Routelist[RouteIndex].begin();
+    it += (1+2*afterIndex);
+    it = this->Routelist[RouteIndex].insert(it,first);
+    it++;
+    it = this->Routelist[RouteIndex].insert(it,second);
 }
 
 void removeElement(vector<int> &vector, int index) {
