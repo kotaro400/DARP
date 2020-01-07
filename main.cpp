@@ -244,7 +244,7 @@ int main(int argc, char *argv[]){
         // **************************イテレーション開始************************************
 
         int search_count = 0;
-        int COUNT_MAX = 1000;
+        int COUNT_MAX = 5000;
         double PenaltyArray[m];
         while(search_count <COUNT_MAX){ //一定回数に達したら終了
             // ルートの数だけ、改善がなくなるまで局所探索
@@ -296,11 +296,13 @@ int main(int argc, char *argv[]){
                             BestTotalPenalty = TotalPenalty;
                             BestRouteDistance = RouteDistance;
                             BestPenalty = model.get(GRB_DoubleAttr_ObjVal);
-                            double tmpPenalty = 0;
-                            for(int order=0; order<routelist.getRouteSize(RouteIndex);order++){
-                                tmpPenalty += DepartureTimePenalty[routelist.getRoute(RouteIndex,order)].get(GRB_DoubleAttr_X);
+                            for(int TmpRouteNum=0;TmpRouteNum<m;TmpRouteNum++){
+                                double tmpPenalty = 0;
+                                for(int order=0; order<routelist.getRouteSize(TmpRouteNum);order++){
+                                    tmpPenalty += DepartureTimePenalty[routelist.getRoute(TmpRouteNum,order)].get(GRB_DoubleAttr_X);
+                                }
+                                PenaltyArray[TmpRouteNum] = tmpPenalty;
                             }
-                            PenaltyArray[RouteIndex] = tmpPenalty;
                         }
                         // 悪い解ならなにもしない
                         // ルートの制約をremove
@@ -320,6 +322,10 @@ int main(int argc, char *argv[]){
                     }
                 }
                 cout << RouteIndex << "番目のペナルティ:" << PenaltyArray[RouteIndex] << endl;
+                for(int jkl=0;jkl<m;jkl++){
+                    cout << PenaltyArray[jkl] << " ";
+                }
+                cout << endl;
                 cout << "----------------------------------" << endl;
                 if (search_count>=COUNT_MAX) break;
             }
@@ -333,9 +339,22 @@ int main(int argc, char *argv[]){
                 }
             }
             cout << endl;
-            cout << "max_index: " << maxPenaltyIndex << endl; 
             if (search_count>=COUNT_MAX) break;
-            routelist.OuterRouteChange_random(n);
+            // routelist.OuterRouteChange_random(n);
+            for(i=0;i<routelist.getRouteListSize();i++){
+                for(j=0;j<routelist.getRouteSize(i);j++){
+                    cout << routelist.getRoute(i,j) << " ";
+                }
+                cout << endl;
+            }
+            cout << "outerchange" << endl;
+            routelist.OuterRouteChange_specified(n,maxPenaltyIndex);
+            for(i=0;i<routelist.getRouteListSize();i++){
+                for(j=0;j<routelist.getRouteSize(i);j++){
+                    cout << routelist.getRoute(i,j) << " ";
+                }
+                cout << endl;
+            }
         }
         cout << "総カウント数:" << search_count << endl;
 
