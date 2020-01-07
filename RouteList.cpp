@@ -231,6 +231,35 @@ void RouteList::InnerOrderChange_requestset(int RouteIndex){
 
 void RouteList::OuterRouteChange_specified(int customerSize,int worstRouteIndex){
     cout << "OuterROuteCHange_Specified" << endl;
+    mt19937_64 mt64(rand());
+    int first,second,beforeindex,afterindex,firstindex;
+    beforeindex = worstRouteIndex;
+    firstindex =abs((int)mt64())%(this->Routelist[beforeindex].size()-2)+1;
+    first = this->Routelist[beforeindex][firstindex];
+    if (first <= customerSize){
+        second = first + customerSize;
+    }else{
+        second = first;
+        first = second -customerSize;
+    }
+    for(auto itr=this->Routelist[beforeindex].begin();itr!=this->Routelist[beforeindex].end();){
+        if (*itr == second || *itr == first){
+            itr = this->Routelist[beforeindex].erase(itr);
+        }else{
+            ++itr;
+        }
+    }
+    afterindex = abs((int)mt64())%this->Routelist.size();
+    while (beforeindex == afterindex){
+        afterindex = abs((int)mt64())%this->Routelist.size();
+    }
+    cout << "afterindex: " << afterindex << endl;
+    auto it = this->Routelist[afterindex].end()-1;
+    it = this->Routelist[afterindex].insert(it,first);
+    it++;
+    it = this->Routelist[afterindex].insert(it,second);
+    it++;
+    cout << beforeindex << "から" << afterindex << endl;
 }
 
 void removeElement(vector<int> &vector, int index) {
