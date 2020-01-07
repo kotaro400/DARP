@@ -5,6 +5,7 @@ path_w = 'output.txt'
 filepath = './data'
 files = os.listdir(filepath)
 for file in files:
+    print(file)
     if file != ".DS_Store":
         path = "./data/" + file
         line = []
@@ -16,6 +17,7 @@ for file in files:
         MaximuRouteDuraion = int(line[0][2])
         outputpath = "./revised/" + file
         outputpath = os.path.abspath(outputpath)
+        print(outputpath)
         with open(outputpath, mode='w') as f:
             for subitem in line[0]:
                 if  subitem.find(' ') == -1:
@@ -28,9 +30,9 @@ for file in files:
                             f.write(subitem)
             line.pop(0)
             for item in line:
-                print(item)
+                # print(item)
                 if item == ['', '']:
-                    exit(1)
+                    break
                 for subitem in item:
                     if  subitem.find(' ') == -1:
                         if subitem == "":
