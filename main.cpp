@@ -249,7 +249,7 @@ int main(int argc, char *argv[]){
         while(search_count <COUNT_MAX){ //一定回数に達したら終了
             // ルートの数だけ、改善がなくなるまで局所探索
             for (int RouteIndex=0;RouteIndex<m;RouteIndex++){ //車両ごと
-                cout << "RouteIndex:" <<RouteIndex << " " << pow((routelist.getRouteSize(RouteIndex)-2)/2,2)*4 << endl;
+                cout << "RouteIndex:" <<RouteIndex << " " << pow((routelist.getRouteSize(RouteIndex)-2)/2,2) << endl;
                 for (int neighborhood=0;neighborhood<pow((routelist.getRouteSize(RouteIndex)-2)/2,2)*4;neighborhood++){ //近傍サイズを探索
                     search_count++;
                     RouteList *TmpRouteList;
