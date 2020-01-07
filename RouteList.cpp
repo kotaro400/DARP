@@ -229,6 +229,10 @@ void RouteList::InnerOrderChange_requestset(int RouteIndex){
     it = this->Routelist[RouteIndex].insert(it,second);
 }
 
+void RouteList::OuterRouteChange_specified(int customerSize,int worstRouteIndex){
+    cout << "OuterROuteCHange_Specified" << endl;
+}
+
 void removeElement(vector<int> &vector, int index) {
     vector.erase(vector.begin()+index);
 }
