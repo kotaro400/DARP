@@ -60,7 +60,7 @@ int main(int argc, char *argv[]){
 
     // ルートの総距離と時間枠ペナルティと乗客数のペナルティ比
     double ALPHA = 1.0; //ルートの距離
-    double BETA = 10.0; //時間枠ペナ
+    double BETA = 5.0; //時間枠ペナ
     double GAMMA = 1.0; //乗客数ペナ
 
     // 最適解
@@ -245,8 +245,6 @@ int main(int argc, char *argv[]){
             cout << endl;
         }
 
-        // routelist.InnerRouteChange_specified(n,worstPosition);
-
 
         // **************************イテレーション開始************************************
         RouteList bestroutelist(m);
@@ -256,7 +254,7 @@ int main(int argc, char *argv[]){
         double QP;
         int NumberOfImprove;
         int search_count = 0;
-        int COUNT_MAX = 8000;
+        int COUNT_MAX =10000;
         double PenaltyArray[m];
         while(search_count < COUNT_MAX){ //一定回数に達したら終了
             // ルートの数だけ、改善がなくなるまで局所探索
@@ -332,6 +330,14 @@ int main(int argc, char *argv[]){
                                     }
                                     PenaltyArray[TmpRouteNum] = tmpPenalty;
                                 }
+                                worstPosition = 1; 
+                                tmpPenalty = 0;
+                                for(i=1;i<=2*n;i++){
+                                    if (DepartureTimePenalty[i].get(GRB_DoubleAttr_X) > tmpPenalty){
+                                        worstPosition = i;
+                                        tmpPenalty = DepartureTimePenalty[i].get(GRB_DoubleAttr_X);
+                                    }
+                                }
                             }
                         }
                         // 悪い解ならなにもしない
@@ -391,7 +397,7 @@ int main(int argc, char *argv[]){
             if(NumberOfImprove==0){
                 routelist = bestroutelist;
             }
-
+            cout << "worstのノード: " << worstPosition << endl;
             // ルート間の挿入
             // routelist.OuterRouteChange_random(n); //ランダムにルート間
             // routelist.OuterRouteChange_specified(n,maxPenaltyIndex); //ペナルティの大きいルートのリクエストを交換

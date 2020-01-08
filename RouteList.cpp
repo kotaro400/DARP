@@ -303,7 +303,6 @@ tuple<int, int> RouteList::OuterRouteChange_specified(int customerSize,int worst
 }
 
 tuple<int, int> RouteList::OuterRouteChange_specified_double(int customerSize,int worstRouteIndex,int bestRouteIndex){
-    cout  << "outer specified double" << endl;
     mt19937_64 mt64(rand());
     int first,second,beforeindex,afterindex,firstindex;
     beforeindex = worstRouteIndex;
@@ -328,7 +327,7 @@ tuple<int, int> RouteList::OuterRouteChange_specified_double(int customerSize,in
     it++;
     it = this->Routelist[afterindex].insert(it,second);
     it++;
-    cout << beforeindex << "から" << afterindex << endl;
+    cout << beforeindex << "から" << afterindex << " specified double"<<endl;
     return make_tuple(beforeindex,afterindex);
 }
 
