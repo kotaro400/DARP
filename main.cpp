@@ -249,7 +249,7 @@ int main(int argc, char *argv[]){
         // **************************イテレーション開始************************************
 
         int search_count = 0;
-        int COUNT_MAX = 2000;
+        int COUNT_MAX = 5000;
         double PenaltyArray[m];
         while(search_count < COUNT_MAX){ //一定回数に達したら終了
             // ルートの数だけ、改善がなくなるまで局所探索
@@ -347,6 +347,7 @@ int main(int argc, char *argv[]){
                 if (search_count>=COUNT_MAX) break;
             }
             int maxPenaltyIndex=0;
+            int minPenaltyIndex=0;
             double TmpPenalty=-1;
             for(int PA_i=0;PA_i<m;PA_i++){
                 cout << PenaltyArray[PA_i] << " ";
@@ -356,11 +357,26 @@ int main(int argc, char *argv[]){
                 }
             }
             cout << endl;
+            TmpPenalty = 100000000.0;
+            for(int PA_i=0;PA_i<m;PA_i++){
+                if (PenaltyArray[PA_i]<TmpPenalty){
+                    TmpPenalty= PenaltyArray[PA_i];
+                    minPenaltyIndex=PA_i;
+                }
+            }
+            if (minPenaltyIndex==maxPenaltyIndex){
+                minPenaltyIndex = rand()%m;
+                maxPenaltyIndex=rand()%m;
+                if (minPenaltyIndex==maxPenaltyIndex){
+                    maxPenaltyIndex=rand()%m;
+                }
+            }
+            cout << "maxIndex: " << maxPenaltyIndex << " minIndex: " << minPenaltyIndex << endl;
             if (search_count>=COUNT_MAX) break;
             routelist.OuterRouteChange_random(n);
             // ルート間の挿入
-            routelist.OuterRouteChange_random(n); //ランダムにルート間
-            // routelist.OuterRouteChange_specified(n,maxPenaltyIndex); //ペナルティの大きいルートのリクエストを交換
+            // routelist.OuterRouteChange_random(n); //ランダムにルート間
+            routelist.OuterRouteChange_specified(n,maxPenaltyIndex); //ペナルティの大きいルートのリクエストを交換
 
             for(i=0;i<routelist.getRouteListSize();i++){
                 for(j=0;j<routelist.getRouteSize(i);j++){
