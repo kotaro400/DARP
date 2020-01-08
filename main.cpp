@@ -15,7 +15,8 @@ using namespace std;
 int main(int argc, char *argv[]){
     int i,j;
     string tmp;
-    int worstPosition,tmpPenalty; //
+    int worstPosition;
+    double tmpPenalty; 
     // 入力を受け取り
     InputData inputdata;
     string inputfile = argv[1];
@@ -254,7 +255,7 @@ int main(int argc, char *argv[]){
         tuple<int, int> TmpTuple;
         double QP;
         int search_count = 0;
-        int COUNT_MAX = 10000;
+        int COUNT_MAX = 6000;
         double PenaltyArray[m];
         while(search_count < COUNT_MAX){ //一定回数に達したら終了
             // ルートの数だけ、改善がなくなるまで局所探索
@@ -324,6 +325,7 @@ int main(int argc, char *argv[]){
                                     double tmpPenalty = 0;
                                     for(int order=0; order<routelist.getRouteSize(TmpRouteNum);order++){
                                         tmpPenalty += DepartureTimePenalty[routelist.getRoute(TmpRouteNum,order)].get(GRB_DoubleAttr_X);
+                                        if (routelist.getRoute(TmpRouteNum,order)<=n) tmpPenalty+= RideTimePenalty[routelist.getRoute(TmpRouteNum,order)].get(GRB_DoubleAttr_X);
                                     }
                                     PenaltyArray[TmpRouteNum] = tmpPenalty;
                                 }
@@ -375,7 +377,7 @@ int main(int argc, char *argv[]){
             if (minPenaltyIndex==maxPenaltyIndex){
                 minPenaltyIndex = rand()%m;
                 maxPenaltyIndex=rand()%m;
-                if (minPenaltyIndex==maxPenaltyIndex){
+                while (minPenaltyIndex==maxPenaltyIndex){
                     maxPenaltyIndex=rand()%m;
                 }
             }
