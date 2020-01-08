@@ -229,6 +229,10 @@ void RouteList::InnerOrderChange_requestset(int RouteIndex){
     it = this->Routelist[RouteIndex].insert(it,second);
 }
 
+void RouteList::InnerOrderChange_node(int RouteIndex){
+    cout << "Inner Node" << endl;
+}
+
 void RouteList::OuterRouteChange_specified(int customerSize,int worstRouteIndex){
     cout << "OuterROuteCHange_Specified" << endl;
     mt19937_64 mt64(rand());

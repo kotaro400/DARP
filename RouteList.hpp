@@ -19,9 +19,10 @@ public:
     int getRouteListSize();
     int getRoute(int RouteNumber,int RouteOrder);
     void InnerRouteChange_requestSet();
-    void InnerRouteChange_node(int customerSize); // 他のルートに挿入 インデックスはランダム
-    void OuterRouteChange_random(int customerSize);
+    void InnerRouteChange_node(int customerSize);
+    void OuterRouteChange_random(int customerSize); // 他のルートに挿入 インデックスはランダム
     void InnerRouteChange_specified(int customerSize,int worst); //ペナルティの大きいノードを単体で違う場所に挿入
     void InnerOrderChange_requestset(int RouteIndex);
+    void InnerOrderChange_node(int RouteIndex);
     void OuterRouteChange_specified(int customerSize,int worstRouteIndex);
 };
