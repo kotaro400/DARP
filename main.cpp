@@ -254,7 +254,7 @@ int main(int argc, char *argv[]){
         double QP;
         int NumberOfImprove;
         int search_count = 0;
-        int COUNT_MAX =8000;
+        int COUNT_MAX =5000;
         double PenaltyArray[m];
         while(search_count < COUNT_MAX){ //一定回数に達したら終了
             // ルートの数だけ、改善がなくなるまで局所探索
@@ -325,11 +325,9 @@ int main(int argc, char *argv[]){
                                 for(int TmpRouteNum=0;TmpRouteNum<m;TmpRouteNum++){
                                     double tmpPenalty = 0;
                                     for(int order=1; order<routelist.getRouteSize(TmpRouteNum)-1;order++){
-                                        cout << routelist.getRoute(TmpRouteNum,order) << " ";
                                         tmpPenalty += DepartureTimePenalty[routelist.getRoute(TmpRouteNum,order)].get(GRB_DoubleAttr_X);
                                         if (routelist.getRoute(TmpRouteNum,order)<=n) tmpPenalty+= RideTimePenalty[routelist.getRoute(TmpRouteNum,order)].get(GRB_DoubleAttr_X);
                                     }
-                                    cout << endl;
                                     PenaltyArray[TmpRouteNum] = tmpPenalty;
                                 }
                                 worstPosition = 0; 
