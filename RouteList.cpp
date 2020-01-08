@@ -271,7 +271,6 @@ void RouteList::InnerOrderChange_node(int customerSize,int RouteIndex){
 }
 
 tuple<int, int> RouteList::OuterRouteChange_specified(int customerSize,int worstRouteIndex){
-    cout << "OuterROuteCHange_Specified" << endl;
     mt19937_64 mt64(rand());
     int first,second,beforeindex,afterindex,firstindex;
     beforeindex = worstRouteIndex;
