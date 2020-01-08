@@ -1,0 +1,16 @@
+# Fdb version 3
+["dvipdf"] 1578487335 "chapter2.dvi" "chapter2.pdf" "chapter2" 1578487336
+  "chapter2.dvi" 1578487334 932 0d524fac306222b9a37a58698c27296a "latex"
+  (generated)
+  "chapter2.pdf"
+["latex"] 1578487334 "chapter2.tex" "chapter2.dvi" "chapter2" 1578487336
+  "/usr/local/texlive/2019/texmf-dist/fonts/map/fontname/texfonts.map" 1511824771 3332 103109f5612ad95229751940c61aada0 ""
+  "/usr/local/texlive/2019/texmf-dist/fonts/tfm/public/cm/cmbx10.tfm" 1136768653 1328 c834bbb027764024c09d3d2bf908b5f0 ""
+  "/usr/local/texlive/2019/texmf-dist/web2c/texmf.cnf" 1570742662 39452 758acee3f2beaeeedff570c5f5d76d98 ""
+  "/usr/local/texlive/2019/texmf-var/web2c/euptex/uplatex.fmt" 1573005491 4553067 6bfd2d44f501852523d42dc3f56fd483 ""
+  "/usr/local/texlive/2019/texmf.cnf" 1557341546 577 d150fef99ac436ad1156e86b0892f6ef ""
+  "chapter2.aux" 1578487284 1169 407c90309b3a48d5dc3f76d1f512a15c ""
+  "chapter2.tex" 1578487335 3143 1d07e2eb2106faf1af55612023183965 ""
+  (generated)
+  "chapter2.dvi"
+  "chapter2.log"
