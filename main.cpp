@@ -265,9 +265,20 @@ int main(int argc, char *argv[]){
 
                     // ルートの制約を追加
                     // ここでdistanceは計算しちゃう
+                    double QP=0;
                     RouteDistance=0;
                     for(i=0;i<TmpRouteList->getRouteListSize();i++){
+                        int current_person=0;
                         for(j=1;j<TmpRouteList->getRouteSize(i)-2;j++){
+                            if (TmpRouteList->getRoute(i,j)<=n){
+                                current_person+=1;
+                            }else{
+                                current_person -= 1;
+                            }
+                            if (current_person > 6){
+                                QP += current_person-6;
+                                cout << "QP: " << QP << endl;
+                            }
                             RouteDistance += cost.getCost(TmpRouteList->getRoute(i,j),TmpRouteList->getRoute(i,j+1));
                             // 論文8の式
                             *tempconstr = DepartureTime[TmpRouteList->getRoute(i,j)] + 10.0 + cost.getCost(TmpRouteList->getRoute(i,j),TmpRouteList->getRoute(i,j+1)) <= DepartureTime[TmpRouteList->getRoute(i,j+1)];
