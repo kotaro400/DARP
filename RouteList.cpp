@@ -331,6 +331,13 @@ tuple<int, int> RouteList::OuterRouteChange_specified_double(int customerSize,in
     return make_tuple(beforeindex,afterindex);
 }
 
+
+
+tuple<int, int> RouteList::OuterRouteChange_worstNode(int customerSize,int worstNode){
+    cout << customerSize << " " << worstNode << endl;
+    return make_tuple(1,2);
+}
+
 void removeElement(vector<int> &vector, int index) {
     vector.erase(vector.begin()+index);
 }
