@@ -229,14 +229,14 @@ int main(int argc, char *argv[]){
         delete tempconstr;
         vector<GRBConstr>().swap(RouteOrderConstr);
 
-        worstPosition = 1; 
-        tmpPenalty = 0;
-        for(i=1;i<=2*n;i++){
-            if (DepartureTimePenalty[i].get(GRB_DoubleAttr_X) > tmpPenalty){
-                worstPosition = i;
-                tmpPenalty = DepartureTimePenalty[i].get(GRB_DoubleAttr_X);
-            }
-        }
+        // worstPosition = 1; 
+        // tmpPenalty = 0;
+        // for(i=1;i<=2*n;i++){
+        //     if (DepartureTimePenalty[i].get(GRB_DoubleAttr_X) > tmpPenalty){
+        //         worstPosition = i;
+        //         tmpPenalty = DepartureTimePenalty[i].get(GRB_DoubleAttr_X);
+        //     }
+        // }
         cout << "worstのノード "  << worstPosition << endl;
         for(i=0;i<routelist.getRouteListSize();i++){
             for(j=0;j<routelist.getRouteSize(i);j++){
@@ -254,7 +254,7 @@ int main(int argc, char *argv[]){
         double QP;
         int NumberOfImprove;
         int search_count = 0;
-        int COUNT_MAX =10000;
+        int COUNT_MAX =8000;
         double PenaltyArray[m];
         while(search_count < COUNT_MAX){ //一定回数に達したら終了
             // ルートの数だけ、改善がなくなるまで局所探索
@@ -324,13 +324,15 @@ int main(int argc, char *argv[]){
                                 BestPenalty = model.get(GRB_DoubleAttr_ObjVal);
                                 for(int TmpRouteNum=0;TmpRouteNum<m;TmpRouteNum++){
                                     double tmpPenalty = 0;
-                                    for(int order=0; order<routelist.getRouteSize(TmpRouteNum);order++){
+                                    for(int order=1; order<routelist.getRouteSize(TmpRouteNum)-1;order++){
+                                        cout << routelist.getRoute(TmpRouteNum,order) << " ";
                                         tmpPenalty += DepartureTimePenalty[routelist.getRoute(TmpRouteNum,order)].get(GRB_DoubleAttr_X);
                                         if (routelist.getRoute(TmpRouteNum,order)<=n) tmpPenalty+= RideTimePenalty[routelist.getRoute(TmpRouteNum,order)].get(GRB_DoubleAttr_X);
                                     }
+                                    cout << endl;
                                     PenaltyArray[TmpRouteNum] = tmpPenalty;
                                 }
-                                worstPosition = 1; 
+                                worstPosition = 0; 
                                 tmpPenalty = 0;
                                 for(i=1;i<=2*n;i++){
                                     if (DepartureTimePenalty[i].get(GRB_DoubleAttr_X) > tmpPenalty){
@@ -393,18 +395,25 @@ int main(int argc, char *argv[]){
             cout << "maxIndex: " << maxPenaltyIndex << " minIndex: " << minPenaltyIndex << endl;
             if (search_count>=COUNT_MAX) break;
 
+            // 改善がない場合は一つ前のルート間近傍をなしにする
             cout << "改善回数" << NumberOfImprove << endl;
             if(NumberOfImprove==0){
                 routelist = bestroutelist;
             }
             cout << "worstのノード: " << worstPosition << endl;
             // ルート間の挿入
-            // routelist.OuterRouteChange_random(n); //ランダムにルート間
+            // TmpTuple = routelist.OuterRouteChange_random(n); //ランダムにルート間
             // routelist.OuterRouteChange_specified(n,maxPenaltyIndex); //ペナルティの大きいルートのリクエストを交換
-            TmpTuple = routelist.OuterRouteChange_specified_double(n,maxPenaltyIndex,minPenaltyIndex);
+            // TmpTuple = routelist.OuterRouteChange_specified_double(n,maxPenaltyIndex,minPenaltyIndex);
+            if (worstPosition==0){
+                TmpTuple = routelist.OuterRouteChange_random(n); //ランダムにルート間
+            }else{
+                TmpTuple = routelist.OuterRouteChange_specified_double(n,maxPenaltyIndex,minPenaltyIndex);
+            }
             for (int tmp=0;tmp<m;tmp++) recent_changed_flag[tmp] = false;
             recent_changed_flag[get<0>(TmpTuple)] = true;
             recent_changed_flag[get<1>(TmpTuple)] = true;
+            routelist.OuterRouteChange_worstNode(n,worstPosition);
             
 
             for(i=0;i<routelist.getRouteListSize();i++){
