@@ -3,6 +3,7 @@ using namespace std;
 #include <iostream>
 #include <random>
 #include <cmath>
+#include <tuple>
 void removeElement(vector<int> &vector, int index); //vectorの指定したインデックスの要素を削除する関数
 
 RouteList::RouteList(int VehicleNum){
@@ -123,7 +124,7 @@ void RouteList::InnerRouteChange_node(int customerSize){
     this->Routelist[index].insert(it,first);
 }
 
-void RouteList::OuterRouteChange_random(int customerSize){
+tuple<int, int> RouteList::OuterRouteChange_random(int customerSize){
     int first,second,beforeindex,afterindex,firstindex;
     mt19937_64 mt64(rand());
     beforeindex = abs((int)mt64())%this->Routelist.size();
@@ -152,6 +153,7 @@ void RouteList::OuterRouteChange_random(int customerSize){
     it++;
     it = this->Routelist[afterindex].insert(it,second);
     it++;
+    return make_tuple(beforeindex,afterindex);
 }
 
 
@@ -268,7 +270,7 @@ void RouteList::InnerOrderChange_node(int customerSize,int RouteIndex){
     this->Routelist[index].insert(it,first);
 }
 
-void RouteList::OuterRouteChange_specified(int customerSize,int worstRouteIndex){
+tuple<int, int> RouteList::OuterRouteChange_specified(int customerSize,int worstRouteIndex){
     cout << "OuterROuteCHange_Specified" << endl;
     mt19937_64 mt64(rand());
     int first,second,beforeindex,afterindex,firstindex;
@@ -298,9 +300,10 @@ void RouteList::OuterRouteChange_specified(int customerSize,int worstRouteIndex)
     it = this->Routelist[afterindex].insert(it,second);
     it++;
     cout << beforeindex << "から" << afterindex << endl;
+    return make_tuple(beforeindex,afterindex);
 }
 
-void RouteList::OuterRouteChange_specified_double(int customerSize,int worstRouteIndex,int bestRouteIndex){
+tuple<int, int> RouteList::OuterRouteChange_specified_double(int customerSize,int worstRouteIndex,int bestRouteIndex){
     cout  << "outer specified double" << endl;
     mt19937_64 mt64(rand());
     int first,second,beforeindex,afterindex,firstindex;
@@ -327,6 +330,7 @@ void RouteList::OuterRouteChange_specified_double(int customerSize,int worstRout
     it = this->Routelist[afterindex].insert(it,second);
     it++;
     cout << beforeindex << "から" << afterindex << endl;
+    return make_tuple(beforeindex,afterindex);
 }
 
 void removeElement(vector<int> &vector, int index) {

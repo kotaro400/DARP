@@ -1,5 +1,6 @@
 #include <iostream>
 #include <cmath>
+#include <tuple>
 #include "InputData.hpp"
 #include "RouteList.hpp"
 #include "Location.hpp"
@@ -58,7 +59,7 @@ int main(int argc, char *argv[]){
 
     // ルートの総距離と時間枠ペナルティと乗客数のペナルティ比
     double ALPHA = 1.0; //ルートの距離
-    double BETA = 5.0; //時間枠ペナ
+    double BETA = 10.0; //時間枠ペナ
     double GAMMA = 1.0; //乗客数ペナ
 
     // 最適解
@@ -248,12 +249,18 @@ int main(int argc, char *argv[]){
 
         // **************************イテレーション開始************************************
 
+        bool recent_changed_flag[m];
+        for (int tmp=0;tmp<m;tmp++) recent_changed_flag[tmp] = true;
+        tuple<int, int> TmpTuple;
+        double QP;
         int search_count = 0;
-        int COUNT_MAX = 5000;
+        int COUNT_MAX = 2000;
         double PenaltyArray[m];
         while(search_count < COUNT_MAX){ //一定回数に達したら終了
             // ルートの数だけ、改善がなくなるまで局所探索
             for (int RouteIndex=0;RouteIndex<m;RouteIndex++){ //車両ごと
+                if (!recent_changed_flag[RouteIndex]) continue;
+                cout << RouteIndex << "スタート" << endl;
                 cout << "RouteIndex:" <<RouteIndex << " " << pow((routelist.getRouteSize(RouteIndex)-2)/2,2)*8 << endl;
                 for (int neighborhood=0;neighborhood<pow((routelist.getRouteSize(RouteIndex)-2)/2,2)*8;neighborhood++){ //近傍サイズを探索
                     search_count++;
@@ -267,7 +274,7 @@ int main(int argc, char *argv[]){
 
                     // ルートの制約を追加
                     // ここでdistanceは計算しちゃう
-                    double QP=0;
+                    QP=0;
                     RouteDistance=0;
                     for(i=0;i<TmpRouteList->getRouteListSize();i++){
                         int current_person=0;
@@ -279,7 +286,6 @@ int main(int argc, char *argv[]){
                             }
                             if (current_person > 6){
                                 QP += current_person-6;
-                                cout << "QP: " << QP << endl;
                             }
                             RouteDistance += cost.getCost(TmpRouteList->getRoute(i,j),TmpRouteList->getRoute(i,j+1));
                             // 論文8の式
@@ -288,6 +294,7 @@ int main(int argc, char *argv[]){
                             RouteOrderConstr.push_back(model.addConstr(*tempconstr,constrname));
                         }
                     }
+                    if (QP>0) cout << "QP: " << QP << endl;
                     
                     // デポの時刻DepotTimeとの制約も追加
                     for(i=0;i<TmpRouteList->getRouteListSize();i++){
@@ -376,7 +383,11 @@ int main(int argc, char *argv[]){
             // ルート間の挿入
             // routelist.OuterRouteChange_random(n); //ランダムにルート間
             // routelist.OuterRouteChange_specified(n,maxPenaltyIndex); //ペナルティの大きいルートのリクエストを交換
-            routelist.OuterRouteChange_specified_double(n,maxPenaltyIndex,minPenaltyIndex);
+            TmpTuple = routelist.OuterRouteChange_specified_double(n,maxPenaltyIndex,minPenaltyIndex);
+            for (int tmp=0;tmp<m;tmp++) recent_changed_flag[tmp] = false;
+            recent_changed_flag[get<0>(TmpTuple)] = true;
+            recent_changed_flag[get<1>(TmpTuple)] = true;
+            
 
             for(i=0;i<routelist.getRouteListSize();i++){
                 for(j=0;j<routelist.getRouteSize(i);j++){
