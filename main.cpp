@@ -56,6 +56,9 @@ int main(int argc, char *argv[]){
     // ペナルティ
     double TotalPenalty=0;
 
+    // ルートの総距離とペナルティの比
+    double BETA = 1.0;
+
     // 最適解
     double BestTotalPenalty;
     double BestRouteDistance;
@@ -210,7 +213,7 @@ int main(int argc, char *argv[]){
         cout << "RouteDistance:" <<RouteDistance << endl;
         cout << "penalty: " << model.get(GRB_DoubleAttr_ObjVal) << endl;
 
-        TotalPenalty = RouteDistance + model.get(GRB_DoubleAttr_ObjVal);
+        TotalPenalty = RouteDistance + BETA*model.get(GRB_DoubleAttr_ObjVal);
         BestTotalPenalty = TotalPenalty;
         BestRouteDistance = RouteDistance;
         BestPenalty = model.get(GRB_DoubleAttr_ObjVal);
@@ -244,20 +247,21 @@ int main(int argc, char *argv[]){
         // **************************イテレーション開始************************************
 
         int search_count = 0;
-        int COUNT_MAX = 5000;
+        int COUNT_MAX = 2000;
         double PenaltyArray[m];
-        while(search_count <COUNT_MAX){ //一定回数に達したら終了
+        while(search_count < COUNT_MAX){ //一定回数に達したら終了
             // ルートの数だけ、改善がなくなるまで局所探索
             for (int RouteIndex=0;RouteIndex<m;RouteIndex++){ //車両ごと
-                cout << "RouteIndex:" <<RouteIndex << " " << pow((routelist.getRouteSize(RouteIndex)-2)/2,2) << endl;
-                for (int neighborhood=0;neighborhood<pow((routelist.getRouteSize(RouteIndex)-2)/2,2)*4;neighborhood++){ //近傍サイズを探索
+                cout << "RouteIndex:" <<RouteIndex << " " << pow((routelist.getRouteSize(RouteIndex)-2)/2,2)*8 << endl;
+                for (int neighborhood=0;neighborhood<pow((routelist.getRouteSize(RouteIndex)-2)/2,2)*8;neighborhood++){ //近傍サイズを探索
                     search_count++;
                     RouteList *TmpRouteList;
                     TmpRouteList = new RouteList(m); //メモリの確保
                     GRBTempConstr *tempconstr;
                     tempconstr = new GRBTempConstr;
                     *TmpRouteList = routelist;
-                    TmpRouteList->InnerOrderChange_requestset(RouteIndex);
+                    // TmpRouteList->InnerOrderChange_requestset(RouteIndex); //リクエストをセットでルート内
+                    TmpRouteList->InnerOrderChange_node(n,RouteIndex); //ノードごとにルート内
 
                     // ルートの制約を追加
                     // ここでdistanceは計算しちゃう
@@ -289,9 +293,9 @@ int main(int argc, char *argv[]){
                         model.optimize();
                         // ペナルティを計算して比較
                         // 良い解の場合 
-                        if (RouteDistance + model.get(GRB_DoubleAttr_ObjVal) < TotalPenalty){
+                        if (RouteDistance + BETA*model.get(GRB_DoubleAttr_ObjVal) < TotalPenalty){
                             routelist = *TmpRouteList;
-                            TotalPenalty = RouteDistance + model.get(GRB_DoubleAttr_ObjVal);
+                            TotalPenalty = RouteDistance + BETA*model.get(GRB_DoubleAttr_ObjVal);
                             cout << "改善 " << TotalPenalty << endl;
                             BestTotalPenalty = TotalPenalty;
                             BestRouteDistance = RouteDistance;
@@ -340,15 +344,15 @@ int main(int argc, char *argv[]){
             }
             cout << endl;
             if (search_count>=COUNT_MAX) break;
-            // routelist.OuterRouteChange_random(n);
+            routelist.OuterRouteChange_random(n);
             for(i=0;i<routelist.getRouteListSize();i++){
                 for(j=0;j<routelist.getRouteSize(i);j++){
                     cout << routelist.getRoute(i,j) << " ";
                 }
                 cout << endl;
             }
-            cout << "outerchange" << endl;
-            routelist.OuterRouteChange_specified(n,maxPenaltyIndex);
+            // routelist.OuterRouteChange_random(n); //ランダムにルート間
+            routelist.OuterRouteChange_specified(n,maxPenaltyIndex); //ペナルティの大きいルートのリクエストを交換
             for(i=0;i<routelist.getRouteListSize();i++){
                 for(j=0;j<routelist.getRouteSize(i);j++){
                     cout << routelist.getRoute(i,j) << " ";
