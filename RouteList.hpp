@@ -24,5 +24,6 @@ public:
     void InnerRouteChange_specified(int customerSize,int worst); //ペナルティの大きいノードを単体で違う場所に挿入
     void InnerOrderChange_requestset(int RouteIndex); //ルートのインデックスを指定してリクエストをセットでルート内
     void InnerOrderChange_node(int customersize,int RouteIndex); //ルートのインデックスを指定してノードごとにルート内 
-    void OuterRouteChange_specified(int customerSize,int worstRouteIndex);
+    void OuterRouteChange_specified(int customerSize,int worstRouteIndex); // 一番ペナルティの大きいルートからリクエストを選んで他に挿入
+    void OuterRouteChange_specified_double(int customerSize,int worstRouteIndex,int bestRouteIndex); //ペナルティが一番大きいものから小さいものに挿入
 };

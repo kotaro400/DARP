@@ -292,7 +292,35 @@ void RouteList::OuterRouteChange_specified(int customerSize,int worstRouteIndex)
     while (beforeindex == afterindex){
         afterindex = abs((int)mt64())%this->Routelist.size();
     }
-    cout << "afterindex: " << afterindex << endl;
+    auto it = this->Routelist[afterindex].end()-1;
+    it = this->Routelist[afterindex].insert(it,first);
+    it++;
+    it = this->Routelist[afterindex].insert(it,second);
+    it++;
+    cout << beforeindex << "から" << afterindex << endl;
+}
+
+void RouteList::OuterRouteChange_specified_double(int customerSize,int worstRouteIndex,int bestRouteIndex){
+    cout  << "outer specified double" << endl;
+    mt19937_64 mt64(rand());
+    int first,second,beforeindex,afterindex,firstindex;
+    beforeindex = worstRouteIndex;
+    firstindex =abs((int)mt64())%(this->Routelist[beforeindex].size()-2)+1;
+    first = this->Routelist[beforeindex][firstindex];
+    if (first <= customerSize){
+        second = first + customerSize;
+    }else{
+        second = first;
+        first = second -customerSize;
+    }
+    for(auto itr=this->Routelist[beforeindex].begin();itr!=this->Routelist[beforeindex].end();){
+        if (*itr == second || *itr == first){
+            itr = this->Routelist[beforeindex].erase(itr);
+        }else{
+            ++itr;
+        }
+    }
+    afterindex = bestRouteIndex;
     auto it = this->Routelist[afterindex].end()-1;
     it = this->Routelist[afterindex].insert(it,first);
     it++;
