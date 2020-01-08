@@ -57,9 +57,9 @@ int main(int argc, char *argv[]){
     double TotalPenalty=0;
 
     // ルートの総距離と時間枠ペナルティと乗客数のペナルティ比
-    double ALPHA = 1.0;
-    double BETA = 1.0;
-    double GAMMA = 1.0;
+    double ALPHA = 1.0; //ルートの距離
+    double BETA = 5.0; //時間枠ペナ
+    double GAMMA = 1.0; //乗客数ペナ
 
     // 最適解
     double BestTotalPenalty;
@@ -358,14 +358,10 @@ int main(int argc, char *argv[]){
             cout << endl;
             if (search_count>=COUNT_MAX) break;
             routelist.OuterRouteChange_random(n);
-            for(i=0;i<routelist.getRouteListSize();i++){
-                for(j=0;j<routelist.getRouteSize(i);j++){
-                    cout << routelist.getRoute(i,j) << " ";
-                }
-                cout << endl;
-            }
-            // routelist.OuterRouteChange_random(n); //ランダムにルート間
-            routelist.OuterRouteChange_specified(n,maxPenaltyIndex); //ペナルティの大きいルートのリクエストを交換
+            // ルート間の挿入
+            routelist.OuterRouteChange_random(n); //ランダムにルート間
+            // routelist.OuterRouteChange_specified(n,maxPenaltyIndex); //ペナルティの大きいルートのリクエストを交換
+
             for(i=0;i<routelist.getRouteListSize();i++){
                 for(j=0;j<routelist.getRouteSize(i);j++){
                     cout << routelist.getRoute(i,j) << " ";
