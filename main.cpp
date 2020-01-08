@@ -56,8 +56,10 @@ int main(int argc, char *argv[]){
     // ペナルティ
     double TotalPenalty=0;
 
-    // ルートの総距離とペナルティの比
+    // ルートの総距離と時間枠ペナルティと乗客数のペナルティ比
+    double ALPHA = 1.0;
     double BETA = 1.0;
+    double GAMMA = 1.0;
 
     // 最適解
     double BestTotalPenalty;
@@ -213,7 +215,7 @@ int main(int argc, char *argv[]){
         cout << "RouteDistance:" <<RouteDistance << endl;
         cout << "penalty: " << model.get(GRB_DoubleAttr_ObjVal) << endl;
 
-        TotalPenalty = RouteDistance + BETA*model.get(GRB_DoubleAttr_ObjVal);
+        TotalPenalty = ALPHA*RouteDistance + BETA*model.get(GRB_DoubleAttr_ObjVal);
         BestTotalPenalty = TotalPenalty;
         BestRouteDistance = RouteDistance;
         BestPenalty = model.get(GRB_DoubleAttr_ObjVal);
@@ -304,9 +306,9 @@ int main(int argc, char *argv[]){
                         model.optimize();
                         // ペナルティを計算して比較
                         // 良い解の場合 
-                        if (RouteDistance + BETA*model.get(GRB_DoubleAttr_ObjVal) < TotalPenalty){
+                        if (ALPHA*RouteDistance + BETA*model.get(GRB_DoubleAttr_ObjVal) + GAMMA*QP < TotalPenalty){
                             routelist = *TmpRouteList;
-                            TotalPenalty = RouteDistance + BETA*model.get(GRB_DoubleAttr_ObjVal);
+                            TotalPenalty = ALPHA*RouteDistance + BETA*model.get(GRB_DoubleAttr_ObjVal);
                             cout << "改善 " << TotalPenalty << endl;
                             BestTotalPenalty = TotalPenalty;
                             BestRouteDistance = RouteDistance;
