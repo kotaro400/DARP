@@ -1,84 +1,19 @@
 \chapter{提案手法}\label{method}
-提案手法を書く際には，
-\begin{enumerate}
- \item まず手法の大まかなアイデアや全体像を言葉で簡潔に説明し，
- \item 次に手法の構成要素のおのおのの詳細を述べ，
- \item 最後にそれらの構成要素をどのように組み合わせて全体の枠組みが
-       構成されているのかを示す
-\end{enumerate}
-というような順序で書くと分かりやすいと思います．
-その際，各構成要素を，
-サブルーチンのように入力として何を受け取って何を返すのかを記述した
-手続きとして名前をつけてまとめておき，
-最後に全体の枠組みを示す際にそれらを利用してアルゴリズムを記述すると
-書きやすいと思います．
+本節では, 本研究で提案する手法について説明する. 本研究では, リクエストの割り当てと訪問順を局所探索を用いて求める. それぞれの反復で得られたルートに対しては, 乗降時間と乗車時間に関してペナルティ関数の値が閾値以下であるかを判定し，閾値以下であれば最適なサービス開始時刻を決定して評価する.
+本研究では制約と目的関数が全て線形の式で表すことが可能であるため,サービス時刻を決定する問題は線形計画問題(linear programming problem, LP)として定式化し,解くことが可能である.
+\section{初期解生成}
+リクエストをランダムに選び, 車両$k$にリクエストのペアが連続となるようにルートの最後に挿入する. これを$k = 1 から m$まで繰り返した後, 未割り当てのリクエストがあれば$k = 1 $として同様の操作を続ける. これを未割り当てのリクエストがなくなるまで続ける.
 
-このような手続きを疑似コードとしてまとめるのに\texttt{algorithmic}が便利です
-（\texttt{algorithmicx}も便利のようです）．
-Algorithm~\ref{algo1}に例を示します．
-\begin{algorithm}
- \caption{Ford-Fulkerson}
- \label{algo1}
- \begin{algorithmic}[1]%1を0にすると行番号なし．
-  \REQUIRE グラフ$G = (V, E)$，始点$s \in V$, 終点$t \in V$, および各辺$e \in E$の容量$u_e$.
-  \ENSURE  $s$から$t$への最大フロー．
-  \FOR{$e = 1$ to $|E|$}
-  \STATE $x_e := 0$とする.
-  \ENDFOR
-  \STATE 残余ネットワーク$G_x$を作成する．
-  \WHILE{$G_x$にフロー追加路が存在する}
-  \STATE フロー追加路に沿って$x$にフローを追加する．
-  \STATE 残余ネットワーク$G_x$を更新する．
-  \ENDWHILE
-  \STATE フロー$x$を出力して終了．
- \end{algorithmic}
-\end{algorithm}
+\section{制限の緩和}
+本研究では, 局所探索を行う上でより自由に探索を行うために, 車両における容量制約を緩和し, 容量制約を破った時のペナルティを計算するペナルティ関数を定義する. 容量制約のペナルティ関数を目的関数に加えた評価関数を用いて解を評価することにより, 実行不可能解も探索可能になる.
 
-なお，手続きの入出力を表す「\texttt{\char`\\REQUIRE}」と「\texttt{\char`\\ENSURE}」
-を使うと，通常はそれぞれ「\textbf{Require:}」と「\textbf{Ensure:}」のように表示されますが，
-これらを上の例のように「\textbf{Input:}」と「\textbf{Output:}」に変更するための記述が
-本\LaTeX ファイルのプリアンブル
-\footnote{\texttt{\char`\\documentclass}と\texttt{\char`\\begin\{document\}}の間の部分．}
-にあります．
-
-手続きをまとめるのに以下のようなスタイルを使うこともあります．
-なお，Step番号を\texttt{description}環境で手動で書いても同様のスタイルを実現できますが，
-Stepを追加したり削除したりしたときに番号の相互参照で失敗しないよう，
-自動的に番号を振る方法の方がよいと思います．
-以下の例では\texttt{enumerate}環境を利用していますが，
-プリアンブルに\texttt{\char`\\usepackage\{enumerate\}}が必要です．
-\newpage
-%\\ \hrulefill %←これでも線は引けるが上下に大きめのスペースが空く
-\vspace{3mm}
-\hrule width \linewidth%←こちらは上下にスペースが空かないので適宜手動調整が要る
-\vspace{2mm}
-\begin{description}
- \item[\underline{Algorithm \textsc{Ford-Fulkerson}}] 
- \item[Input:] グラフ$G=(V,E)$ \ldots （略）
- \item[Output:] $s$から$t$への最大フロー．
-\end{description}
-\begin{enumerate}[{\sf Step 1.}] %← enumerateパッケージが必要．
- %\begin{enumerate}[\textbf{Step 1.}]では番号がずっと1のままでうまくいかない.
- \item すべての$e \in E$に対し$x_e := 0$とする.
- \item 残余ネットワーク$G_x$を作成する．
- \item \label{StepShuryoHantei}
-       $G_x$にフロー追加路が存在しなければ，フロー$x$を出力して終了．
- \item フロー追加路に沿って$x$にフローを追加．
- \item %残余ネットワーク
-       $G_x$を更新したのちStep~\ref{StepShuryoHantei}に戻る．
-\end{enumerate}
-\vspace{2mm}
-%\hrule height 0.2mm depth 0.2mm width \linewidth
-\hrule width \linewidth
-\vspace{3mm}
-
-どのようなスタイルを使う方が書きやすいか，分かりやすいかは，
-アルゴリズムによっても変わりますし，好みもあると思いますが，
-アルゴリズムの反復構造は\texttt{algorithmic}の方が分かりやすいように思います．
-
-疑似コードを読まなくてもアルゴリズムのアイデアが大体分かるように
-本文の文章中に説明を書きましょう．
-疑似コードはアルゴリズムを正確に記述するためのものなので，複雑になりがちです．
-従って，よほど内容に興味がある読者でなければ疑似コードまで読みたいとは思いません．
-読者が疑似コードを読まなくてもアイデアの概要が本文から分かるように書いてなければ，
-とても読みづらい論文になってしまいます．
+車両の容量制約のペナルティは, 車両の最大容量を超えて乗った人数として, $QP$と表す. 車両$k$に対してルートの$i$番目を訪問後に容量を超えて乗っている人数を$QP_i^k$とすると,
+\begin{align*}
+  QP = \sum_{k \in K}\sum_{i \in n_k} QP_i^k,
+\end{align*}
+と表せる．
+$\gamma$を定数とすると、ペナルティを加えた評価関数を$f(\sigma)$とすると
+\begin{align*}
+  f(\sigma) = \alpha d(\sigma)+ \beta t(\sigma) + \gamma QP,
+\end{align*}
+で定義する.

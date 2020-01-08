@@ -3,7 +3,9 @@
 \contentsline {section}{\numberline {2.1}Pickup and delivery problem}{2}% 
 \contentsline {section}{\numberline {2.2}乗合タクシー問題(Dial-a-ride problem)}{2}% 
 \contentsline {chapter}{\numberline {第3章}定式化}{4}% 
-\contentsline {chapter}{\numberline {第4章}提案手法}{5}% 
+\contentsline {chapter}{\numberline {第4章}提案手法}{6}% 
+\contentsline {section}{\numberline {4.1}初期解生成}{6}% 
+\contentsline {section}{\numberline {4.2}制限の緩和}{6}% 
 \contentsline {chapter}{\numberline {第5章}提案手法2}{7}% 
 \contentsline {chapter}{\numberline {第6章}計算実験}{8}% 
 \contentsline {chapter}{\numberline {第7章}まとめ}{9}% 
