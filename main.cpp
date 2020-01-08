@@ -254,11 +254,13 @@ int main(int argc, char *argv[]){
         for (int tmp=0;tmp<m;tmp++) recent_changed_flag[tmp] = true;
         tuple<int, int> TmpTuple;
         double QP;
+        int NumberOfImprove;
         int search_count = 0;
-        int COUNT_MAX = 6000;
+        int COUNT_MAX = 8000;
         double PenaltyArray[m];
         while(search_count < COUNT_MAX){ //一定回数に達したら終了
             // ルートの数だけ、改善がなくなるまで局所探索
+            NumberOfImprove=0;
             for (int RouteIndex=0;RouteIndex<m;RouteIndex++){ //車両ごと
                 if (!recent_changed_flag[RouteIndex]) continue;
                 cout << RouteIndex << "スタート" << endl;
@@ -314,6 +316,7 @@ int main(int argc, char *argv[]){
                         // 良い解の場合 
                         if (ALPHA*RouteDistance + BETA*model.get(GRB_DoubleAttr_ObjVal) + GAMMA*QP < TotalPenalty){
                             routelist = *TmpRouteList;
+                            NumberOfImprove += 1;
                             if(QP==0) {
                                 bestroutelist = *TmpRouteList;
                                 TotalPenalty = ALPHA*RouteDistance + BETA*model.get(GRB_DoubleAttr_ObjVal);
@@ -383,6 +386,12 @@ int main(int argc, char *argv[]){
             }
             cout << "maxIndex: " << maxPenaltyIndex << " minIndex: " << minPenaltyIndex << endl;
             if (search_count>=COUNT_MAX) break;
+
+            cout << "改善回数" << NumberOfImprove << endl;
+            if(NumberOfImprove==0){
+                routelist = bestroutelist;
+            }
+
             // ルート間の挿入
             // routelist.OuterRouteChange_random(n); //ランダムにルート間
             // routelist.OuterRouteChange_specified(n,maxPenaltyIndex); //ペナルティの大きいルートのリクエストを交換
