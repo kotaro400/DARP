@@ -1,0 +1,8 @@
+PWD /Users/takedakiyoshi/lab/DARP
+INPUT /usr/local/texlive/2019/texmf.cnf
+INPUT /usr/local/texlive/2019/texmf-dist/web2c/texmf.cnf
+INPUT /usr/local/texlive/2019/texmf.cnf
+INPUT /usr/local/texlive/2019/texmf-dist/web2c/texmf.cnf
+INPUT /usr/local/texlive/2019/texmf-var/web2c/euptex/uplatex.fmt
+INPUT previous_research.tex
+OUTPUT previous_research.log

@@ -92,6 +92,8 @@ INPUT abstract.aux
 INPUT abstract.aux
 INPUT chapter1.aux
 INPUT chapter1.aux
+INPUT previous_research.aux
+INPUT previous_research.aux
 INPUT chapter2.aux
 INPUT chapter2.aux
 INPUT chapter3.aux
@@ -155,6 +157,9 @@ OUTPUT template.toc
 OUTPUT chapter1.aux
 INPUT chapter1.tex
 INPUT chapter1.tex
+OUTPUT previous_research.aux
+INPUT previous_research.tex
+INPUT previous_research.tex
 OUTPUT chapter2.aux
 INPUT chapter2.tex
 INPUT chapter2.tex
@@ -210,6 +215,8 @@ INPUT abstract.aux
 INPUT abstract.aux
 INPUT chapter1.aux
 INPUT chapter1.aux
+INPUT previous_research.aux
+INPUT previous_research.aux
 INPUT chapter2.aux
 INPUT chapter2.aux
 INPUT chapter3.aux
