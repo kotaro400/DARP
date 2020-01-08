@@ -373,7 +373,6 @@ int main(int argc, char *argv[]){
             }
             cout << "maxIndex: " << maxPenaltyIndex << " minIndex: " << minPenaltyIndex << endl;
             if (search_count>=COUNT_MAX) break;
-            routelist.OuterRouteChange_random(n);
             // ルート間の挿入
             // routelist.OuterRouteChange_random(n); //ランダムにルート間
             routelist.OuterRouteChange_specified(n,maxPenaltyIndex); //ペナルティの大きいルートのリクエストを交換
