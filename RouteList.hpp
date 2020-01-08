@@ -18,11 +18,11 @@ public:
     vector<int>* getRoutePointerByIndex(int index);
     int getRouteListSize();
     int getRoute(int RouteNumber,int RouteOrder);
-    void InnerRouteChange_requestSet();
-    void InnerRouteChange_node(int customerSize);
+    void InnerRouteChange_requestSet(); //リクエストをセットでルート内 ランダム
+    void InnerRouteChange_node(int customerSize); //ノードごとにルート内 ランダム
     void OuterRouteChange_random(int customerSize); // 他のルートに挿入 インデックスはランダム
     void InnerRouteChange_specified(int customerSize,int worst); //ペナルティの大きいノードを単体で違う場所に挿入
-    void InnerOrderChange_requestset(int RouteIndex);
-    void InnerOrderChange_node(int RouteIndex);
+    void InnerOrderChange_requestset(int RouteIndex); //ルートのインデックスを指定してリクエストをセットでルート内
+    void InnerOrderChange_node(int customersize,int RouteIndex); //ルートのインデックスを指定してノードごとにルート内 
     void OuterRouteChange_specified(int customerSize,int worstRouteIndex);
 };
