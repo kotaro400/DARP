@@ -41,14 +41,15 @@ $\gamma$を定数とすると、ペナルティを加えた評価関数を$f(\si
  \label{algo1}
  \begin{algorithmic}[1]%1を0にすると行番号なし．
   \STATE $x := x_{init}$とする。
-  \FOR{$j = 1$ to $m$}
-  \FOR{$k = 1$ to $a_j^2$}
-  \STATE ルート内の近傍操作を行う
-  \IF{改善した}
-  \STATE  $x_{best} := x$
-  \ENDIF
-  \ENDFOR
-  \ENDFOR
+  % \FOR{$j = 1$ to $m$}
+  % \FOR{$k = 1$ to $a_j^2$}
+  % \STATE ルート内の近傍操作を行う
+  % \IF{改善した}
+  % \STATE  $x_{best} := x$
+  % \ENDIF
+  % \ENDFOR
+  % \ENDFOR
+  \STATE 改善がなくなるまでルート内の近傍操作を行う
   \STATE ルート間の近傍操作を行う
   \STATE 変化があったルートに対してルート内の近傍操作を行う
   \IF{改善した}
