@@ -50,3 +50,4 @@ for file in files:
                     f.write("0,0,1,0,"+str(item[-1].strip("\n"))+",0,"+str(int(item[-1].strip("\n"))+1)+",1\n")
                 else:
                     f.write(str(int(item[-2])-1)+",1,"+str(item[-2])+",0,"+str(item[-1].strip("\n"))+",0,"+str(int(item[-1].strip("\n"))+1)+",1\n")
+    print(str(file)+":done")
