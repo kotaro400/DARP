@@ -333,9 +333,36 @@ tuple<int, int> RouteList::OuterRouteChange_specified_double(int customerSize,in
 
 
 
-tuple<int, int> RouteList::OuterRouteChange_worstNode(int customerSize,int worstNode){
-    cout << customerSize << " " << worstNode << endl;
-    return make_tuple(1,2);
+tuple<int, int> RouteList::OuterRouteChange_worstNode(int customerSize,int worstNode,int bestRouteIndex){
+    cout <<  "outer worstnode 指定" << endl;
+    mt19937_64 mt64(rand());
+    int first,second,beforeindex,afterindex,firstindex;
+    first = worstNode;
+    if (first <= customerSize){
+        second = first + customerSize;
+    }else{
+        second = first;
+        first = second -customerSize;
+    }
+    cout << first << " " << second << endl;
+    for (int i=0;i<this->Routelist.size();i++){
+        for(auto itr=this->Routelist[i].begin();itr!=this->Routelist[i].end();){
+            if (*itr == second || *itr == first){
+                itr = this->Routelist[i].erase(itr);
+                beforeindex = i;
+            }else{
+                ++itr;
+            }
+        }
+    }
+    afterindex = bestRouteIndex;
+    auto it = this->Routelist[afterindex].end()-1;
+    it = this->Routelist[afterindex].insert(it,first);
+    it++;
+    it = this->Routelist[afterindex].insert(it,second);
+    it++;
+    cout << beforeindex << "から" << afterindex << " worstnode指定"<<endl;
+    return make_tuple(beforeindex,afterindex);
 }
 
 void removeElement(vector<int> &vector, int index) {
