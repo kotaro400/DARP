@@ -410,6 +410,7 @@ int main(int argc, char *argv[]){
             cout << "改善回数" << NumberOfImprove << endl;
             if(NumberOfImprove==0){
                 routelist = bestroutelist;
+                worstPosition=0;
             }
             cout << "worstのノード: " << worstPosition << endl;
             // ルート間の挿入
@@ -425,7 +426,7 @@ int main(int argc, char *argv[]){
             for (int tmp=0;tmp<m;tmp++) recent_changed_flag[tmp] = false;
             recent_changed_flag[get<0>(TmpTuple)] = true;
             recent_changed_flag[get<1>(TmpTuple)] = true;
-            // routelist.OuterRouteChange_worstNode(n,worstPosition,minPenaltyIndex);
+            // routelist.swapRoute(n);
             
 
             for(i=0;i<routelist.getRouteListSize();i++){

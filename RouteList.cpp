@@ -365,6 +365,11 @@ tuple<int, int> RouteList::OuterRouteChange_worstNode(int customerSize,int worst
     return make_tuple(beforeindex,afterindex);
 }
 
+tuple<int, int> RouteList::swapRoute(int customerSize){
+    cout << customerSize << endl;
+    return make_tuple(1,2);
+}
+
 void removeElement(vector<int> &vector, int index) {
     vector.erase(vector.begin()+index);
 }
