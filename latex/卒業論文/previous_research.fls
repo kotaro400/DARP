@@ -8,3 +8,4 @@ INPUT previous_research.tex
 OUTPUT previous_research.log
 INPUT /usr/local/texlive/2019/texmf-dist/fonts/map/fontname/texfonts.map
 INPUT /usr/local/texlive/2019/texmf-dist/fonts/tfm/public/cm/cmbx10.tfm
+OUTPUT previous_research.dvi
