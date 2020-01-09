@@ -60,7 +60,7 @@ int main(int argc, char *argv[]){
 
     // ルートの総距離と時間枠ペナルティと乗客数のペナルティ比
     double ALPHA = 1.0; //ルートの距離
-    double BETA = 5.0; //時間枠ペナ
+    double BETA = 50.0; //時間枠ペナ
     double GAMMA = 1.0; //乗客数ペナ
 
     // 最適解
@@ -253,13 +253,15 @@ int main(int argc, char *argv[]){
         tuple<int, int> TmpTuple;
         double QP;
         int NumberOfImprove;
+        int TmpNumOfImprove;
         int search_count = 0;
-        int COUNT_MAX =5000;
+        int COUNT_MAX =10000;
         double PenaltyArray[m];
         while(search_count < COUNT_MAX){ //一定回数に達したら終了
             // ルートの数だけ、改善がなくなるまで局所探索
             NumberOfImprove=0;
             for (int RouteIndex=0;RouteIndex<m;RouteIndex++){ //車両ごと
+                TmpNumOfImprove=0;
                 if (!recent_changed_flag[RouteIndex]) continue;
                 cout << RouteIndex << "スタート" << endl;
                 cout << "RouteIndex:" <<RouteIndex << " " << pow((routelist.getRouteSize(RouteIndex)-2),2)*2 << endl;
@@ -315,6 +317,7 @@ int main(int argc, char *argv[]){
                         if (ALPHA*RouteDistance + BETA*model.get(GRB_DoubleAttr_ObjVal) + GAMMA*QP < TotalPenalty){
                             routelist = *TmpRouteList;
                             NumberOfImprove += 1;
+                            TmpNumOfImprove+=1;
                             if(QP==0) {
                                 bestroutelist = *TmpRouteList;
                                 TotalPenalty = ALPHA*RouteDistance + BETA*model.get(GRB_DoubleAttr_ObjVal);
@@ -355,6 +358,16 @@ int main(int argc, char *argv[]){
                     }
                     if (search_count == COUNT_MAX){
                         break;
+                    }
+                    if(TmpNumOfImprove==0){
+                        for(int TmpRouteNum=0;TmpRouteNum<m;TmpRouteNum++){
+                            double tmpPenalty = 0;
+                            for(int order=1; order<routelist.getRouteSize(TmpRouteNum)-1;order++){
+                                tmpPenalty += DepartureTimePenalty[routelist.getRoute(TmpRouteNum,order)].get(GRB_DoubleAttr_X);
+                                // if (routelist.getRoute(TmpRouteNum,order)<=n) tmpPenalty+= RideTimePenalty[routelist.getRoute(TmpRouteNum,order)].get(GRB_DoubleAttr_X);
+                            }
+                            PenaltyArray[TmpRouteNum] = tmpPenalty;
+                        }
                     }
                 }
                 cout << RouteIndex << "番目のペナルティ:" << PenaltyArray[RouteIndex] << endl;
@@ -407,11 +420,12 @@ int main(int argc, char *argv[]){
                 TmpTuple = routelist.OuterRouteChange_random(n); //ランダムにルート間
             }else{
                 TmpTuple = routelist.OuterRouteChange_specified_double(n,maxPenaltyIndex,minPenaltyIndex);
+                // TmpTuple = routelist.OuterRouteChange_worstNode(n,worstPosition,minPenaltyIndex);
             }
             for (int tmp=0;tmp<m;tmp++) recent_changed_flag[tmp] = false;
             recent_changed_flag[get<0>(TmpTuple)] = true;
             recent_changed_flag[get<1>(TmpTuple)] = true;
-            routelist.OuterRouteChange_worstNode(n,worstPosition);
+            // routelist.OuterRouteChange_worstNode(n,worstPosition,minPenaltyIndex);
             
 
             for(i=0;i<routelist.getRouteListSize();i++){
