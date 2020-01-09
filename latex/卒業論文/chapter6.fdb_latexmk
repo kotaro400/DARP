@@ -1,0 +1,17 @@
+# Fdb version 3
+["dvipdf"] 1578548765 "chapter6.dvi" "chapter6.pdf" "chapter6" 1578548765
+  "chapter6.dvi" 1578548765 924 00c6e949282d21ff3f2d47e619b41556 "latex"
+  (generated)
+  "chapter6.pdf"
+["latex"] 1578548764 "chapter6.tex" "chapter6.dvi" "chapter6" 1578548765
+  "/usr/local/texlive/2019/texmf-dist/fonts/map/fontname/texfonts.map" 1511824771 3332 103109f5612ad95229751940c61aada0 ""
+  "/usr/local/texlive/2019/texmf-dist/fonts/tfm/public/cm/cmbx10.tfm" 1136768653 1328 c834bbb027764024c09d3d2bf908b5f0 ""
+  "/usr/local/texlive/2019/texmf-dist/fonts/tfm/public/cm/cmtt10.tfm" 1136768653 768 1321e9409b4137d6fb428ac9dc956269 ""
+  "/usr/local/texlive/2019/texmf-dist/web2c/texmf.cnf" 1570742662 39452 758acee3f2beaeeedff570c5f5d76d98 ""
+  "/usr/local/texlive/2019/texmf-var/web2c/euptex/uplatex.fmt" 1573005491 4553067 6bfd2d44f501852523d42dc3f56fd483 ""
+  "/usr/local/texlive/2019/texmf.cnf" 1557341546 577 d150fef99ac436ad1156e86b0892f6ef ""
+  "chapter6.aux" 1578548747 1505 1b3649a66c692ac43894c3dc7b3f861c ""
+  "chapter6.tex" 1578548763 1966 02dc2dfa3adfe77fc36274c652b938a9 ""
+  (generated)
+  "chapter6.dvi"
+  "chapter6.log"

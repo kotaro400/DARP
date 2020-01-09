@@ -1,0 +1,12 @@
+PWD /Users/takedakiyoshi/lab/DARP/latex/卒業論文
+INPUT /usr/local/texlive/2019/texmf.cnf
+INPUT /usr/local/texlive/2019/texmf-dist/web2c/texmf.cnf
+INPUT /usr/local/texlive/2019/texmf.cnf
+INPUT /usr/local/texlive/2019/texmf-dist/web2c/texmf.cnf
+INPUT /usr/local/texlive/2019/texmf-var/web2c/euptex/uplatex.fmt
+INPUT chapter6.tex
+OUTPUT chapter6.log
+INPUT /usr/local/texlive/2019/texmf-dist/fonts/map/fontname/texfonts.map
+INPUT /usr/local/texlive/2019/texmf-dist/fonts/tfm/public/cm/cmbx10.tfm
+INPUT /usr/local/texlive/2019/texmf-dist/fonts/tfm/public/cm/cmtt10.tfm
+OUTPUT chapter6.dvi
