@@ -420,7 +420,7 @@ tuple<int, int> RouteList::swapRoute(int customerSize){
     it = this->Routelist[beforeindex].insert(it,after_first);
     it++;
     it = this->Routelist[beforeindex].insert(it,after_second);
-    return make_tuple(1,2);
+    return make_tuple(beforeindex,afterindex);
 }
 
 void removeElement(vector<int> &vector, int index) {
