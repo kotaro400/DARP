@@ -366,7 +366,60 @@ tuple<int, int> RouteList::OuterRouteChange_worstNode(int customerSize,int worst
 }
 
 tuple<int, int> RouteList::swapRoute(int customerSize){
-    cout << customerSize << endl;
+    cout << "swapRoute" << endl;
+    mt19937_64 mt64(rand());
+    int beforeindex,afterindex,before_first,before_second,after_first,after_second;
+    beforeindex = abs((int)mt64())%this->Routelist.size();
+    int before_first_index = abs((int)mt64())%(this->Routelist[beforeindex].size()-2)+1;
+    before_first = this->Routelist[beforeindex][before_first_index];
+    if (before_first <= customerSize){
+        before_second = before_first + customerSize;
+    }else{
+        before_second = before_first;
+        before_first = before_second -customerSize;
+    }
+    for(auto itr=this->Routelist[beforeindex].begin();itr!=this->Routelist[beforeindex].end();){
+        if (*itr == before_second || *itr == before_first){
+            itr = this->Routelist[beforeindex].erase(itr);
+        }else{
+            ++itr;
+        }
+    }
+    cout << beforeindex << "から" << before_first << "と" << before_second << "を削除" << endl;
+    afterindex = abs((int)mt64())%this->Routelist.size();
+    while(beforeindex == afterindex){
+        afterindex = abs((int)mt64())%this->Routelist.size();
+    }
+    int after_first_index = abs((int)mt64())%(this->Routelist[afterindex].size()-2)+1;
+    after_first = this->Routelist[afterindex][after_first_index];
+    if (after_first <= customerSize){
+        after_second = after_first + customerSize;
+    }else{
+        after_second = after_first;
+        after_first = after_second -customerSize;
+    }
+    for(auto itr=this->Routelist[afterindex].begin();itr!=this->Routelist[afterindex].end();){
+        if (*itr == after_second || *itr == after_first){
+            itr = this->Routelist[afterindex].erase(itr);
+        }else{
+            ++itr;
+        }
+    }
+    cout << afterindex << "から" << after_first << "と" << after_second << "を削除" << endl;
+    //  2つのリクエストペアを削除
+
+    // 挿入
+    // beforeindexの2つをafterindexに挿入
+    auto it = this->Routelist[afterindex].end()-1;
+    it = this->Routelist[afterindex].insert(it,before_first);
+    it++;
+    it = this->Routelist[afterindex].insert(it,before_second);
+    
+    // afterindexの2つをbeforeindexに挿入
+    it = this->Routelist[beforeindex].end()-1;
+    it = this->Routelist[beforeindex].insert(it,after_first);
+    it++;
+    it = this->Routelist[beforeindex].insert(it,after_second);
     return make_tuple(1,2);
 }
 
