@@ -360,16 +360,15 @@ int main(int argc, char *argv[]){
                         break;
                     }
                     if(TmpNumOfImprove==0){
-                        for(int TmpRouteNum=0;TmpRouteNum<m;TmpRouteNum++){
-                            double tmpPenalty = 0;
-                            for(int order=1; order<routelist.getRouteSize(TmpRouteNum)-1;order++){
-                                tmpPenalty += DepartureTimePenalty[routelist.getRoute(TmpRouteNum,order)].get(GRB_DoubleAttr_X);
-                                // if (routelist.getRoute(TmpRouteNum,order)<=n) tmpPenalty+= RideTimePenalty[routelist.getRoute(TmpRouteNum,order)].get(GRB_DoubleAttr_X);
-                            }
-                            PenaltyArray[TmpRouteNum] = tmpPenalty;
+                        double tmpPenalty = 0;
+                        for(int order=1; order<routelist.getRouteSize(RouteIndex)-1;order++){
+                            tmpPenalty += DepartureTimePenalty[routelist.getRoute(RouteIndex,order)].get(GRB_DoubleAttr_X);
+                            // if (routelist.getRoute(TmpRouteNum,order)<=n) tmpPenalty+= RideTimePenalty[routelist.getRoute(TmpRouteNum,order)].get(GRB_DoubleAttr_X);
                         }
+                        PenaltyArray[RouteIndex] = tmpPenalty;
                     }
                 }
+                cout << "イテレーション回数:" << search_count << endl;
                 cout << RouteIndex << "番目のペナルティ:" << PenaltyArray[RouteIndex] << endl;
                 for(int jkl=0;jkl<m;jkl++){
                     cout << PenaltyArray[jkl] << " ";
@@ -417,16 +416,16 @@ int main(int argc, char *argv[]){
             // TmpTuple = routelist.OuterRouteChange_random(n); //ランダムにルート間
             // routelist.OuterRouteChange_specified(n,maxPenaltyIndex); //ペナルティの大きいルートのリクエストを交換
             // TmpTuple = routelist.OuterRouteChange_specified_double(n,maxPenaltyIndex,minPenaltyIndex);
-            if (worstPosition==0){
-                TmpTuple = routelist.OuterRouteChange_random(n); //ランダムにルート間
-            }else{
-                TmpTuple = routelist.OuterRouteChange_specified_double(n,maxPenaltyIndex,minPenaltyIndex);
-                // TmpTuple = routelist.OuterRouteChange_worstNode(n,worstPosition,minPenaltyIndex);
-            }
+            // if (worstPosition==0){
+            //     TmpTuple = routelist.OuterRouteChange_random(n); //ランダムにルート間
+            // }else{
+            //     TmpTuple = routelist.OuterRouteChange_specified_double(n,maxPenaltyIndex,minPenaltyIndex);
+            //     // TmpTuple = routelist.OuterRouteChange_worstNode(n,worstPosition,minPenaltyIndex);
+            // }
+            TmpTuple = routelist.swapRoute(n); //ルートを交換
             for (int tmp=0;tmp<m;tmp++) recent_changed_flag[tmp] = false;
             recent_changed_flag[get<0>(TmpTuple)] = true;
             recent_changed_flag[get<1>(TmpTuple)] = true;
-            // routelist.swapRoute(n);
             
 
             for(i=0;i<routelist.getRouteListSize();i++){
