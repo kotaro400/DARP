@@ -385,7 +385,7 @@ tuple<int, int,int,int,int,int> RouteList::swapRoute(int customerSize){
             ++itr;
         }
     }
-    cout << beforeindex << "から" << before_first << "と" << before_second << "を削除" << endl;
+    // cout << beforeindex << "から" << before_first << "と" << before_second << "を削除" << endl;
     afterindex = abs((int)mt64())%this->Routelist.size();
     while(beforeindex == afterindex){
         afterindex = abs((int)mt64())%this->Routelist.size();
@@ -405,7 +405,7 @@ tuple<int, int,int,int,int,int> RouteList::swapRoute(int customerSize){
             ++itr;
         }
     }
-    cout << afterindex << "から" << after_first << "と" << after_second << "を削除" << endl;
+    // cout << afterindex << "から" << after_first << "と" << after_second << "を削除" << endl;
     //  2つのリクエストペアを削除
 
     // 挿入

@@ -373,8 +373,8 @@ int main(int argc, char *argv[]){
         int beforeindex,afterindex;
         RouteList OuterRoutelist(m);
 
+        // /*
         // 挿入近傍
-        /*
         while(search_count < COUNT_MAX){ //一定回数に達したら終了
             TmpTotalPenalty = 100000000000000000.0;
             OuterRoutelist = routelist;
@@ -387,20 +387,10 @@ int main(int argc, char *argv[]){
             first = get<2>(TmpTuple_for_random);
             second = get<3>(TmpTuple_for_random);
             cout << beforeindex << "から" << afterindex << "に" << first << "と" << second << "をわたす" <<  endl;
-            for(i=0;i<OuterRoutelist.getRouteListSize();i++){
-                for(j=0;j<OuterRoutelist.getRouteSize(i);j++){
-                    cout << OuterRoutelist.getRoute(i,j) << " ";
-                }
-                cout << endl;
-            }
-            // beforeindexのルート内近傍(いるかはわからん)
-
             // afterindex
             int aftersize=OuterRoutelist.getRouteSize(afterindex);
-            cout << "aftersize " <<  aftersize << endl;
             for(int f=1;f<aftersize;f++){
                 for (int s=f+1;s<=aftersize;s++){
-                    
                     RouteList *TmpRouteList;
                     TmpRouteList = new RouteList(m); //メモリの確保
                     GRBTempConstr *tempconstr;
@@ -469,41 +459,31 @@ int main(int argc, char *argv[]){
                     delete tempconstr;
                     //TmpRouteListクラスのメモリ解放
                     delete TmpRouteList; 
-                    
-
-
                     if(search_count >= COUNT_MAX) break;
                 }
                 if(search_count >= COUNT_MAX) break;
             }
-            //ここまでランダムなルート間挿入
-           // 一番いい位置に挿入して、それが既存よりよかったら移動
+           // 一番いい位置に挿入して、それが既存より良かったら移動
             if (TmpTotalPenalty < BestTotalPenalty){
-                cout << "よい" << endl;
+                cout << "解を移動" << endl;
                 bestroutelist = routelist;
                 BestTotalPenalty = TmpTotalPenalty;
                 BestRouteDistance = TmpRouteDistance;
                 BestPenalty =  TmpBestPenalty;
             } else{
                 cout << "よくない" << endl;
-                // cout << "tmp:" << TmpTotalPenalty << endl;
-                // cout << "best:" << BestTotalPenalty << endl;
                 routelist = bestroutelist;
             }
-
-            // search_count+=2000;
-
         }
-        */
+        // */
 
 
 
-        // /*
+        /*
+        // 交換近傍
         while(search_count < COUNT_MAX){ //一定回数に達したら終了
             TmpTotalPenalty = 100000000000000000.0;
             OuterRoutelist = routelist;
-            
-            //    swap
             TmpTuple_for_swap = OuterRoutelist.swapRoute(n);
             beforeindex = get<0>(TmpTuple_for_swap);
             afterindex = get<1>(TmpTuple_for_swap);
@@ -512,15 +492,9 @@ int main(int argc, char *argv[]){
             before_second = get<3>(TmpTuple_for_swap);
             after_first = get<4>(TmpTuple_for_swap);
             after_second = get<5>(TmpTuple_for_swap);
-            // cout << beforeindex << "から" <<afterindex << "に" << before_first << "," << before_second << "と" << after_first << "," <<after_second << "を移動" << endl;
+            cout << beforeindex << "から" << before_first << "と" << before_second << ", " <<afterindex << "から"  << after_first << "と" <<after_second << "を移動" << endl;
             // beforeindexを先に改善
             int beforesize = OuterRoutelist.getRouteSize(beforeindex);
-            for(i=0;i<OuterRoutelist.getRouteListSize();i++){
-                for(j=0;j<OuterRoutelist.getRouteSize(i);j++){
-                    cout << OuterRoutelist.getRoute(i,j) << " ";
-                }
-                cout << endl;
-            }
             for (int f=1;f<beforesize;f++){
                 for (int s=f+1;s<=beforesize;s++){
                     RouteList *TmpRouteList;
@@ -573,8 +547,6 @@ int main(int argc, char *argv[]){
                             routelist = *TmpRouteList;
                             TmpTotalPenalty = ALPHA*RouteDistance + BETA*model.get(GRB_DoubleAttr_ObjVal);
                             // cout << "改善 " << TmpTotalPenalty << " fとs:"  << f << " " << s <<endl;
-                            // TmpRouteDistance = RouteDistance;
-                            // TmpBestPenalty = model.get(GRB_DoubleAttr_ObjVal);
                         }
                     }
 
@@ -647,7 +619,7 @@ int main(int argc, char *argv[]){
                         if (QP==0){
                             TmpGoodRoute = *TmpRouteList;
                             TmpTotalPenalty = ALPHA*RouteDistance + BETA*model.get(GRB_DoubleAttr_ObjVal);
-                            cout << "改善 " << TmpTotalPenalty << " fとs:"  << f << " " << s <<endl;
+                            cout << "改善 " << TmpTotalPenalty << " count:"  << search_count <<endl;
                             TmpRouteDistance = RouteDistance;
                             TmpBestPenalty = model.get(GRB_DoubleAttr_ObjVal);
                         }
@@ -670,7 +642,6 @@ int main(int argc, char *argv[]){
                 if(search_count >= COUNT_MAX) break;
             }
 
-
             for(i=0;i<TmpGoodRoute.getRouteListSize();i++){
                 for(j=0;j<TmpGoodRoute.getRouteSize(i);j++){
                     cout << TmpGoodRoute.getRoute(i,j) << " ";
@@ -678,9 +649,6 @@ int main(int argc, char *argv[]){
                 cout << endl;
             }
             
-
-
-
             // 一番いい位置に挿入して、それが既存よりよかったら移動
             if (TmpTotalPenalty < BestTotalPenalty){
                 cout << "よい" << endl;
@@ -691,37 +659,11 @@ int main(int argc, char *argv[]){
                 BestPenalty =  TmpBestPenalty;
             } else{
                 cout << "よくない" << endl;
-                // cout << "tmp:" << TmpTotalPenalty << endl;
-                // cout << "best:" << BestTotalPenalty << endl;
                 routelist = bestroutelist;
             }
 
         }
-        // */
-
-        
-        //     // ルート間の挿入
-        //     // TmpTuple = routelist.OuterRouteChange_random(n); //ランダムにルート間
-        //     // routelist.OuterRouteChange_specified(n,maxPenaltyIndex); //ペナルティの大きいルートのリクエストを交換
-        //     // TmpTuple = routelist.OuterRouteChange_specified_double(n,maxPenaltyIndex,minPenaltyIndex);
-        //     // if (worstPosition==0){
-        //     //     TmpTuple = routelist.OuterRouteChange_random(n); //ランダムにルート間
-        //     // }else{
-        //     //     TmpTuple = routelist.OuterRouteChange_specified_double(n,maxPenaltyIndex,minPenaltyIndex);
-        //     //     // TmpTuple = routelist.OuterRouteChange_worstNode(n,worstPosition,minPenaltyIndex);
-        //     // }
-        //     TmpTuple = routelist.swapRoute(n); //ルートを交換
-        //     for (int tmp=0;tmp<m;tmp++) recent_changed_flag[tmp] = false;
-        //     recent_changed_flag[get<0>(TmpTuple)] = true;
-        //     recent_changed_flag[get<1>(TmpTuple)] = true;
-            
-
-        //     for(i=0;i<routelist.getRouteListSize();i++){
-        //         for(j=0;j<routelist.getRouteSize(i);j++){
-        //             cout << routelist.getRoute(i,j) << " ";
-        //         }
-        //         cout << endl;
-        //     }
+        */
         
         cout << "総カウント数:" << search_count << endl;
 
