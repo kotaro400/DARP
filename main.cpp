@@ -254,7 +254,7 @@ int main(int argc, char *argv[]){
         int NumberOfImprove;
         int TmpNumOfImprove;
         int search_count = 0;
-        int COUNT_MAX =6000;
+        int COUNT_MAX =10000;
         double PenaltyArray[m];
 
         // 初期解のルート内近傍
