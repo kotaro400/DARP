@@ -365,7 +365,7 @@ tuple<int, int> RouteList::OuterRouteChange_worstNode(int customerSize,int worst
     return make_tuple(beforeindex,afterindex);
 }
 
-tuple<int, int> RouteList::swapRoute(int customerSize){
+tuple<int, int,int,int,int,int> RouteList::swapRoute(int customerSize){
     cout << "swapRoute" << endl;
     mt19937_64 mt64(rand());
     int beforeindex,afterindex,before_first,before_second,after_first,after_second;
@@ -410,17 +410,17 @@ tuple<int, int> RouteList::swapRoute(int customerSize){
 
     // 挿入
     // beforeindexの2つをafterindexに挿入
-    auto it = this->Routelist[afterindex].end()-1;
-    it = this->Routelist[afterindex].insert(it,before_first);
-    it++;
-    it = this->Routelist[afterindex].insert(it,before_second);
+    // auto it = this->Routelist[afterindex].end()-1;
+    // it = this->Routelist[afterindex].insert(it,before_first);
+    // it++;
+    // it = this->Routelist[afterindex].insert(it,before_second);
     
     // afterindexの2つをbeforeindexに挿入
-    it = this->Routelist[beforeindex].end()-1;
-    it = this->Routelist[beforeindex].insert(it,after_first);
-    it++;
-    it = this->Routelist[beforeindex].insert(it,after_second);
-    return make_tuple(beforeindex,afterindex);
+    // it = this->Routelist[beforeindex].end()-1;
+    // it = this->Routelist[beforeindex].insert(it,after_first);
+    // it++;
+    // it = this->Routelist[beforeindex].insert(it,after_second);
+    return make_tuple(beforeindex,afterindex,before_first,before_second,after_first,after_second);
 }
 
 void removeElement(vector<int> &vector, int index) {

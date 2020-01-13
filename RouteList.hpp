@@ -27,5 +27,5 @@ public:
     tuple<int, int> OuterRouteChange_specified(int customerSize,int worstRouteIndex); // 一番ペナルティの大きいルートからリクエストを選んで他に挿入
     tuple<int, int> OuterRouteChange_specified_double(int customerSize,int worstRouteIndex,int bestRouteIndex); //ペナルティが一番大きいものから小さいものに挿入
     tuple<int, int> OuterRouteChange_worstNode(int customerSize,int WorstNode,int bestRouteIndex); //ペナルティの大きいノードを他のルートに挿入
-    tuple<int, int> swapRoute(int customerSize);
+    tuple<int, int,int,int,int,int> swapRoute(int customerSize);
 };
