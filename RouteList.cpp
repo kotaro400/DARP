@@ -124,7 +124,7 @@ void RouteList::InnerRouteChange_node(int customerSize){
     this->Routelist[index].insert(it,first);
 }
 
-tuple<int, int> RouteList::OuterRouteChange_random(int customerSize){
+tuple<int, int,int,int> RouteList::OuterRouteChange_random(int customerSize){
     int first,second,beforeindex,afterindex,firstindex;
     mt19937_64 mt64(rand());
     beforeindex = abs((int)mt64())%this->Routelist.size();
@@ -148,12 +148,12 @@ tuple<int, int> RouteList::OuterRouteChange_random(int customerSize){
         afterindex = abs((int)mt64())%this->Routelist.size();
     }
 
-    auto it = this->Routelist[afterindex].end()-1;
-    it = this->Routelist[afterindex].insert(it,first);
-    it++;
-    it = this->Routelist[afterindex].insert(it,second);
-    it++;
-    return make_tuple(beforeindex,afterindex);
+    // auto it = this->Routelist[afterindex].end()-1;
+    // it = this->Routelist[afterindex].insert(it,first);
+    // it++;
+    // it = this->Routelist[afterindex].insert(it,second);
+    // it++;
+    return make_tuple(beforeindex,afterindex,first,second);
 }
 
 
