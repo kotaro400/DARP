@@ -353,7 +353,6 @@ int main(int argc, char *argv[]){
             // } 
             }
             cout << "イテレーション回数:" << search_count << endl;
-            cout << RouteIndex << "番目のペナルティ:" << PenaltyArray[RouteIndex] << endl;
             for(int jkl=0;jkl<m;jkl++){
                 cout << PenaltyArray[jkl] << " ";
             }
@@ -373,27 +372,24 @@ int main(int argc, char *argv[]){
         tuple<int,int,int,int,int,int> TmpTuple_for_swap;
         int beforeindex,afterindex;
         while(search_count < COUNT_MAX){ //一定回数に達したら終了
-            
-            // ランダムにルート間の挿入近傍
             TmpTotalPenalty = 100000000000000000.0;
             RouteList OuterRoutelist(m);
             OuterRoutelist = routelist;
-            TmpTuple_for_random = OuterRoutelist.OuterRouteChange_random(n); //ランダムにルート間
 
+            // ランダムにルート間の挿入近傍
+            TmpTuple_for_random = OuterRoutelist.OuterRouteChange_random(n);
             beforeindex = get<0>(TmpTuple_for_random);
             afterindex = get<1>(TmpTuple_for_random);
             int first,second;
             first = get<2>(TmpTuple_for_random);
             second = get<3>(TmpTuple_for_random);
             cout << beforeindex << "から" << afterindex << "に" << first << "と" << second << "をわたす" <<  endl;
-
             for(i=0;i<OuterRoutelist.getRouteListSize();i++){
                 for(j=0;j<OuterRoutelist.getRouteSize(i);j++){
                     cout << OuterRoutelist.getRoute(i,j) << " ";
                 }
                 cout << endl;
             }
-
             // beforeindexのルート内近傍(いるかはわからん)
 
             // afterindex
@@ -470,6 +466,8 @@ int main(int argc, char *argv[]){
                     delete tempconstr;
                     //TmpRouteListクラスのメモリ解放
                     delete TmpRouteList; 
+                    
+                    // ここまでランダムなルート間挿入
 
                     if(search_count >= COUNT_MAX) break;
                 }
@@ -487,16 +485,9 @@ int main(int argc, char *argv[]){
             }
 
             
-            if(search_count >= COUNT_MAX) break;
         }
 
-        //     // 改善がない場合は一つ前のルート間近傍をなしにする
-        //     cout << "改善回数" << NumberOfImprove << endl;
-        //     if(NumberOfImprove==0){
-        //         routelist = bestroutelist;
-        //         worstPosition=0;
-        //     }
-        //     cout << "worstのノード: " << worstPosition << endl;
+        
         //     // ルート間の挿入
         //     // TmpTuple = routelist.OuterRouteChange_random(n); //ランダムにルート間
         //     // routelist.OuterRouteChange_specified(n,maxPenaltyIndex); //ペナルティの大きいルートのリクエストを交換
