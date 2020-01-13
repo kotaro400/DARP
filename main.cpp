@@ -387,7 +387,7 @@ int main(int argc, char *argv[]){
             first = get<2>(TmpTuple_for_random);
             second = get<3>(TmpTuple_for_random);
             cout << beforeindex << "から" << afterindex << "に" << first << "と" << second << "をわたす" <<  endl;
-            // afterindex
+            // afterindexに2つの頂点を挿入
             int aftersize=OuterRoutelist.getRouteSize(afterindex);
             for(int f=1;f<aftersize;f++){
                 for (int s=f+1;s<=aftersize;s++){
