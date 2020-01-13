@@ -254,7 +254,7 @@ int main(int argc, char *argv[]){
         int NumberOfImprove;
         int TmpNumOfImprove;
         int search_count = 0;
-        int COUNT_MAX =2000;
+        int COUNT_MAX =5000;
         double PenaltyArray[m];
 
         // 初期解のルート内近傍
@@ -467,12 +467,14 @@ int main(int argc, char *argv[]){
                     //TmpRouteListクラスのメモリ解放
                     delete TmpRouteList; 
                     
-                    // ここまでランダムなルート間挿入
+
 
                     if(search_count >= COUNT_MAX) break;
                 }
                 if(search_count >= COUNT_MAX) break;
             }
+            // ここまでランダムなルート間挿入
+            // */
             // 一番いい位置に挿入して、それが既存よりよかったら移動
             if (TmpTotalPenalty < BestTotalPenalty){
                 cout << "よい" << endl;
@@ -484,7 +486,6 @@ int main(int argc, char *argv[]){
                 routelist = bestroutelist;
             }
 
-            
         }
 
         
