@@ -423,6 +423,12 @@ tuple<int, int,int,int,int,int> RouteList::swapRoute(int customerSize){
     return make_tuple(beforeindex,afterindex,before_first,before_second,after_first,after_second);
 }
 
+void RouteList::insertRoute(int routeindex,int place,int number){
+    auto it = this->Routelist[routeindex].begin();
+    it += place;
+    this->Routelist[routeindex].insert(it,number);
+}
+
 void removeElement(vector<int> &vector, int index) {
     vector.erase(vector.begin()+index);
 }
