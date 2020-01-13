@@ -254,7 +254,7 @@ int main(int argc, char *argv[]){
         int NumberOfImprove;
         int TmpNumOfImprove;
         int search_count = 0;
-        int COUNT_MAX =5000;
+        int COUNT_MAX =6000;
         double PenaltyArray[m];
 
         // 初期解のルート内近傍
@@ -371,9 +371,12 @@ int main(int argc, char *argv[]){
         tuple<int, int,int,int> TmpTuple_for_random;
         tuple<int,int,int,int,int,int> TmpTuple_for_swap;
         int beforeindex,afterindex;
+        RouteList OuterRoutelist(m);
+
+        // 挿入近傍
+        /*
         while(search_count < COUNT_MAX){ //一定回数に達したら終了
             TmpTotalPenalty = 100000000000000000.0;
-            RouteList OuterRoutelist(m);
             OuterRoutelist = routelist;
 
             // ランダムにルート間の挿入近傍
@@ -473,9 +476,8 @@ int main(int argc, char *argv[]){
                 }
                 if(search_count >= COUNT_MAX) break;
             }
-            // ここまでランダムなルート間挿入
-            // */
-            // 一番いい位置に挿入して、それが既存よりよかったら移動
+            //ここまでランダムなルート間挿入
+           // 一番いい位置に挿入して、それが既存よりよかったら移動
             if (TmpTotalPenalty < BestTotalPenalty){
                 cout << "よい" << endl;
                 bestroutelist = routelist;
@@ -483,10 +485,219 @@ int main(int argc, char *argv[]){
                 BestRouteDistance = TmpRouteDistance;
                 BestPenalty =  TmpBestPenalty;
             } else{
+                cout << "よくない" << endl;
+                // cout << "tmp:" << TmpTotalPenalty << endl;
+                // cout << "best:" << BestTotalPenalty << endl;
+                routelist = bestroutelist;
+            }
+
+            // search_count+=2000;
+
+        }
+        */
+
+
+
+        // /*
+        while(search_count < COUNT_MAX){ //一定回数に達したら終了
+            TmpTotalPenalty = 100000000000000000.0;
+            OuterRoutelist = routelist;
+            
+            //    swap
+            TmpTuple_for_swap = OuterRoutelist.swapRoute(n);
+            beforeindex = get<0>(TmpTuple_for_swap);
+            afterindex = get<1>(TmpTuple_for_swap);
+            int before_first,before_second,after_first,after_second;
+            before_first = get<2>(TmpTuple_for_swap);
+            before_second = get<3>(TmpTuple_for_swap);
+            after_first = get<4>(TmpTuple_for_swap);
+            after_second = get<5>(TmpTuple_for_swap);
+            // cout << beforeindex << "から" <<afterindex << "に" << before_first << "," << before_second << "と" << after_first << "," <<after_second << "を移動" << endl;
+            // beforeindexを先に改善
+            int beforesize = OuterRoutelist.getRouteSize(beforeindex);
+            for(i=0;i<OuterRoutelist.getRouteListSize();i++){
+                for(j=0;j<OuterRoutelist.getRouteSize(i);j++){
+                    cout << OuterRoutelist.getRoute(i,j) << " ";
+                }
+                cout << endl;
+            }
+            for (int f=1;f<beforesize;f++){
+                for (int s=f+1;s<=beforesize;s++){
+                    RouteList *TmpRouteList;
+                    TmpRouteList = new RouteList(m); //メモリの確保
+                    GRBTempConstr *tempconstr;
+                    tempconstr = new GRBTempConstr;
+                    *TmpRouteList = OuterRoutelist;
+                    TmpRouteList->insertRoute(beforeindex,f,after_first);
+                    TmpRouteList->insertRoute(beforeindex,s,after_second);
+                    // ルートの制約を追加
+                    // ここでdistanceは計算しちゃう
+                    QP=0;
+                    RouteDistance=0;
+                    for(i=0;i<TmpRouteList->getRouteListSize();i++){
+                        int current_person=0;
+                        for(j=1;j<TmpRouteList->getRouteSize(i)-2;j++){
+                            if (TmpRouteList->getRoute(i,j)<=n){
+                                current_person+=1;
+                            }else{
+                                current_person -= 1;
+                            }
+                            if (current_person > 6){
+                                QP += current_person-6;
+                            }
+                            RouteDistance += cost.getCost(TmpRouteList->getRoute(i,j),TmpRouteList->getRoute(i,j+1));
+                            // 論文8の式
+                            *tempconstr = DepartureTime[TmpRouteList->getRoute(i,j)] + 10.0 + cost.getCost(TmpRouteList->getRoute(i,j),TmpRouteList->getRoute(i,j+1)) <= DepartureTime[TmpRouteList->getRoute(i,j+1)];
+                            constrname = "constr"+to_string(i)+ "_" + to_string(j);
+                            RouteOrderConstr.push_back(model.addConstr(*tempconstr,constrname));
+                        }
+                    }
+                    // デポの時刻DepotTimeとの制約も追加
+                    for(i=0;i<TmpRouteList->getRouteListSize();i++){
+                        RouteDistance += cost.getCost(0,TmpRouteList->getRoute(i,1));
+                        RouteDistance += cost.getCost(TmpRouteList->getRouteSize(i)-2,0);
+                        // デポと1番目の制約
+                        *tempconstr = DepotTime[i] + cost.getCost(0,TmpRouteList->getRoute(i,1)) <= DepartureTime[TmpRouteList->getRoute(i,1)];
+                        constrname = to_string(i) + "constr_depot_1";
+                        RouteOrderConstr.push_back(model.addConstr(*tempconstr,constrname));
+                        // 最後とデポの制約
+                        *tempconstr = DepartureTime[TmpRouteList->getRoute(i,TmpRouteList->getRouteSize(i)-2)] + 10.0 + cost.getCost(TmpRouteList->getRoute(i,TmpRouteList->getRouteSize(i)-2),0) == DepotTime[i+m];
+                        constrname = to_string(i) + "constr_last_depot";
+                        RouteOrderConstr.push_back(model.addConstr(*tempconstr,constrname));
+                    }  
+                    // LP実行(optimize)
+                    model.optimize();
+                    search_count++;
+                    if (ALPHA*RouteDistance + BETA*model.get(GRB_DoubleAttr_ObjVal) + GAMMA*QP < TmpTotalPenalty){
+                        if (QP==0){
+                            routelist = *TmpRouteList;
+                            TmpTotalPenalty = ALPHA*RouteDistance + BETA*model.get(GRB_DoubleAttr_ObjVal);
+                            // cout << "改善 " << TmpTotalPenalty << " fとs:"  << f << " " << s <<endl;
+                            // TmpRouteDistance = RouteDistance;
+                            // TmpBestPenalty = model.get(GRB_DoubleAttr_ObjVal);
+                        }
+                    }
+
+                    // 悪い解ならなにもしない
+                    // ルートの制約をremove
+                    for(i=0;i<RouteOrderConstr.size();i++){
+                        model.remove(RouteOrderConstr[i]);
+                    }
+                    //RouteOrderConstrとtemoconstrのメモリ解放
+                    vector<GRBConstr>().swap(RouteOrderConstr);
+                    delete tempconstr;
+                    //TmpRouteListクラスのメモリ解放
+                    delete TmpRouteList; 
+
+                    if(search_count >= COUNT_MAX) break;
+                }
+                if(search_count >= COUNT_MAX) break;
+            }
+            TmpTotalPenalty = 1000000000000.0;
+            RouteList TmpGoodRoute(m);
+            // afterindexを改善
+            int aftersize = OuterRoutelist.getRouteSize(afterindex);
+            for (int f=1;f<aftersize;f++){
+                for (int s=f+1;s<=aftersize;s++){
+                    RouteList *TmpRouteList;
+                    TmpRouteList = new RouteList(m); //メモリの確保
+                    GRBTempConstr *tempconstr;
+                    tempconstr = new GRBTempConstr;
+                    *TmpRouteList = routelist;
+                    TmpRouteList->insertRoute(afterindex,f,before_first);
+                    TmpRouteList->insertRoute(afterindex,s,before_second);
+                    // ルートの制約を追加
+                    // ここでdistanceは計算しちゃう
+                    QP=0;
+                    RouteDistance=0;
+                    for(i=0;i<TmpRouteList->getRouteListSize();i++){
+                        int current_person=0;
+                        for(j=1;j<TmpRouteList->getRouteSize(i)-2;j++){
+                            if (TmpRouteList->getRoute(i,j)<=n){
+                                current_person+=1;
+                            }else{
+                                current_person -= 1;
+                            }
+                            if (current_person > 6){
+                                QP += current_person-6;
+                            }
+                            RouteDistance += cost.getCost(TmpRouteList->getRoute(i,j),TmpRouteList->getRoute(i,j+1));
+                            // 論文8の式
+                            *tempconstr = DepartureTime[TmpRouteList->getRoute(i,j)] + 10.0 + cost.getCost(TmpRouteList->getRoute(i,j),TmpRouteList->getRoute(i,j+1)) <= DepartureTime[TmpRouteList->getRoute(i,j+1)];
+                            constrname = "constr"+to_string(i)+ "_" + to_string(j);
+                            RouteOrderConstr.push_back(model.addConstr(*tempconstr,constrname));
+                        }
+                    }
+                    // デポの時刻DepotTimeとの制約も追加
+                    for(i=0;i<TmpRouteList->getRouteListSize();i++){
+                        RouteDistance += cost.getCost(0,TmpRouteList->getRoute(i,1));
+                        RouteDistance += cost.getCost(TmpRouteList->getRouteSize(i)-2,0);
+                        // デポと1番目の制約
+                        *tempconstr = DepotTime[i] + cost.getCost(0,TmpRouteList->getRoute(i,1)) <= DepartureTime[TmpRouteList->getRoute(i,1)];
+                        constrname = to_string(i) + "constr_depot_1";
+                        RouteOrderConstr.push_back(model.addConstr(*tempconstr,constrname));
+                        // 最後とデポの制約
+                        *tempconstr = DepartureTime[TmpRouteList->getRoute(i,TmpRouteList->getRouteSize(i)-2)] + 10.0 + cost.getCost(TmpRouteList->getRoute(i,TmpRouteList->getRouteSize(i)-2),0) == DepotTime[i+m];
+                        constrname = to_string(i) + "constr_last_depot";
+                        RouteOrderConstr.push_back(model.addConstr(*tempconstr,constrname));
+                    }  
+                    model.optimize();
+                    search_count++;
+                    if (ALPHA*RouteDistance + BETA*model.get(GRB_DoubleAttr_ObjVal) + GAMMA*QP < TmpTotalPenalty){
+                        if (QP==0){
+                            TmpGoodRoute = *TmpRouteList;
+                            TmpTotalPenalty = ALPHA*RouteDistance + BETA*model.get(GRB_DoubleAttr_ObjVal);
+                            cout << "改善 " << TmpTotalPenalty << " fとs:"  << f << " " << s <<endl;
+                            TmpRouteDistance = RouteDistance;
+                            TmpBestPenalty = model.get(GRB_DoubleAttr_ObjVal);
+                        }
+                    }
+
+
+                    // 悪い解ならなにもしない
+                    // ルートの制約をremove
+                    for(i=0;i<RouteOrderConstr.size();i++){
+                        model.remove(RouteOrderConstr[i]);
+                    }
+                    //RouteOrderConstrとtemoconstrのメモリ解放
+                    vector<GRBConstr>().swap(RouteOrderConstr);
+                    delete tempconstr;
+                    //TmpRouteListクラスのメモリ解放
+                    delete TmpRouteList; 
+
+                    if(search_count >= COUNT_MAX) break;
+                }
+                if(search_count >= COUNT_MAX) break;
+            }
+
+
+            for(i=0;i<TmpGoodRoute.getRouteListSize();i++){
+                for(j=0;j<TmpGoodRoute.getRouteSize(i);j++){
+                    cout << TmpGoodRoute.getRoute(i,j) << " ";
+                }
+                cout << endl;
+            }
+            
+
+
+
+            // 一番いい位置に挿入して、それが既存よりよかったら移動
+            if (TmpTotalPenalty < BestTotalPenalty){
+                cout << "よい" << endl;
+                bestroutelist = TmpGoodRoute;
+                routelist = TmpGoodRoute;
+                BestTotalPenalty = TmpTotalPenalty;
+                BestRouteDistance = TmpRouteDistance;
+                BestPenalty =  TmpBestPenalty;
+            } else{
+                cout << "よくない" << endl;
+                // cout << "tmp:" << TmpTotalPenalty << endl;
+                // cout << "best:" << BestTotalPenalty << endl;
                 routelist = bestroutelist;
             }
 
         }
+        // */
 
         
         //     // ルート間の挿入
