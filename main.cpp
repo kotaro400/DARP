@@ -470,6 +470,12 @@ int main(int argc, char *argv[]){
                 BestTotalPenalty = TmpTotalPenalty;
                 BestRouteDistance = TmpRouteDistance;
                 BestPenalty =  TmpBestPenalty;
+                for(i=0;i<bestroutelist.getRouteListSize();i++){
+                    for(j=0;j<bestroutelist.getRouteSize(i);j++){
+                        cout << bestroutelist.getRoute(i,j) << " ";
+                    }
+                    cout << endl;
+                }
             } else{
                 cout << "よくない" << endl;
                 routelist = bestroutelist;
@@ -657,6 +663,12 @@ int main(int argc, char *argv[]){
                 BestTotalPenalty = TmpTotalPenalty;
                 BestRouteDistance = TmpRouteDistance;
                 BestPenalty =  TmpBestPenalty;
+                for(i=0;i<bestroutelist.getRouteListSize();i++){
+                    for(j=0;j<bestroutelist.getRouteSize(i);j++){
+                        cout << bestroutelist.getRoute(i,j) << " ";
+                    }
+                    cout << endl;
+                }
             } else{
                 cout << "よくない" << endl;
                 routelist = bestroutelist;
