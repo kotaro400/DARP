@@ -1,16 +1,16 @@
 # Fdb version 3
-["dvipdf"] 1578971494 "previous_research.dvi" "previous_research.pdf" "previous_research" 1578971496
-  "previous_research.dvi" 1578971494 6544 d8610a91a67b286a09af8911758a8f31 "latex"
+["dvipdf"] 1578971972 "previous_research.dvi" "previous_research.pdf" "previous_research" 1578971973
+  "previous_research.dvi" 1578971972 6544 6693909f784842fe1d3727ece97bba2b "latex"
   (generated)
   "previous_research.pdf"
-["latex"] 1578971494 "previous_research.tex" "previous_research.dvi" "previous_research" 1578971496
+["latex"] 1578971972 "previous_research.tex" "previous_research.dvi" "previous_research" 1578971973
   "/usr/local/texlive/2019/texmf-dist/fonts/map/fontname/texfonts.map" 1511824771 3332 103109f5612ad95229751940c61aada0 ""
   "/usr/local/texlive/2019/texmf-dist/fonts/tfm/public/cm/cmbx10.tfm" 1136768653 1328 c834bbb027764024c09d3d2bf908b5f0 ""
   "/usr/local/texlive/2019/texmf-dist/web2c/texmf.cnf" 1570742662 39452 758acee3f2beaeeedff570c5f5d76d98 ""
   "/usr/local/texlive/2019/texmf-var/web2c/euptex/uplatex.fmt" 1573005491 4553067 6bfd2d44f501852523d42dc3f56fd483 ""
   "/usr/local/texlive/2019/texmf.cnf" 1557341546 577 d150fef99ac436ad1156e86b0892f6ef ""
-  "previous_research.aux" 1578971334 1018 fe5cfc8e81c6b2b23c5439798963f94e ""
-  "previous_research.tex" 1578971496 4862 51b6b2c791014af69ec6e4c9e19eea3a ""
+  "previous_research.aux" 1578971945 1018 fe5cfc8e81c6b2b23c5439798963f94e ""
+  "previous_research.tex" 1578971971 4872 cd8407ad9486e714effe092769bf98ad ""
   (generated)
-  "previous_research.log"
   "previous_research.dvi"
+  "previous_research.log"
