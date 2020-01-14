@@ -370,7 +370,6 @@ int main(int argc, char *argv[]){
 
         // /*
         // 挿入近傍
-        bool iszero=false;
         while(search_count < COUNT_MAX){ //一定回数に達したら終了
             TmpTotalPenalty = 100000000000000000.0;
             OuterRoutelist = routelist;
@@ -445,14 +444,6 @@ int main(int argc, char *argv[]){
                             TmpBestPenalty = model.get(GRB_DoubleAttr_ObjVal);
                         }
                     }
-                    if (model.get(GRB_DoubleAttr_ObjVal)==0.0){
-                        bestroutelist = *TmpRouteList;
-                        cout << "ペナルティ0--------------" << endl;
-                        BestTotalPenalty = TmpTotalPenalty;
-                        BestRouteDistance = TmpRouteDistance;
-                        BestPenalty =  TmpBestPenalty;
-                        iszero=true;
-                    }
                     // 悪い解ならなにもしない
                     // ルートの制約をremove
                     for(i=0;i<RouteOrderConstr.size();i++){
@@ -467,7 +458,6 @@ int main(int argc, char *argv[]){
                 }
                 if(search_count >= COUNT_MAX) break;
             }
-            if (iszero) break;
            // 一番いい位置に挿入して、それが既存より良かったら移動
             if (TmpTotalPenalty < BestTotalPenalty){
                 cout << "解を移動" << endl;
