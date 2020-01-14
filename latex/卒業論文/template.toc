@@ -11,6 +11,8 @@
 \contentsline {section}{\numberline {5.3}局所探索法}{8}% 
 \contentsline {subsection}{\numberline {5.3.1}ルート内の近傍操作}{9}% 
 \contentsline {subsection}{\numberline {5.3.2}ルート間の近傍操作}{9}% 
+\contentsline {subsubsection}{挿入近傍}{9}% 
+\contentsline {subsubsection}{交換近傍}{9}% 
 \contentsline {subsection}{\numberline {5.3.3}局所探索アルゴリズム}{9}% 
 \contentsline {chapter}{\numberline {第6章}計算実験}{10}% 
 \contentsline {section}{\numberline {6.1}実験環境}{10}% 
