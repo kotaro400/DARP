@@ -16,5 +16,7 @@
 \contentsline {subsection}{\numberline {5.3.3}局所探索アルゴリズム}{9}% 
 \contentsline {chapter}{\numberline {第6章}計算実験}{10}% 
 \contentsline {section}{\numberline {6.1}実験環境}{10}% 
-\contentsline {chapter}{\numberline {第7章}まとめ}{11}% 
-\contentsline {chapter}{参考文献}{13}% 
+\contentsline {section}{\numberline {6.2}問題例の作成方法}{10}% 
+\contentsline {section}{\numberline {6.3}インスタンスについて}{10}% 
+\contentsline {chapter}{\numberline {第7章}まとめ}{12}% 
+\contentsline {chapter}{参考文献}{14}% 
