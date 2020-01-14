@@ -251,15 +251,12 @@ int main(int argc, char *argv[]){
         bool recent_changed_flag[m];
         for (int tmp=0;tmp<m;tmp++) recent_changed_flag[tmp] = true;
         double QP;
-        int NumberOfImprove;
-        int TmpNumOfImprove;
         int search_count = 0;
-        int COUNT_MAX =10000;
+        int COUNT_MAX = 20000;
         double PenaltyArray[m];
 
         // 初期解のルート内近傍
         for (int RouteIndex=0;RouteIndex<m;RouteIndex++){ //車両ごと
-            TmpNumOfImprove=0;
             cout << "RouteIndex:" <<RouteIndex << " " << pow((routelist.getRouteSize(RouteIndex)-2),2)*2 << endl;
             for (int neighborhood=0;neighborhood<pow((routelist.getRouteSize(RouteIndex)-2),2)*2;neighborhood++){ //近傍サイズを探索
                 RouteList *TmpRouteList;
@@ -311,8 +308,6 @@ int main(int argc, char *argv[]){
                 // 良い解の場合 
                 if (ALPHA*RouteDistance + BETA*model.get(GRB_DoubleAttr_ObjVal) + GAMMA*QP < TotalPenalty){
                     routelist = *TmpRouteList;
-                    NumberOfImprove += 1;
-                    TmpNumOfImprove+=1;
                     if(QP==0) {
                         bestroutelist = *TmpRouteList;
                         TotalPenalty = ALPHA*RouteDistance + BETA*model.get(GRB_DoubleAttr_ObjVal);
