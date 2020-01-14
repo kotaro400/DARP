@@ -443,7 +443,7 @@ int main(int argc, char *argv[]){
                         if (QP==0){
                             routelist = *TmpRouteList;
                             TmpTotalPenalty = ALPHA*RouteDistance + BETA*model.get(GRB_DoubleAttr_ObjVal);
-                            cout << "改善 " << TmpTotalPenalty << " count:" << search_count  <<endl;
+                            cout << "改善 " << TmpTotalPenalty << " distance:" << RouteDistance << " count:" << search_count  <<endl;
                             // BestTotalPenalty = TmpTotalPenalty;
                             TmpRouteDistance = RouteDistance;
                             TmpBestPenalty = model.get(GRB_DoubleAttr_ObjVal);
