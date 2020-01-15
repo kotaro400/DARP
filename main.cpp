@@ -432,7 +432,6 @@ int main(int argc, char *argv[]){
                         RouteOrderConstr.push_back(model.addConstr(*tempconstr,constrname));
                     }  
                     // LP実行(optimize)
-                    cout << beforeindex << " "<< afterindex << " " << f  << " " << s << " " << RouteOrderConstr.size() <<endl;
                     model.optimize();
                     search_count++;
                     try {
