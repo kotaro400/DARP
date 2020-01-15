@@ -29,7 +29,7 @@ DARPでは多くの既存研究があるが、本研究では時間枠及び乗�
 ほぼ全てのインスタンスにおいて、挿入近傍による値のほうが交換近傍による値よりも良い性能であることが確認でき、平均で6.5\%良い性能であることが確認できた。
 
 \subsection{既存研究との比較}
-本研究での提案手法で、時間枠と乗車時間のペナルティの値を大きくすることで、既存研究との計算結果を比較することができる。\ref{sec:insert}で挿入近傍のほうが良い解を得られることが確認できたため、挿入近傍を用いて出力した解とCordeauらによって示された最良値を比較する。また、目的関数におけるペナルティを$\alpha=1,\beta=100$とする。
+本研究での提案手法で、時間枠と乗車時間のペナルティの値を大きくすることで、既存研究との計算結果を比較することができる。\ref{sec:insert}で挿入近傍のほうが良い解を得られることが確認できたため、挿入近傍を用いて出力した解とCordeauらによって示された最良値を比較する。また、目的関数におけるペナルティを$\alpha=1,\beta=50$とする。
 Cordeauらによって示された最良値は試行回数が$10^5$回の値であるため、同様に$10^5$回の試行を行い、結果を比較した。計算実験の値と最良解との相違を表\ref{cordeau}に示す。
 
 \begin{table}[]
@@ -63,15 +63,15 @@ r3b & 72         & 7          & \multicolumn{1}{r}{921.741} & 4.658             
 \begin{tabular}{ccclllll}
 \hline
         & \multicolumn{2}{c}{size}                    & \multicolumn{3}{c}{本研究}                                                        & \multicolumn{2}{c}{Besk Known Score}                       \\ \cline{2-8}
-問題例     & n                    & m                    & \multicolumn{1}{c}{値} & \multicolumn{1}{c}{ペナルティ} & \multicolumn{1}{c}{gap} & \multicolumn{1}{c}{1000} & \multicolumn{1}{c}{10000} \\ \cline{2-8}
-r1a     & 24                   & 3                    & \multicolumn{1}{r}{1}    & \multicolumn{1}{r}{2}     & \multicolumn{1}{r}{3}   & \multicolumn{1}{r}{190.79}    & \multicolumn{1}{r}{190.02}     \\
-r2a     & 48                   & 3                    & \multicolumn{1}{r}{1}    & \multicolumn{1}{r}{2}     & \multicolumn{1}{r}{3}   & \multicolumn{1}{r}{302.08}    & \multicolumn{1}{r}{320.08}     \\
+問題例     & n                    & m                    & \multicolumn{1}{c}{値} & \multicolumn{1}{c}{ペナルティ} & \multicolumn{1}{c}{GAP(\%)} & \multicolumn{1}{c}{1000} & \multicolumn{1}{c}{10000} \\ \cline{2-8}
+r1a     & 24                   & 3                    & \multicolumn{1}{r}{212.49}    & \multicolumn{1}{r}{0.0}     & \multicolumn{1}{r}{11.8}   & \multicolumn{1}{r}{190.79}    & \multicolumn{1}{r}{190.02}     \\
+r2a     & 48                   & 3                    & \multicolumn{1}{r}{400.05}    & \multicolumn{1}{r}{0.0}     & \multicolumn{1}{r}{32.4}   & \multicolumn{1}{r}{302.08}    & \multicolumn{1}{r}{302.08}     \\
 r3a     & 72                   & 7                   & \multicolumn{1}{r}{6}    & \multicolumn{1}{r}{7}     & \multicolumn{1}{r}{8}   & \multicolumn{1}{r}{532.08}    & \multicolumn{1}{r}{532.08}     \\
 r4a     & 120                   & 9                  & \multicolumn{1}{r}{1}    & \multicolumn{1}{r}{2}     & \multicolumn{1}{r}{3}   & \multicolumn{1}{r}{572.68}    & \multicolumn{1}{r}{572.78}     \\
 r5a     & 144                  & 11                   & \multicolumn{1}{r}{1}    & \multicolumn{1}{r}{2}     & \multicolumn{1}{r}{3}   & \multicolumn{1}{r}{636.97}    & \multicolumn{1}{r}{636.97}     \\
 r6a     & 24                   & 13                    & \multicolumn{1}{r}{1}    & \multicolumn{1}{r}{2}     & \multicolumn{1}{r}{3}   & \multicolumn{1}{r}{801.40}    & \multicolumn{1}{r}{801.40}     \\
-r1b    & 48                  & 3                    & \multicolumn{1}{r}{1}    & \multicolumn{1}{r}{2}     & \multicolumn{1}{r}{3}   & \multicolumn{1}{r}{164.72}    & \multicolumn{1}{r}{164.46}     \\
-r2b     & 72                  & 5                  & \multicolumn{1}{r}{1}    & \multicolumn{1}{r}{2}     & \multicolumn{1}{r}{3}   & \multicolumn{1}{r}{301.28}    & \multicolumn{1}{r}{296.06}     \\
+r1b    & 48                  & 3                    & \multicolumn{1}{r}{195.6}    & \multicolumn{1}{r}{0.0}     & \multicolumn{1}{r}{18.9}   & \multicolumn{1}{r}{164.72}    & \multicolumn{1}{r}{164.46}     \\
+r2b     & 72                  & 5                  & \multicolumn{1}{r}{388.43}    & \multicolumn{1}{r}{0.0}     & \multicolumn{1}{r}{31.0}   & \multicolumn{1}{r}{301.28}    & \multicolumn{1}{r}{296.06}     \\
 r3b     & 24                   &7                   & \multicolumn{1}{r}{1}    & \multicolumn{1}{r}{2}     & \multicolumn{1}{r}{3}   & \multicolumn{1}{r}{498.20}    & \multicolumn{1}{r}{493.30}     \\
 r4b     & 24                   & 9                   & \multicolumn{1}{r}{1}    & \multicolumn{1}{r}{2}     & \multicolumn{1}{r}{3}   & \multicolumn{1}{r}{548.89}    & \multicolumn{1}{r}{535.90}     \\
 r5b     & 120                 & 11                   & \multicolumn{1}{r}{1}    & \multicolumn{1}{r}{2}     & \multicolumn{1}{r}{3}   & \multicolumn{1}{r}{592.65}    & \multicolumn{1}{r}{589.74}     \\
