@@ -60,11 +60,11 @@ int main(int argc, char *argv[]){
 
     // ルートの総距離と時間枠ペナルティと乗客数のペナルティ比
     double ALPHA = 1.0; //ルートの距離
-    double BETA = 5.0; //時間枠ペナ
+    double BETA = 50.0; //時間枠ペナ
     double GAMMA = 1.0; //乗客数ペナ
 
     // イテレーション回数
-    int COUNT_MAX = 10000;
+    int COUNT_MAX = 100000;
 
     // 最適解
     double BestTotalPenalty;
@@ -432,19 +432,24 @@ int main(int argc, char *argv[]){
                         RouteOrderConstr.push_back(model.addConstr(*tempconstr,constrname));
                     }  
                     // LP実行(optimize)
+                    cout << beforeindex << " "<< afterindex << " " << f  << " " << s << " " << RouteOrderConstr.size() <<endl;
                     model.optimize();
                     search_count++;
-                    // ペナルティを計算して比較
-                    // 良い解の場合 
-                    if (ALPHA*RouteDistance + BETA*model.get(GRB_DoubleAttr_ObjVal) + GAMMA*QP < TmpTotalPenalty){
-                        if (QP==0){
-                            routelist = *TmpRouteList;
-                            TmpTotalPenalty = ALPHA*RouteDistance + BETA*model.get(GRB_DoubleAttr_ObjVal);
-                            cout << "改善 " << TmpTotalPenalty << " distance:" << RouteDistance << " count:" << search_count  <<endl;
-                            // BestTotalPenalty = TmpTotalPenalty;
-                            TmpRouteDistance = RouteDistance;
-                            TmpBestPenalty = model.get(GRB_DoubleAttr_ObjVal);
+                    try {
+                        // ペナルティを計算して比較
+                        // 良い解の場合 
+                        if (ALPHA*RouteDistance + BETA*model.get(GRB_DoubleAttr_ObjVal) + GAMMA*QP < TmpTotalPenalty){
+                            if (QP==0){
+                                routelist = *TmpRouteList;
+                                TmpTotalPenalty = ALPHA*RouteDistance + BETA*model.get(GRB_DoubleAttr_ObjVal);
+                                cout << "改善 " << TmpTotalPenalty << " distance:" << RouteDistance << " count:" << search_count  <<endl;
+                                // BestTotalPenalty = TmpTotalPenalty;
+                                TmpRouteDistance = RouteDistance;
+                                TmpBestPenalty = model.get(GRB_DoubleAttr_ObjVal);
+                            }
                         }
+                    }catch(GRBException e){
+                        cout << "ああああああああ" << endl;
                     }
                     // 悪い解ならなにもしない
                     // ルートの制約をremove
@@ -707,9 +712,9 @@ int main(int argc, char *argv[]){
         }
 
         
-    } catch (GRBException e) {
-        cout << "Error code = " << e.getErrorCode() << endl;
-        cout << e.getMessage() << endl;
+    // } catch (GRBException e) {
+    //     cout << "Error code = " << e.getErrorCode() << endl;
+    //     cout << e.getMessage() << endl;
     } catch (...) {
         cout << "Error during optimization" << endl;
     }
