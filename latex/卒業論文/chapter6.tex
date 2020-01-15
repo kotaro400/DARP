@@ -17,22 +17,62 @@ DARPでは多くの既存研究があるが、本研究では時間枠及び乗�
 \end{enumerate}
 以上の特徴を持つリクエスト数24から144のインスタンスを使用して計算実験を行った。
 \section{実験結果}
+ここでは、提案手法について行った計算実験の結果を示す。
+顧客数と車両数が同じであるインスタンスが複数あるものに対しては、添字$a,b$で区別する。
 \subsection{挿入近傍と交換近傍の比較}
+局所探索におけるルート間の近傍操作として挿入近傍と交換近傍の比較を行った。
+試行回数を10000回としたときの計算結果を表\ref{table1}に示す。
 
 
-\begin{table}[htbp]
- \centering
- \tabcolsep = 15pt
- \renewcommand{\arraystretch}{0.8}
- \caption{表の表示例}
- \label{table1}
- \begin{tabular}{lrr} \hline
-  問題例 & 最良値 & 計算時間（秒） \\ \hline
-  c05100 &    123 & 10.1 \\
-  c10100 &    456 & 15.2 \\
-  c20100 &    789 & 20.3 \\ \hline
- \end{tabular}
+
+% \begin{table}[]
+%   \centering
+%   \tabcolsep = 15pt
+%   \renewcommand{\arraystretch}{0.8}
+%   \caption{2段組みスタイルにおいて幅の広い表を表示する例}
+%   \label{table21}
+% \begin{tabular}{llcllll}
+%   \hline
+%     & \multicolumn{2}{c}{size}                       & \multicolumn{2}{c}{挿入近傍}                          & \multicolumn{2}{c}{交換近傍}                         \\ \cline{2-7}
+% 問題例 & 顧客数                      & \multicolumn{1}{c}{車両数} &  最良値                      & \multicolumn{1}{c}{計算時間(分)} & 最良値                     & \multicolumn{1}{c}{計算時間(分)} \\ \cline{2-7}
+% r1a & \multicolumn{1}{r}{24} & 3                     & \multicolumn{1}{r}{13} & 34                     & \multicolumn{1}{r}{12} & 45                     \\
+% r2a & \multicolumn{1}{r}{34} & 1                     & \multicolumn{1}{r}{2}  & 3                      & \multicolumn{1}{r}{4}  & 5                      \\ \hline
+% \end{tabular}
+% \end{table}
+
+\begin{table}[]
+  \tabcolsep = 19pt
+  \renewcommand{\arraystretch}{0.8}
+  \caption{挿入近傍と交換近傍の比較}
+  \label{table1}
+\begin{tabular}{ccccrcr}
+\hline
+    & \multicolumn{2}{c}{size} & \multicolumn{2}{c}{挿入近傍}                          & \multicolumn{2}{c}{交換近傍}                         \\ \cline{2-7}
+問題例 & 顧客数           &  車両数          & 最良値                      & \multicolumn{1}{c}{計算時間} & 最良値                      & \multicolumn{1}{c}{計算時間} \\ \cline{2-7}
+r1a & 24          & 3          & \multicolumn{1}{r}{216.005} & 2.14                     & \multicolumn{1}{r}{12} & 45                     \\
+r2a & 48          & 5          & \multicolumn{1}{r}{514.503}  & 2.93                      & \multicolumn{1}{r}{4}  & 5                      \\
+r3a & 72         & 7          & \multicolumn{1}{r}{960.476} & 4.917                     & \multicolumn{1}{r}{12} & 45                     \\
+r1b & 24          & 3          & \multicolumn{1}{r}{195.6} & 2.417                     & \multicolumn{1}{r}{12} & 45                     \\
+r2b & 48          & 5          & \multicolumn{1}{r}{437.568} & 3.340                     & \multicolumn{1}{r}{12} & 45                     \\
+r3b & 72         & 7          & \multicolumn{1}{r}{921.741} & 4.658                   & \multicolumn{1}{r}{12} & 45                     \\
+\hline
+\end{tabular}
 \end{table}
+
+
+% \begin{table}[htbp]
+%  \centering
+%  \tabcolsep = 40pt
+%  \renewcommand{\arraystretch}{0.8}
+%  \caption{表の表示例}
+%  \label{table12}
+%  \begin{tabular}{lrr} \hline
+%   問題例 & 挿入近傍 & 計算時間（秒)& 挿入近傍 & 計算時間（秒) \\ \hline
+%   instance\_24\_3 &    123 & 10.1 \\
+%   c10100 &    456 & 15.2 \\
+%   c20100 &    789 & 20.3 \\ \hline
+%  \end{tabular}
+% \end{table}
 
 
 \begin{table*}
