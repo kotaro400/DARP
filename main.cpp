@@ -64,7 +64,7 @@ int main(int argc, char *argv[]){
     double GAMMA = 1.0; //乗客数ペナ
 
     // イテレーション回数
-    int COUNT_MAX = 100000;
+    int COUNT_MAX = 10000;
 
     // 最適解
     double BestTotalPenalty;
