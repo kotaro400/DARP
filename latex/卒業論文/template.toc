@@ -21,5 +21,6 @@
 \contentsline {section}{\numberline {6.4}実験結果}{11}% 
 \contentsline {subsection}{\numberline {6.4.1}挿入近傍と交換近傍の比較}{11}% 
 \contentsline {subsection}{\numberline {6.4.2}既存研究との比較}{11}% 
+\contentsline {subsection}{\numberline {6.4.3}車両数を減らした計算結果}{11}% 
 \contentsline {chapter}{\numberline {第7章}まとめ}{13}% 
 \contentsline {chapter}{参考文献}{15}% 
