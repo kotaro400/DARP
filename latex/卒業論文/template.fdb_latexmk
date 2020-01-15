@@ -1,9 +1,9 @@
 # Fdb version 3
-["dvipdf"] 1578988174 "template.dvi" "template.pdf" "template" 1578988175
+["dvipdf"] 1578988174 "template.dvi" "template.pdf" "template" 1578996446
   "template.dvi" 1578988174 47760 388fa6f47b89f5f95491784614f10224 "latex"
   (generated)
   "template.pdf"
-["latex"] 1578988173 "template.tex" "template.dvi" "template" 1578988175
+["latex"] 1578988173 "template.tex" "template.dvi" "template" 1578996446
   "/usr/local/texlive/2019/texmf-dist/fonts/map/fontname/texfonts.map" 1511824771 3332 103109f5612ad95229751940c61aada0 ""
   "/usr/local/texlive/2019/texmf-dist/fonts/tfm/adobe/symbol/psyr.tfm" 1136768653 1408 5937f58aa508ea2cea4901c07d10f5fe ""
   "/usr/local/texlive/2019/texmf-dist/fonts/tfm/adobe/zapfding/pzdr.tfm" 1136768653 1528 f853c4d1b4e0550255e02831fdc8496f ""
@@ -96,7 +96,7 @@
   "chapter4.aux" 1578988174 1894 0ec3e8fadd7a4359a955bb27243755ba "latex"
   "chapter4.tex" 1578975486 5009 6c5e9e430c3352172f0d4d9e7af7a367 ""
   "chapter6.aux" 1578988174 1744 d9e35e247f25dcf5dc53d3e4ccb093b8 "latex"
-  "chapter6.tex" 1578988166 2584 2d27b07651d73dd7ce9211fd8aad8368 ""
+  "chapter6.tex" 1578996442 2584 2d27b07651d73dd7ce9211fd8aad8368 ""
   "chapter7.aux" 1578988174 906 a027afce097311afeca6ed511e22f9b0 "latex"
   "chapter7.tex" 1450776390 1618 fcf0e37257c56c46c27f1a5d99181499 ""
   "chapter8.aux" 1578988174 697 e7bf18a55876bde966714f7a32903cb6 "latex"
@@ -107,20 +107,20 @@
   "tekiyou.aux" 1578988174 695 3e601870a2e5c9c9c1ab59b7bc53b6ae "latex"
   "tekiyou.tex" 1578486936 1205 90705fad01d02d2aabb71cb98150eeea ""
   "template.aux" 1578988174 451 ce9f3d0e704caa172258ba557352a543 "latex"
-  "template.tex" 1578988173 4012 b0210e6e6e574ebfa9c20a49e9a12196 ""
+  "template.tex" 1578996446 4012 b0210e6e6e574ebfa9c20a49e9a12196 ""
   "template.toc" 1578988174 1498 e03c89599f293255ac44fa7d2c8abae1 "latex"
   (generated)
-  "chapter6.aux"
-  "template.toc"
-  "abstract.aux"
-  "chapter7.aux"
   "template.log"
-  "chapter8.aux"
-  "chapter2.aux"
-  "template.aux"
-  "tekiyou.aux"
-  "template.dvi"
-  "chapter1.aux"
-  "previous_research.aux"
   "chapter3.aux"
+  "chapter6.aux"
+  "template.aux"
+  "chapter8.aux"
+  "template.dvi"
   "chapter4.aux"
+  "template.toc"
+  "chapter2.aux"
+  "abstract.aux"
+  "tekiyou.aux"
+  "previous_research.aux"
+  "chapter1.aux"
+  "chapter7.aux"

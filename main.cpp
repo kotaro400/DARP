@@ -63,6 +63,9 @@ int main(int argc, char *argv[]){
     double BETA = 5.0; //時間枠ペナ
     double GAMMA = 1.0; //乗客数ペナ
 
+    // イテレーション回数
+    int COUNT_MAX = 100000;
+
     // 最適解
     double BestTotalPenalty;
     double BestRouteDistance;
@@ -252,7 +255,6 @@ int main(int argc, char *argv[]){
         for (int tmp=0;tmp<m;tmp++) recent_changed_flag[tmp] = true;
         double QP;
         int search_count = 0;
-        int COUNT_MAX = 20000;
         double PenaltyArray[m];
 
         // 初期解のルート内近傍
