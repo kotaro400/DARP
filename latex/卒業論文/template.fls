@@ -175,8 +175,6 @@ INPUT /usr/local/texlive/2019/texmf-dist/fonts/tfm/jknappen/ec/ecrm0800.tfm
 OUTPUT chapter6.aux
 INPUT chapter6.tex
 INPUT chapter6.tex
-INPUT sample_fig.eps
-INPUT sample_fig.eps
 OUTPUT chapter7.aux
 INPUT chapter7.tex
 INPUT chapter7.tex
