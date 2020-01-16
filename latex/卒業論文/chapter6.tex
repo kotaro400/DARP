@@ -29,9 +29,12 @@ DARPでは多くの既存研究があるが、本研究では時間枠及び乗�
 ほぼ全てのインスタンスにおいて、挿入近傍による値のほうが交換近傍による値よりも良い性能であることが確認でき、平均で6.5\%良い性能であることが確認できた。
 
 \subsection{既存研究との比較}
-本研究での提案手法で、時間枠と乗車時間のペナルティの値を大きくすることで、既存研究との計算結果を比較することができる。\ref{sec:insert}で挿入近傍のほうが良い解を得られることが確認できたため、挿入近傍を用いて出力した解とCordeauらによって示された最良値を比較する。また、目的関数におけるペナルティを$\alpha=1,\beta=50$とする。
+本研究での提案手法で、時間枠と乗車時間のペナルティの値を大きくすることで、既存研究との計算結果を比較することができる。\ref{sec:insert}で挿入近傍のほうが良い解を得られることが確認できたため、挿入近傍を用いて出力した解とCordeauらによって示された最良値を比較する。また、目的関数におけるペナルティを$\alpha=1,\beta=500$とする。
 Cordeauらによって示された最良値は試行回数が$10^5$回の値であるため、同様に$10^5$回の試行を行い、結果を比較した。計算実験の値と最良解との相違を表\ref{cordeau}に示す。
 
+複数のインスタンスでペナルティの値が0である解を得ることができ、Cordeauらが示した最良解との比較を行うことができた。
+規模の小さいインスタンス(r1a,r2a,r1b,r2b)に対しては、最良解との相違が30\%程度の解を得ることができた。一方、規模の大きいインスタンスに対しては、あまり良い結果が得られなかった。これは、局所最適解を得るための十分な試行回数を行うことができなかったことが理由と考えられる。また、ペナルティに対する係数を$\beta=500$と大きくしているので、ルートの総距離についてはあまり最小化されなかったと思われる。
+また、
 \subsection{車両数を減らした計算結果}
 サービスにおける
 
@@ -67,19 +70,19 @@ r3b & 72         & 7          & \multicolumn{1}{r}{921.741} & 4.658             
 \begin{tabular}{ccclllll}
 \hline
         & \multicolumn{2}{c}{size}                    & \multicolumn{3}{c}{本研究}                                                        & \multicolumn{2}{c}{Besk Known Score}                       \\ \cline{2-8}
-問題例     & n                    & m                    & \multicolumn{1}{c}{値} & \multicolumn{1}{c}{ペナルティ} & \multicolumn{1}{c}{GAP(\%)} & \multicolumn{1}{c}{1000} & \multicolumn{1}{c}{10000} \\ \cline{2-8}
-r1a     & 24                   & 3                    & \multicolumn{1}{r}{212.49}    & \multicolumn{1}{r}{0.0}     & \multicolumn{1}{r}{11.8}   & \multicolumn{1}{r}{190.79}    & \multicolumn{1}{r}{190.02}     \\
-r2a     & 48                   & 3                    & \multicolumn{1}{r}{386.03}    & \multicolumn{1}{r}{0.0}     & \multicolumn{1}{r}{27.7}   & \multicolumn{1}{r}{302.08}    & \multicolumn{1}{r}{302.08}     \\
-r3a     & 72                   & 7                   & \multicolumn{1}{r}{763.27}    & \multicolumn{1}{r}{3.5}     & \multicolumn{1}{r}{43.4}   & \multicolumn{1}{r}{532.08}    & \multicolumn{1}{r}{532.08}     \\
-r4a     & 120                   & 9                  & \multicolumn{1}{r}{1005.17}    & \multicolumn{1}{r}{0.0}     & \multicolumn{1}{r}{75.4}   & \multicolumn{1}{r}{572.68}    & \multicolumn{1}{r}{572.68}     \\
-r5a     & 144                  & 11                   & \multicolumn{1}{r}{1077.68}    & \multicolumn{1}{r}{0.0}     & \multicolumn{1}{r}{69.1}   & \multicolumn{1}{r}{636.97}    & \multicolumn{1}{r}{636.97}     \\
-r6a     & 24                   & 13                    & \multicolumn{1}{r}{1494.52}    & \multicolumn{1}{r}{39.64}     & \multicolumn{1}{r}{86.4}   & \multicolumn{1}{r}{801.40}    & \multicolumn{1}{r}{801.40}     \\
-r1b    & 48                  & 3                    & \multicolumn{1}{r}{195.6}    & \multicolumn{1}{r}{0.0}     & \multicolumn{1}{r}{18.9}   & \multicolumn{1}{r}{164.72}    & \multicolumn{1}{r}{164.46}     \\
-r2b     & 72                  & 5                  & \multicolumn{1}{r}{388.43}    & \multicolumn{1}{r}{0.0}     & \multicolumn{1}{r}{31.0}   & \multicolumn{1}{r}{301.28}    & \multicolumn{1}{r}{296.06}     \\
-r3b     & 24                   &7                   & \multicolumn{1}{r}{777.09}    & \multicolumn{1}{r}{0.0}     & \multicolumn{1}{r}{57.5}   & \multicolumn{1}{r}{498.20}    & \multicolumn{1}{r}{493.30}     \\
-r4b     & 24                   & 9                   & \multicolumn{1}{r}{969.14}    & \multicolumn{1}{r}{0.24}     & \multicolumn{1}{r}{80.0}   & \multicolumn{1}{r}{548.89}    & \multicolumn{1}{r}{535.90}     \\
-r5b     & 120                 & 11                   & \multicolumn{1}{r}{976.458}    & \multicolumn{1}{r}{0.0}     & \multicolumn{1}{r}{65.5}   & \multicolumn{1}{r}{592.65}    & \multicolumn{1}{r}{589.74}     \\
-r6b     & 144               & 13                   & \multicolumn{1}{r}{1317.47}    & \multicolumn{1}{r}{0.0}     & \multicolumn{1}{r}{77.1}   & \multicolumn{1}{r}{766.55}    & \multicolumn{1}{r}{743.60}     \\
+問題例     & 顧客数                    & 車両数                   & \multicolumn{1}{c}{値} & \multicolumn{1}{c}{ペナルティ} & \multicolumn{1}{c}{GAP(\%)} & \multicolumn{1}{c}{1000} & \multicolumn{1}{c}{10000} \\ \cline{2-8}
+r1a     & 24                   & 3                    & \multicolumn{1}{r}{212.49}    & \multicolumn{1}{r}{0.00}     & \multicolumn{1}{r}{11.8}   & \multicolumn{1}{r}{190.79}    & \multicolumn{1}{r}{190.02}     \\
+r2a     & 48                   & 3                    & \multicolumn{1}{r}{386.03}    & \multicolumn{1}{r}{0.00}     & \multicolumn{1}{r}{27.7}   & \multicolumn{1}{r}{302.08}    & \multicolumn{1}{r}{302.08}     \\
+r3a     & 72                   & 7                   & \multicolumn{1}{r}{776.31}    & \multicolumn{1}{r}{0.56}     & \multicolumn{1}{r}{45.8}   & \multicolumn{1}{r}{532.08}    & \multicolumn{1}{r}{532.08}     \\
+r4a     & 120                   & 9                  & \multicolumn{1}{r}{1005.17}    & \multicolumn{1}{r}{0.00}     & \multicolumn{1}{r}{75.4}   & \multicolumn{1}{r}{572.68}    & \multicolumn{1}{r}{572.68}     \\
+r5a     & 144                  & 11                   & \multicolumn{1}{r}{1077.68}    & \multicolumn{1}{r}{0.00}     & \multicolumn{1}{r}{69.1}   & \multicolumn{1}{r}{636.97}    & \multicolumn{1}{r}{636.97}     \\
+r6a     & 24                   & 13                    & \multicolumn{1}{r}{1506.35}    & \multicolumn{1}{r}{9.56}     & \multicolumn{1}{r}{87.9}   & \multicolumn{1}{r}{801.40}    & \multicolumn{1}{r}{801.40}     \\
+r1b    & 48                  & 3                    & \multicolumn{1}{r}{195.6}    & \multicolumn{1}{r}{0.00}     & \multicolumn{1}{r}{18.9}   & \multicolumn{1}{r}{164.72}    & \multicolumn{1}{r}{164.46}     \\
+r2b     & 72                  & 5                  & \multicolumn{1}{r}{388.43}    & \multicolumn{1}{r}{0.00}     & \multicolumn{1}{r}{31.0}   & \multicolumn{1}{r}{301.28}    & \multicolumn{1}{r}{296.06}     \\
+r3b     & 24                   &7                   & \multicolumn{1}{r}{777.09}    & \multicolumn{1}{r}{0.00}     & \multicolumn{1}{r}{57.5}   & \multicolumn{1}{r}{498.20}    & \multicolumn{1}{r}{493.30}     \\
+r4b     & 24                   & 9                   & \multicolumn{1}{r}{973.73}    & \multicolumn{1}{r}{0.00}     & \multicolumn{1}{r}{81.6}   & \multicolumn{1}{r}{548.89}    & \multicolumn{1}{r}{535.90}     \\
+r5b     & 120                 & 11                   & \multicolumn{1}{r}{976.458}    & \multicolumn{1}{r}{0.00}     & \multicolumn{1}{r}{65.5}   & \multicolumn{1}{r}{592.65}    & \multicolumn{1}{r}{589.74}     \\
+r6b     & 144               & 13                   & \multicolumn{1}{r}{1317.47}    & \multicolumn{1}{r}{0.00}     & \multicolumn{1}{r}{77.1}   & \multicolumn{1}{r}{766.55}    & \multicolumn{1}{r}{743.60}     \\
         & \multicolumn{1}{l}{} & \multicolumn{1}{l}{} &                          &                           &                         &                          &                           \\
 average & \multicolumn{1}{c}{} & \multicolumn{1}{l}{} &\multicolumn{1}{r}{796.862333}   &     \multicolumn{1}{r}{3.615}                        &  \multicolumn{1}{r}{51.8}                        &       \multicolumn{1}{r}{524.91 }                    &       \multicolumn{1}{r}{515.38}                     \\ \hline
 \end{tabular}
