@@ -448,7 +448,8 @@ int main(int argc, char *argv[]){
                             }
                         }
                     }catch(GRBException e){
-                        cout << "ああああああああ" << endl;
+                        cout << "no solution" << endl;
+                        search_count--;
                     }
                     // 悪い解ならなにもしない
                     // ルートの制約をremove
