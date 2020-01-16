@@ -37,14 +37,14 @@ Cordeauらによって示された最良値は試行回数が$10^5$回の値で�
 
 
 \begin{table}[]
-\tabcolsep = 19pt
-\renewcommand{\arraystretch}{0.8}
+\tabcolsep = 12pt
+% \renewcommand{\arraystretch}{0.8}
 \caption{挿入近傍と交換近傍の比較}
 \label{insert}
 \begin{tabular}{ccccrcr}
 \hline
     & \multicolumn{2}{c}{size} & \multicolumn{2}{c}{挿入近傍}                          & \multicolumn{2}{c}{交換近傍}                         \\ \cline{2-7}
-問題例 & 顧客数           &  車両数          & 最良値                      & \multicolumn{1}{c}{計算時間} & 最良値                      & \multicolumn{1}{c}{計算時間} \\ \cline{2-7}
+問題例 & 顧客数           &  車両数          & 最良値                      & \multicolumn{1}{c}{計算時間(分)} & 最良値                      & \multicolumn{1}{c}{計算時間(分)} \\ \cline{2-7}
 r1a & 24          & 3          & \multicolumn{1}{r}{216.005} & 2.14                     & \multicolumn{1}{r}{233.376} & 1.728                    \\
 r2a & 48          & 5          & \multicolumn{1}{r}{514.503}  & 2.93                      & \multicolumn{1}{r}{566.30}  & 2.81                     \\
 r3a & 72         & 7          & \multicolumn{1}{r}{960.476} & 4.917                     & \multicolumn{1}{r}{959.992} & 4.745                   \\
@@ -58,9 +58,9 @@ r3b & 72         & 7          & \multicolumn{1}{r}{921.741} & 4.658             
 \end{table}
 
 
-
+\begin{landscape}
 \begin{table}[]
-\tabcolsep = 18pt
+\tabcolsep = 19pt
 \renewcommand{\arraystretch}{0.8}
 \caption{Best Known Scoreとの比較}
 \label{cordeau}
@@ -84,6 +84,7 @@ r6b     & 144               & 13                   & \multicolumn{1}{r}{1}    & 
 average & \multicolumn{1}{l}{} & \multicolumn{1}{l}{} &                          &                           &                         &       \multicolumn{1}{r}{524.91 }                    &       \multicolumn{1}{r}{515.38}                     \\ \hline
 \end{tabular}
 \end{table}
+\end{landscape}
 
 % \begin{table}[htbp]
 %  \centering
