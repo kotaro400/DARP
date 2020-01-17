@@ -60,7 +60,7 @@ int main(int argc, char *argv[]){
 
     // ルートの総距離と時間枠ペナルティと乗客数のペナルティ比
     double ALPHA = 1.0; //ルートの距離
-    double BETA = 50.0; //時間枠ペナ
+    double BETA = 1.0; //時間枠ペナ
     double GAMMA = 1.0; //乗客数ペナ
 
     // イテレーション回数
