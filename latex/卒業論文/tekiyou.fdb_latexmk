@@ -1,14 +1,14 @@
 # Fdb version 3
-["dvipdf"] 1579427493 "tekiyou.dvi" "tekiyou.pdf" "tekiyou" 1579427494
-  "tekiyou.dvi" 1579427493 6268 cc7f68022645ada385df5f4d078a8e00 "latex"
+["dvipdf"] 1579430076 "tekiyou.dvi" "tekiyou.pdf" "tekiyou" 1579430076
+  "tekiyou.dvi" 1579430075 6112 5371330a762e83c511627148a05ee22c "latex"
   (generated)
   "tekiyou.pdf"
-["latex"] 1579427492 "tekiyou.tex" "tekiyou.dvi" "tekiyou" 1579427494
+["latex"] 1579430075 "tekiyou.tex" "tekiyou.dvi" "tekiyou" 1579430076
   "/usr/local/texlive/2019/texmf-dist/web2c/texmf.cnf" 1570742662 39452 758acee3f2beaeeedff570c5f5d76d98 ""
   "/usr/local/texlive/2019/texmf-var/web2c/euptex/uplatex.fmt" 1573005491 4553067 6bfd2d44f501852523d42dc3f56fd483 ""
   "/usr/local/texlive/2019/texmf.cnf" 1557341546 577 d150fef99ac436ad1156e86b0892f6ef ""
-  "tekiyou.aux" 1579427386 695 3e601870a2e5c9c9c1ab59b7bc53b6ae ""
-  "tekiyou.tex" 1579427494 4186 6c25841464eb6af5e0d575caf32a88de ""
+  "tekiyou.aux" 1579430015 695 3e601870a2e5c9c9c1ab59b7bc53b6ae ""
+  "tekiyou.tex" 1579430075 4224 5beb72ed5bc04c2037c14585262070f2 ""
   (generated)
   "tekiyou.dvi"
   "tekiyou.log"
