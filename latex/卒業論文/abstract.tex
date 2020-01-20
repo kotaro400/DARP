@@ -14,4 +14,16 @@ The Dial-a-Ride Problem (DARP) consists of designing vehicle routes and schedule
 
 A number of papers about DARP has been published. most of the previous research deal with time windows and maximum ride time as hard constraints.
 
-In this study, we consider with the DARP where time windows and maximum ride time are soft constraints. These soft constraints make the DARP more generic. We propose iterated local search algorithm to find a solution to the problem.
+In this study, we consider with the DARP where time windows and maximum ride time are piecewise linear convex functions. By Giving these constraints as soft constrains, users' dissatisfactions can be expressed flexibly. Therefore, Dial-a-ride problem with convex time window penalty is a more generic Dial-a-ride problem.
+
+We propose a local search algorithm with two operationson request vertices. One of the operations is intra-route operation that removes a request pair from a route and add the request pair in the same route. The other operations is inter-route operations and we made two types of algorithm to compare performance of inter-route operations.
+One of the operations about inter-route is called relocate-inter, that removes a request pair from a route and add the request pair to another route. The other operation is called swap-inter, that removes a request pair from a route and exchange it with the request pair from another route.
+We find that algorithm which used relocate-inter is better than algorithm which used swap-inter.
+
+By making time window penalty large, we can compare the performance with the previous study. We find that we can find a route with about 30\% difference from previous study for small instances. On the other hand, we cannot find a good route for large instances. This may be due to insufficient number of iterations.
+
+In this study, the objective function is a weighted sum of the length of the route and penalty and we perfom experiments with different coefficients.
+We confirm that changing the penalty's coefficient result in a solution corresponding to various situations.
+
+We reduced the number of vehicles by one and compare the result with the result with default number of vehicles. We confirm that we can find a feasible solution even if the number of vehicles is one less.
+This result leads to reduced service costs such as fuel and time.
