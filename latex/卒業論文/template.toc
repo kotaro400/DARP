@@ -18,7 +18,7 @@
 \contentsline {section}{\numberline {6.1}実験環境}{10}% 
 \contentsline {section}{\numberline {6.2}問題例の作成方法}{10}% 
 \contentsline {section}{\numberline {6.3}インスタンスについて}{10}% 
-\contentsline {section}{\numberline {6.4}実験結果}{11}% 
+\contentsline {section}{\numberline {6.4}実験結果}{10}% 
 \contentsline {subsection}{\numberline {6.4.1}挿入近傍と交換近傍の比較}{11}% 
 \contentsline {subsection}{\numberline {6.4.2}既存研究との比較}{11}% 
 \contentsline {subsection}{\numberline {6.4.3}目的関数の係数の違いによる計算結果}{11}% 
