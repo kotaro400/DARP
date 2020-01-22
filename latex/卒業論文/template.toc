@@ -2,7 +2,7 @@
 \contentsline {chapter}{\numberline {第2章}先行研究の紹介}{2}% 
 \contentsline {chapter}{\numberline {第3章}問題定義}{4}% 
 \contentsline {section}{\numberline {3.1}Pickup and delivery problem}{4}% 
-\contentsline {section}{\numberline {3.2}乗合タクシー問題(Dial-a-ride problem)}{4}% 
+\contentsline {section}{\numberline {3.2}乗合タクシー問題(dial-a-ride problem)}{4}% 
 \contentsline {section}{\numberline {3.3}乗合タクシー問題の問題複雑度}{5}% 
 \contentsline {chapter}{\numberline {第4章}定式化}{6}% 
 \contentsline {chapter}{\numberline {第5章}提案手法}{8}% 
