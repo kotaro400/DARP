@@ -485,10 +485,7 @@ int main(int argc, char *argv[]){
                     routelist = bestroutelist;
                 }
                 if(search_count >= COUNT_MAX) break;
-            }
-
-            // 交換近傍
-            else{
+            }else{ // 交換近傍
                 cout << "swapーーーーーーーー" << endl;
                 TmpTotalPenalty = 100000000000000000.0;
                 OuterRoutelist = routelist;
@@ -649,14 +646,6 @@ int main(int argc, char *argv[]){
                     }
                     if(search_count >= COUNT_MAX) break;
                 }
-
-                // for(i=0;i<routelist.getRouteListSize();i++){
-                //     for(j=0;j<routelist.getRouteSize(i);j++){
-                //         cout << routelist.getRoute(i,j) << " ";
-                //     }
-                //     cout << endl;
-                // }
-                
                 // 一番いい位置に挿入して、それが既存よりよかったら移動
                 if (TmpTotalPenalty < BestTotalPenalty){
                     cout << "よい" << endl;
@@ -676,6 +665,7 @@ int main(int argc, char *argv[]){
                 }
                 if(search_count >= COUNT_MAX) break;
             }
+
             inter_count++;
         }
         
