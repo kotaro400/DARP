@@ -366,7 +366,6 @@ tuple<int, int> RouteList::OuterRouteChange_worstNode(int customerSize,int worst
 }
 
 tuple<int, int,int,int,int,int> RouteList::swapRoute(int customerSize){
-    cout << "swapRoute" << endl;
     mt19937_64 mt64(rand());
     int beforeindex,afterindex,before_first,before_second,after_first,after_second;
     beforeindex = abs((int)mt64())%this->Routelist.size();
