@@ -1,14 +1,14 @@
 # Fdb version 3
-["dvipdf"] 1579663005 "chapter1.dvi" "chapter1.pdf" "chapter1" 1579663006
-  "chapter1.dvi" 1579663005 884 1c8bce698d1fc136f7cb8389b3695b50 "latex"
+["dvipdf"] 1579934593 "chapter1.dvi" "chapter1.pdf" "chapter1" 1579934594
+  "chapter1.dvi" 1579934593 884 d2e1e9f3221521c0efdfa2c6e8041e81 "latex"
   (generated)
   "chapter1.pdf"
-["latex"] 1579663005 "chapter1.tex" "chapter1.dvi" "chapter1" 1579663006
+["latex"] 1579934592 "chapter1.tex" "chapter1.dvi" "chapter1" 1579934594
   "/usr/local/texlive/2019/texmf-dist/web2c/texmf.cnf" 1570742662 39452 758acee3f2beaeeedff570c5f5d76d98 ""
   "/usr/local/texlive/2019/texmf-var/web2c/euptex/uplatex.fmt" 1573005491 4553067 6bfd2d44f501852523d42dc3f56fd483 ""
   "/usr/local/texlive/2019/texmf.cnf" 1557341546 577 d150fef99ac436ad1156e86b0892f6ef ""
-  "chapter1.aux" 1579661683 876 48c0c2cbe6dc1d445ab65dbf2cb887da ""
-  "chapter1.tex" 1579663005 3340 95a5ced1ca55cf15ca55142f95d6216b ""
+  "chapter1.aux" 1579934211 876 48c0c2cbe6dc1d445ab65dbf2cb887da ""
+  "chapter1.tex" 1579934592 3375 afccb16733b0894ced37700e86aabb29 ""
   (generated)
   "chapter1.dvi"
   "chapter1.log"

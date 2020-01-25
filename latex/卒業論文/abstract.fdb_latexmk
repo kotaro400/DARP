@@ -1,14 +1,14 @@
 # Fdb version 3
-["dvipdf"] 1579761180 "abstract.dvi" "abstract.pdf" "abstract" 1579761259
-  "abstract.dvi" 1579761180 916 07c1bb984fbeb7ffbc508bd7c7ba2749 "latex"
+["dvipdf"] 1579934209 "abstract.dvi" "abstract.pdf" "abstract" 1579934210
+  "abstract.dvi" 1579934209 916 fc7b538acb43798f30752dcfb01e976a "latex"
   (generated)
   "abstract.pdf"
-["latex"] 1579761180 "abstract.tex" "abstract.dvi" "abstract" 1579761259
+["latex"] 1579934209 "abstract.tex" "abstract.dvi" "abstract" 1579934210
   "/usr/local/texlive/2019/texmf-dist/web2c/texmf.cnf" 1570742662 39452 758acee3f2beaeeedff570c5f5d76d98 ""
   "/usr/local/texlive/2019/texmf-var/web2c/euptex/uplatex.fmt" 1573005491 4553067 6bfd2d44f501852523d42dc3f56fd483 ""
   "/usr/local/texlive/2019/texmf.cnf" 1557341546 577 d150fef99ac436ad1156e86b0892f6ef ""
-  "abstract.aux" 1579760656 696 acf0baae2813e6672a8dd96ea841bd77 ""
-  "abstract.tex" 1579761259 3523 181faba06a1fa59d867d230503d5cec8 ""
+  "abstract.aux" 1579934130 696 acf0baae2813e6672a8dd96ea841bd77 ""
+  "abstract.tex" 1579934208 3430 a57b51b9a53b36eb618cb8e8914f01ee ""
   (generated)
-  "abstract.log"
   "abstract.dvi"
+  "abstract.log"

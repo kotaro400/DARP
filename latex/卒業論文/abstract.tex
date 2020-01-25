@@ -18,9 +18,9 @@ A number of papers about DARP have been published. Most of the previous research
 
 In this study, we consider with the DARP in which time windows and the maximum ride time are piecewise linear convex functions. By giving these constraints as soft constrains, users' dissatisfactions can be expressed flexibly. Therefore, the dial-a-ride problem with convex time penalty is a more generic dial-a-ride problem.
 
-We propose a local search algorithm with two operations on request vertices. One of the operations is intra-route operation that removes a request pair from a route and add the request pair to the same route. The other operation is inter-route operation and we made two types of algorithm to compare performance of inter-route operations.
-One of the operations about inter-route is called relocate-inter  that removes a request pair from a route and add the request pair to another route. The other operation is called swap-inter that removes a request pair from a route and exchange it with the request pair from another route.
-We find that algorithm which used relocate-inter is better than algorithm which used swap-inter.
+We propose a local search algorithm on request vertices. We made three types of algorithm to compare performance of inter-route operations.
+One of the operations is called relocate-inter that removes a request pair from a route and add the request pair to another route. Another operation is called swap-inter that removes a request pair from a route and exchange it with the request pair from another route. The other operation is a mixture of two operations that uses relocate-inter and swap-inter alternately.
+We find that the algorithm which used relocate-inter and the algorithm which used mixture of two operations are better.
 
 By making the time window penalty large, we can compare the performance with the previous study. We confirm that we can find a solution with about 30\% difference from previous study for small instances. On the other hand, we cannot find a good solution for large instances. This may be due to insufficient number of iterations.
 
