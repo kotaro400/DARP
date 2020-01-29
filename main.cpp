@@ -528,6 +528,7 @@ int main(int argc, char *argv[]){
         // /*
         // ここから交換
         while(SwapCount < SwapList.size()){
+            cout <<  "交換 " << SwapCount << endl; 
             TmpTotalPenalty = 100000000000000000.0;
             OuterRoutelist = routelist; 
             Tuple_swap = OuterRoutelist.Outer_Swap(n,m,SwapList[SwapCount].first,SwapList[SwapCount].second);
