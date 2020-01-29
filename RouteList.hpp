@@ -29,4 +29,6 @@ public:
     tuple<int, int> OuterRouteChange_worstNode(int customerSize,int WorstNode,int bestRouteIndex); //ペナルティの大きいノードを他のルートに挿入
     tuple<int, int,int,int,int,int> swapRoute(int customerSize);
     void insertRoute(int routeindex,int place, int number);
+    int Outer_Relocate(int n, int m,int number);
+    tuple<int,int> Outer_Swap(int n,int m,int num1,int num2);
 };

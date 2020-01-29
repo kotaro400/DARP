@@ -432,3 +432,29 @@ void removeElement(vector<int> &vector, int index) {
     vector.erase(vector.begin()+index);
 }
 
+
+
+
+int RouteList::Outer_Relocate(int n,int m, int number){
+    int beforeindex;
+    for (int VehicleNum = 0;VehicleNum<m;VehicleNum++){
+        for (int j = 0;j<this->Routelist[VehicleNum].size();j++){
+            if (this->Routelist[VehicleNum][j] == number){
+                beforeindex = VehicleNum;
+            }
+        }
+    }
+    for (auto itr = this->Routelist[beforeindex].begin();itr != this->Routelist[beforeindex].end();){
+        if (*itr == number || *itr == (number+n)){
+            itr = this->Routelist[beforeindex].erase(itr);
+        }else{
+            ++itr;
+        }
+    }
+    return beforeindex;    
+}
+
+tuple<int,int> RouteList::Outer_Swap(int n,int m,int num1,int num2){
+    
+}
+
