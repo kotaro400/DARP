@@ -455,6 +455,42 @@ int RouteList::Outer_Relocate(int n,int m, int number){
 }
 
 tuple<int,int> RouteList::Outer_Swap(int n,int m,int num1,int num2){
-    
+    // beforeindexとafterindexを返す
+    int beforeindex,afterindex,before_first,before_second,after_first,after_second;
+    before_first = num1;
+    before_second = num1 + n;
+    after_first = num2;
+    after_second = num2 + n;
+    cout << num1 << " " << num2 << endl;
+        // beforeindexとafterindexを見つける
+    for (int VehicileNum = 0;VehicileNum<m;VehicileNum++){
+        for (int j=0;j<this->Routelist[VehicileNum].size();j++){
+            if (this->Routelist[VehicileNum][j]==num1){
+                beforeindex = VehicileNum;
+            } 
+            if (this->Routelist[VehicileNum][j]==num2){
+                afterindex = VehicileNum;
+            }
+        }
+    }
+    cout << beforeindex << " " << afterindex << endl;
+    // 要素を削除
+    for (auto itr = this->Routelist[beforeindex].begin();itr != this->Routelist[beforeindex].end();){
+        if (*itr == before_first || *itr == before_second){
+            itr = this->Routelist[beforeindex].erase(itr);
+        }else{
+            ++itr;
+        }
+    }
+    for (auto itr = this->Routelist[afterindex].begin();itr != this->Routelist[afterindex].end();){
+        if (*itr == after_first || *itr == after_second){
+            itr = this->Routelist[afterindex].erase(itr);
+        }else{
+            ++itr;
+        }
+    }
+    return make_tuple(beforeindex,afterindex);
+
+
 }
 
