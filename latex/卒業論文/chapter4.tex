@@ -7,14 +7,14 @@
 \section{制限の緩和}
 本研究では, 局所探索を行う上でより自由に探索を行うために, 車両における容量制約を緩和し, 容量制約を破った時のペナルティを計算するペナルティ関数を定義する. 容量制約のペナルティ関数を目的関数に加えた評価関数を用いて解を評価することにより, 実行不可能解も探索可能になる.
 
-車両の容量制約のペナルティは, 車両の最大容量を超えて乗った人数として, $QP$と表す. 車両$k$に対してルートの$i$番目を訪問後に容量を超えて乗っている人数を$QP_i^k$とすると,
+車両の容量制約のペナルティは, 車両の最大容量を超えて乗った人数として, $H$と表す. 車両$k$に対してルートの$i$番目を訪問後に容量を超えて乗っている人数を$H_{ki}$とすると,
 \begin{align*}
-  QP = \sum_{k \in K}\sum_{i \in n_k} QP_i^k,
+  H = \sum_{k \in K}\sum_{i \in n_k} H_{ki},
 \end{align*}
-と表せる. 
+と表せる.
 $\gamma$を定数とすると, ペナルティを加えた評価関数を$f(\sigma)$とすると
 \begin{align*}
-  f(\sigma) = \alpha d(\sigma)+ \beta t(\sigma) + \gamma QP,
+  f(\sigma) = \alpha d(\sigma)+ \beta t(\sigma) + \gamma H,
 \end{align*}
 で定義する.
 
@@ -53,6 +53,6 @@ $\gamma$を定数とすると, ペナルティを加えた評価関数を$f(\sig
   \IF{改善した}
   \STATE  $x_{\rm best} := x$
   \ENDIF
-  \STATE $x_{\rm best}$を局所最適解として出力して終了. 
+  \STATE $x_{\rm best}$を局所最適解として出力して終了.
  \end{algorithmic}
 \end{algorithm}
