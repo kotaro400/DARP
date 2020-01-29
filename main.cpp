@@ -62,7 +62,7 @@ int main(int argc, char *argv[]){
 
     // ルートの総距離と時間枠ペナルティと乗客数のペナルティ比
     double ALPHA = 1.0; //ルートの距離
-    double BETA = 1.0; //時間枠ペナ
+    double BETA = 500.0; //時間枠ペナ
     double GAMMA = 1.0; //乗客数ペナ
 
     // イテレーション回数
@@ -613,9 +613,7 @@ int main(int argc, char *argv[]){
                         //TmpRouteListクラスのメモリ解放
                         delete TmpRouteList; 
 
-                        if(search_count >= COUNT_MAX) break;
                     }
-                    if(search_count >= COUNT_MAX) break;
             }
             TmpTotalPenalty = 1000000000000.0;
             // afterindexを改善
@@ -686,9 +684,7 @@ int main(int argc, char *argv[]){
                         //TmpRouteListクラスのメモリ解放
                         delete TmpRouteList; 
 
-                        if(search_count >= COUNT_MAX) break;
                     }
-                    if(search_count >= COUNT_MAX) break;
             }
             // 一番いい位置に挿入して、それが既存よりよかったら移動
             if (TmpTotalPenalty < BestTotalPenalty){
