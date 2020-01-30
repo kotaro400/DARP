@@ -1,0 +1,18 @@
+# Fdb version 3
+["dvipdf"] 1580362037 "sebyousi.dvi" "sebyousi.pdf" "sebyousi" 1580362038
+  "sebyousi.dvi" 1580362037 588 33a367d693d2b590a43ae6a9b79aeb4b "latex"
+  (generated)
+  "sebyousi.pdf"
+["latex"] 1580362037 "sebyousi.tex" "sebyousi.dvi" "sebyousi" 1580362038
+  "/usr/local/texlive/2019/texmf-dist/tex/platex/base/plext.sty" 1569964647 19217 a32341d86245c6d6b18b831ca5bdd715 ""
+  "/usr/local/texlive/2019/texmf-dist/tex/platex/base/tarticle.cls" 1571691592 26004 bb1dee56c37944b0fb7189937b2c48b7 ""
+  "/usr/local/texlive/2019/texmf-dist/tex/platex/base/tsize10.clo" 1571691592 8672 efbd527428761ffaeb2474c4f8821013 ""
+  "/usr/local/texlive/2019/texmf-dist/web2c/texmf.cnf" 1570742662 39452 758acee3f2beaeeedff570c5f5d76d98 ""
+  "/usr/local/texlive/2019/texmf-var/web2c/euptex/uplatex.fmt" 1573005491 4553067 6bfd2d44f501852523d42dc3f56fd483 ""
+  "/usr/local/texlive/2019/texmf.cnf" 1557341546 577 d150fef99ac436ad1156e86b0892f6ef ""
+  "sebyousi.aux" 1580362037 8 a94a2480d3289e625eea47cd1b285758 "latex"
+  "sebyousi.tex" 1580362037 419 7f654ed791b04b804f8318f5fb7eee8a ""
+  (generated)
+  "sebyousi.dvi"
+  "sebyousi.log"
+  "sebyousi.aux"
