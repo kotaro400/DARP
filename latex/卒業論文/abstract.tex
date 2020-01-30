@@ -22,9 +22,8 @@ We propose a local search algorithm on request vertices. We made three types of 
 One of the operations is called relocate-inter that removes a request pair from a route and add the request pair to another route. Another operation is called swap-inter that removes a request pair from a route and exchange it with the request pair from another route. The other operation is a mixture of two operations that uses relocate-inter and swap-inter alternately.
 We find that the algorithm which used relocate-inter and the algorithm which used mixture of two operations are better.
 
-By making the time window penalty large, we can compare the performance with the previous study. We confirm that we can find a solution with about 30\% difference from previous study for small instances. On the other hand, we cannot find a good solution for large instances. This may be due to insufficient number of iterations.
-
-In this study, the objective function is a weighted sum of the length of the routes and penalty and we perfom experiments with different coefficients.
+By making the time window penalty large, we can compare the performance with the previous study. We confirm that we can find a solution with about 40\% difference from previous study for all instances. 
+In this study, the objective function is a weighted sum of the length of the routes and penalty and we perform experiments with different coefficients.
 We confirm that changing the penalty's coefficient result in a solution corresponding to various situations.
 
 We reduced the number of vehicles by one and compare the result with the one with default number of vehicles. We confirm that we can find a feasible solution even if the number of vehicles is one less.
