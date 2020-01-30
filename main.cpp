@@ -62,11 +62,11 @@ int main(int argc, char *argv[]){
 
     // ルートの総距離と時間枠ペナルティと乗客数のペナルティ比
     double ALPHA = 1.0; //ルートの距離
-    double BETA = 500.0; //時間枠ペナ
+    double BETA = 1.0; //時間枠ペナ
     double GAMMA = 1.0; //乗客数ペナ
 
     // イテレーション回数
-    int COUNT_MAX = 100000;
+    // int COUNT_MAX = 100000;
 
     // 最適解
     double BestTotalPenalty;
@@ -405,10 +405,11 @@ int main(int argc, char *argv[]){
         tuple<int,int> Tuple_swap;
         int SwapCount = 0;
 
-        /*
+        // /*
         // 挿入
         while(NeighrListCount<NeighborList.size()){
             cout << NeighborList[NeighrListCount].first << "  " << NeighborList[NeighrListCount].second <<"を挿入" << endl;
+            cout << "回数:" << NeighrListCount << endl;
             TmpTotalPenalty = 100000000000000000.0;
             OuterRoutelist = routelist;
             // ルート間の挿入
@@ -499,9 +500,7 @@ int main(int argc, char *argv[]){
                         delete tempconstr;
                         //TmpRouteListクラスのメモリ解放
                         delete TmpRouteList; 
-                        if(search_count >= COUNT_MAX) break;
                     }
-                    if(search_count >= COUNT_MAX) break;
             }
             // 一番いい位置に挿入して、それが既存より良かったら移動
             if (TmpTotalPenalty < BestTotalPenalty){
@@ -522,10 +521,10 @@ int main(int argc, char *argv[]){
             }
 
         }
-        */
+        // */
         // 挿入ここまで
 
-        // /*
+        /*
         // ここから交換
         while(SwapCount < SwapList.size()){
             cout <<  "交換 " << SwapCount << endl; 
@@ -705,7 +704,7 @@ int main(int argc, char *argv[]){
             }
 
         }
-        // */
+        */
 
         cout << "総カウント数:" << search_count << endl;
         cout << "n:" << n << " m:" << m << endl;
