@@ -709,7 +709,7 @@ int main(int argc, char *argv[]){
         cout << "総カウント数:" << search_count << endl;
         cout << "n:" << n << " m:" << m << endl;
         cout << "インスタンス:" << inputfile << endl;
-
+        cout << "係数β:" << BETA << endl;
         cout << "RouteDistance: " << BestRouteDistance << endl;
         cout << "bestpena:"<<BestPenalty << endl;
 
