@@ -62,7 +62,7 @@ int main(int argc, char *argv[]){
 
     // ルートの総距離と時間枠ペナルティと乗客数のペナルティ比
     double ALPHA = 1.0; //ルートの距離
-    double BETA = 1.0; //時間枠ペナ
+    double BETA = 500.0; //時間枠ペナ
     double GAMMA = 1.0; //乗客数ペナ
 
     // イテレーション回数
@@ -72,6 +72,8 @@ int main(int argc, char *argv[]){
     double BestTotalPenalty;
     double BestRouteDistance;
     double BestPenalty;
+
+    int ImprovedNumber=0;
     
     // クラスをまたいでenvとmodelを保持できなさそうだからmainの中で宣言する
     try{
@@ -504,6 +506,7 @@ int main(int argc, char *argv[]){
             }
             // 一番いい位置に挿入して、それが既存より良かったら移動
             if (TmpTotalPenalty < BestTotalPenalty){
+                ImprovedNumber += 1;
                 cout << "解を移動" << endl;
                 bestroutelist = routelist;
                 BestTotalPenalty = TmpTotalPenalty;
@@ -712,7 +715,10 @@ int main(int argc, char *argv[]){
         cout << "係数β:" << BETA << endl;
         cout << "RouteDistance: " << BestRouteDistance << endl;
         cout << "bestpena:"<<BestPenalty << endl;
-
+        cout << "NeighbohList:" << NeighborList.size() << endl;
+        cout << "改善回数:" << ImprovedNumber << endl;
+ 
+ 
         // for(i=1;i<=2*n;i++){
         //      cout << DepartureTime[i].get(GRB_StringAttr_VarName) << " "
         //     << DepartureTime[i].get(GRB_DoubleAttr_X) << " "
