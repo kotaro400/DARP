@@ -23,5 +23,5 @@
 \contentsline {subsection}{\numberline {6.4.2}既存研究との比較}{11}% 
 \contentsline {subsection}{\numberline {6.4.3}目的関数の係数の違いによる計算結果}{11}% 
 \contentsline {subsection}{\numberline {6.4.4}車両数を減らした計算結果}{11}% 
-\contentsline {chapter}{\numberline {第7章}まとめと今後の研究計画}{15}% 
-\contentsline {chapter}{参考文献}{17}% 
+\contentsline {chapter}{\numberline {第7章}まとめと今後の研究計画}{16}% 
+\contentsline {chapter}{参考文献}{18}% 
