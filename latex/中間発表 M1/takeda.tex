@@ -1,4 +1,4 @@
-\documentclass[a4j，11pt，twocolumn]{jsarticle}
+\documentclass[a4j,11pt,twocolumn]{jsarticle}
 
 %\usepackage{multicol} %2段組み用
 \usepackage{amsmath}  %alignなど数式関係で必要になることが多い．
@@ -7,18 +7,18 @@
 \usepackage{url}      %URLの表記に使う\urlコマンドに必要．
 \usepackage{txfonts}  %英文をTimes Romanのようなフォントにする．
                       %通常のLaTeXのフォントにしたいときはこれをコメントアウトする．
-\usepackage{algorithm，algorithmic} %algorithmとalgorithmic環境を利用するのに必要．
-\usepackage{enumerate}%enumerate環境で項目を[Step 1．]のような形式に変更するのに利用．
+\usepackage{algorithm,algorithmic}
+\usepackage{enumerate}
 
 \pagestyle{plain} %ページ番号のスタイル
 \urlstyle{same}   %\urlコマンドのフォント指定．"tt"，"rm"，"sf"，"same"(=使用中のフォント)
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%wsz%%%% ↓テキスト幅，マージン，行間の調節
 \textwidth     =  160mm %テキスト幅
-\oddsidemargin = -7．5mm %左側のマージン
+\oddsidemargin = -7.5mm %左側のマージン
 \textheight    =  230mm %テキストの高さ
 \topmargin     =  -15mm %上のマージン
-\renewcommand{\baselinestretch}{1．1} %行間を調節
+\renewcommand{\baselinestretch}{1.1} %行間を調節
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% ↑テキスト幅，マージン，行間の調節
 
 %%%% ↓Change the style of itemize，enumerate，etc．
@@ -53,14 +53,14 @@
 \begin{document}
 \twocolumn[%
 \begin{center}
- {\LARGE \textbf{Dial-a-Ride問題}}\\
+ {\LARGE \textbf{乗合タクシー問題}}\\
  %\vspace{5mm}
  {\Large 竹田 陽} \\
- 2019年11月28日
+ 2020年4月21日
 \end{center}
 \begin{quote}
  \textbf{Abstract．}
- The Dial-a-Ride Problem (DARP) consists of designing vehicle routes and schedules for multiple users who specify pickup and delivery requests between origins and destination．The aim is to design a set of minimun cost vehicle route while accommodating all requests．Side constraints include vechile capacity，route duration，maximum ride time，etc．DARP arises in share taxi service or transporting people in health care service．A number of papers about DARP has been published，however，most of the previous research deal with time windows and maximum ride time as hard constraints．In this study，we consider with the DARP where time windows and maximum ride time are soft constraints．These soft constraints make the DARP more generic．We propose a local search algorithm on request vertices．to find a solution to the problem．
+ The dial-a-ride problem (DARP) consists of designing vehicle routes and schedules for multiple users who specify pickup and delivery requests between origins and destination．The aim is to design a set of minimun cost vehicle route while accommodating all requests．Side constraints include vechile capacity，route duration，maximum ride time，etc．DARP arises in share taxi service or transporting people in health care service．A number of papers about DARP has been published，however，most of the previous research deal with time windows and maximum ride time as hard constraints．In this study，we consider with the DARP where time windows and maximum ride time are soft constraints．These soft constraints make the DARP more generic．We propose a local search algorithm on request vertices to find a solution to the problem．
 \end{quote}
 \vspace{5mm}
 ]
@@ -80,9 +80,9 @@ DARPに関して，既存研究をいくつか紹介する．Jawらは，この�
 
 
 \section{問題説明}
-まず，Pickup and Delivery problem (PDP)について説明し，そのあとに乗合タクシー問題(DARP)について詳しく説明する．
-\subsection{{\large Pickup and Delivery problem}}
-Pick and Delivery problem (PDP)は，荷物を出発地まで目的地まで輸送する問題である．PDPでは，荷物を受け取る地点(pickup)と荷物を配送する地点(delivery)のペアからなる$n$個のリクエストと$m$台のが与えられたときに以下の制約を満たしつつ与えられたコストを最小化するルートを求める問題である．
+まず，pickup and delivery problem (PDP)について説明し，そのあとに乗合タクシー問題(DARP)について詳しく説明する．
+\subsection{{\large pickup and delivery problem}}
+pick and delivery problem (PDP)は，荷物を出発地まで目的地まで輸送する問題である．PDPでは，荷物を受け取る地点(pickup)と荷物を配送する地点(delivery)のペアからなる$n$個のリクエストと$m$台のが与えられたときに以下の制約を満たしつつ与えられたコストを最小化するルートを求める問題である．
 \begin{enumerate}
  \item 与えられた$n$個のリクエスト全ての地点を訪問する．
  \item 全ての車両はデポから出発してデポに帰る．
@@ -92,7 +92,7 @@ Pick and Delivery problem (PDP)は，荷物を出発地まで目的地まで輸�
 ここでのリクエストとは，荷物の輸送要求のことを指す．
 
 与えられるコストとしては各頂点間の距離や時間などがある．よく制約として考えられるものは，リクエストの訪問点を決められた時間内に訪れなければならない時間枠制約や車両の容量を制限した容量制約などがある．また，車両の種類が複数あり，車両によって最大容量が異なる多資源制約や，複数のデポを考慮する問題など，様々な拡張が考えられている．
-\subsection{{\large Dial-a-Ride problem}}
+\subsection{{\large dial-a-ride problem}}
 乗合タクシー問題(dial-a-ride problem，DARP)は，PDPを人の輸送に特化した問題である．DARPはPDPと違い人を輸送するため，車両に乗っている乗車時間が長いと利用者の不満がたまってしまう．そこで乗車時間やリクエストの訪問時間のずれなどで評価される不満度を考慮する必要がある．
 
 顧客の満足度は，利用者の乗車時間と出発地と目的地での待ち時間ではかる．本研究では，利用者が乗車時刻，降車時刻，乗車時間のそれぞれに対して希望を持つことを考える．それぞれの希望はそれぞれ連続区分線形凸関数のペナルティ関数で表される．ペナルティ関数を区分線形関数にすることで，任意の間隔ごとに関数を設定することが可能になり，3分の遅延なら許容できるが20分の遅れは許容できないなどの表現が可能になる．また，乗車時間に応じてペナルティをかけることができるので，不満度を柔軟に表現することが可能になる．したがって，DARPをより汎用的に解くことが可能となる．
@@ -143,10 +143,10 @@ t(\sigma) = \sum_ {i \in I_\sigma} (g^+_i(\tau_i)+g^-_i(\tau_{i+n})+g_i(\tau_{i+
   &                    && \sum_{k \in K} n_k = 2n，\tag{4}\\
   &                    && \sigma_k(0) = \sigma_k(n_k+1) = 0 \ \ \ \ \ \ (k \in K)，\tag{5}\\
   &                    && 0 < q_{\sigma_k(h)} < Q\ \ \ \
-  (h \in \{0，．．．，n_k\}，k \in K)，\tag{6}\\
+  (h \in \{0, ... ,n_k\}，k \in K), \tag{6}\\
   &                    && g_i(\tau_{i+n}-\tau_i) > s_i + t_{i，i+n}\ \ \ \ \ \ \ \ \ \ \ \ \ \  (i \in I)，\tag{7}\\
   &                    && \tau_ {\sigma_k (h+1)} \geqq \tau_ {\sigma_k (h)} + s_{\sigma_k (h)} + t_ {\sigma_k (h)，\sigma_k (h+1)}\\
-  &                    &&  \ \ \ \ (h \in \{0，．．．，n_k\}，k \in K)．\tag{8}
+  &                    &&  \ \ \ \ (h \in \{0, ... ,n_k\},k \in K).\tag{8}
 \end{align*}
 式$(2)，(3)$は訪問点が1回ずつしか訪問されないことを，式$(4)$は全てのリクエストが実行されることを表している．式$(5)$は全ての車両がデポから出発してデポに帰ることを表している．式$(6)$は車両の容量制約を表している．式$(7)，(8)$はリクエストの先行制約とサービス時刻に関する制約を表している．
 
@@ -204,7 +204,7 @@ $\gamma$を定数とすると，ペナルティを加えた評価関数を$f(\si
 
 \section{計算実験}
 \subsection{実験環境}
-実験に用いるプログラムはC++を用いて実装し，計算機はプロセッサ 1．4 GHz Intel Core i5，メモリ 16 GB 2133 MHz LPDDR3のmacOSを搭載したものを使用した．探索における最適なサービス開始時刻を決定する際のLPソルバーとしては，Gurobi Optimizer (ver 9．0．0)を使用した．
+実験に用いるプログラムはC++を用いて実装し，計算機はプロセッサ 1.4 GHz Intel Core i5，メモリ 16 GB 2133 MHz LPDDR3のmacOSを搭載したものを使用した．探索における最適なサービス開始時刻を決定する際のLPソルバーとしては，Gurobi Optimizer (ver 9.0.0)を使用した．
 
 \subsection{問題例の作成方法}
 DARPでは多くの既存研究があるが，本研究では時間枠及び乗車時間に対して区分線形で凸のペナルティ関数で与えている．このような問題設定のインスタンスは存在していないため，ベンチマークとしてよく使用されるCordeauらによって提供されている\cite{tabu}インスタンスに修正を加えて計算実験を行う．修正方法を以下に示す．
@@ -236,7 +236,7 @@ DARPでは多くの既存研究があるが，本研究では時間枠及び乗�
 
 \subsubsection{既存研究との比較}
 \label{sec:cordeau}
-本研究での提案手法で，時間枠と乗車時間のペナルティの値を大きくすることで，既存研究との計算結果を比較することができる．挿入近傍を用いて得られた局所最適解とCordeauらによって示された最良値を比較する．また，目的関数におけるペナルティを$\alpha=1，\beta=500$とする．計算実験の値と最良解との相違を表\ref{cordeau}に示す．表における最良値は，ルートの総距離を示す．Cordeauらによる最良値は，タブーサーチの探索回数を$10^5$回行った際のルートの総距離を示す．
+本研究での提案手法で，時間枠と乗車時間のペナルティの値を大きくすることで，既存研究との計算結果を比較することができる．挿入近傍を用いて得られた局所最適解とCordeauらによって示された最良値を比較する．また，目的関数におけるペナルティを$\alpha=1, \beta=500$とする．計算実験の値と最良解との相違を表\ref{cordeau}に示す．表における最良値は，ルートの総距離を示す．Cordeauらによる最良値は，タブーサーチの探索回数を$10^5$回行った際のルートの総距離を示す．
 
 1つのインスタンス（r2a）を除く全てのインスタンスでペナルティの値が0である解を得ることができ，Cordeauらが示した最良解との比較を行うことができた．
 どのインスタンスでも精度が40\%程度の局所最適解を出力することが確認できた．
@@ -250,20 +250,20 @@ DARPでは多くの既存研究があるが，本研究では時間枠及び乗�
 \begin{table*}
  \centering
   \tabcolsep =8pt
-  \renewcommand{\arraystretch}{0．8}
+  \renewcommand{\arraystretch}{0.8}
   \caption{近傍操作の比較}
   \label{insert}
 \begin{tabular}{cccrrrrrr}
 \hline
 \multicolumn{1}{l}{} & \multicolumn{2}{c}{size} & \multicolumn{2}{c}{挿入近傍}                              & \multicolumn{2}{c}{交換近傍}                              & \multicolumn{2}{c}{2種類を交互}                            \\ \cline{2-9}
 問題例                  & 顧客数         & 車両数        & \multicolumn{1}{c}{最良値} & \multicolumn{1}{c}{計算時間(分)} & \multicolumn{1}{c}{最良値} & \multicolumn{1}{c}{計算時間(分)} & \multicolumn{1}{c}{最良値} & \multicolumn{1}{c}{計算時間(分)} \\ \cline{2-9}
-r1a                  & 24          & 3          & 216．00                  & 2．14                        & 233．37                  & 1．72                        & 211．84                  & 2．86                        \\
-r2a                  & 48          & 5          & 514．50                  & 2．93                        & 566．30                  & 2．81                        & 558．18                  & 4．07                        \\
-r3a                  & 72          & 7          & 960．47                  & 4．91                        & 959．99                  & 4．74                        & 919．01                  & 6．30                        \\
-r1b                  & 24          & 3          & 195．60                  & 2．41                        & 209．95                  & 2．48                        & 208．88                  & 2．58                        \\
-r2b                  & 48          & 5          & 437．56                  & 3．34                        & 453．13                  & 3．24                        & 432．22                & 4．37                        \\
-r3b                  & 72          & 7          & 921．74                  & 4．65                        & 1031．66                 & 4．71                        & 923．22                & 6．07                        \\ \hline
-平均                   & \multicolumn{1}{l}{} & \multicolumn{1}{l}{} & \multicolumn{1}{l}{}    & 3．40                        &                         & 3．28                        &                         & 4．37                        \\ \hline
+r1a                  & 24          & 3          & 216.00                  & 2.14                        & 233.37                  & 1.72                        & 211.84                  & 2.86                        \\
+r2a                  & 48          & 5          & 514.50                  & 2.93                        & 566.30                  & 2.81                        & 558.18                  & 4.07                        \\
+r3a                  & 72          & 7          & 960.47                  & 4.91                        & 959.99                  & 4.74                        & 919.01                  & 6.30                        \\
+r1b                  & 24          & 3          & 195.60                  & 2.41                        & 209.95                  & 2.48                        & 208.88                  & 2.58                        \\
+r2b                  & 48          & 5          & 437.56                  & 3.34                        & 453.13                  & 3.24                        & 432.22                & 4.37                        \\
+r3b                  & 72          & 7          & 921.74                  & 4.65                        & 1031.66                 & 4.71                        & 923.22                & 6.07                        \\ \hline
+平均                   & \multicolumn{1}{l}{} & \multicolumn{1}{l}{} & \multicolumn{1}{l}{}    & 3.40                        &                         & 3.28                        &                         & 4.37                        \\ \hline
 \end{tabular}
 \end{table*}
 
@@ -272,45 +272,45 @@ r3b                  & 72          & 7          & 921．74                  & 4�
 \begin{table*}
    \centering
   \tabcolsep = 9pt
-  \renewcommand{\arraystretch}{0．8}
+  \renewcommand{\arraystretch}{0.8}
   \caption{Best Known Scoreとの比較}
   \label{cordeau}
 \begin{tabular}{cccrrrrrr}
 \hline
 \multicolumn{1}{l}{} & \multicolumn{2}{c}{size}                    & \multicolumn{5}{c}{本研究}                                                                                                                                                                   & \multicolumn{1}{c}{Cordeau} \\ \hline
 問題例                  & 顧客数                  & 車両数                  & \multicolumn{1}{c}{局所最適解} & \multicolumn{1}{c}{ペナルティ} & \multicolumn{1}{c}{GAP(\%)} & \multicolumn{1}{c}{\begin{tabular}[c]{@{}c@{}}挿入近傍の\\ 探索回数\end{tabular}} & \multicolumn{1}{c}{改善回数} & \multicolumn{1}{c}{最良値}     \\ \hline
-r1a                  & 24                   & 3                    & 219．27                    & 0．00                      & 15．2                        & 72                                                                       & 5                        & 190．02                      \\
-r2a                  & 48                   & 5                    & 431．61                    & 0．02                      & 42．6                        & 240                                                                      & 32                       & 302．08                      \\
-r3a                  & 72                   & 7                    & 779．04                    & 0．00                      & 46．4                        & 504                                                                      & 41                       & 532．08                      \\
-r4a                  & 96                   & 9                    & 836．76                    & 0．00                      & 45．9                        & 864                                                                      & 61                       & 582．78                      \\
-r5a                  & 120                  & 11                   & 915．14                    & 0．00                      & 43．6                        & 1320                                                                     & 110                      & 636．97                      \\
-r1b                  & 24                   & 3                    & 208．56                    & 0．00                      & 26．4                        & 72                                                                       & 16                       & 164．46                      \\
-r2b                  & 48                   & 5                    & 402．11                    & 0．00                      & 35．8                        & 240                                                                      & 15                       & 296．06                      \\
-r3b                  & 72                   & 7                    & 697．87                    & 0．00                      & 41．4                        & 504                                                                      & 49                       & 493．30                      \\
-r4b                  & 96                   & 9                    & 833．65                    & 0．00                      & 55．5                        & 864                                                                      & 75                       & 535．90                      \\
-r5b                  & 120                  & 11                   & 853．89                    & 0．00                      & 44．6                        & 1320                                                                     & 106                      & 589．74                      \\ \hline
-平均                   & \multicolumn{1}{l}{} & \multicolumn{1}{l}{} &                           &                           & 39．7                        &                                                                          &                          &                             \\ \hline
+r1a                  & 24                   & 3                    & 219.27                    & 0.00                      & 15.2                        & 72                                                                       & 5                        & 190.02                      \\
+r2a                  & 48                   & 5                    & 431.61                    & 0.02                      & 42.6                        & 240                                                                      & 32                       & 302.08                      \\
+r3a                  & 72                   & 7                    & 779.04                    & 0.00                      & 46.4                        & 504                                                                      & 41                       & 532.08                      \\
+r4a                  & 96                   & 9                    & 836.76                    & 0.00                      & 45.9                        & 864                                                                      & 61                       & 582.78                      \\
+r5a                  & 120                  & 11                   & 915.14                    & 0.00                      & 43.6                        & 1320                                                                     & 110                      & 636.97                      \\
+r1b                  & 24                   & 3                    & 208.56                    & 0.00                      & 26.4                        & 72                                                                       & 16                       & 164.46                      \\
+r2b                  & 48                   & 5                    & 402.11                    & 0.00                      & 35.8                        & 240                                                                      & 15                       & 296.06                      \\
+r3b                  & 72                   & 7                    & 697.87                    & 0.00                      & 41.4                        & 504                                                                      & 49                       & 493.30                      \\
+r4b                  & 96                   & 9                    & 833.65                    & 0.00                      & 55.5                        & 864                                                                      & 75                       & 535.90                      \\
+r5b                  & 120                  & 11                   & 853.89                    & 0.00                      & 44.6                        & 1320                                                                     & 106                      & 589.74                      \\ \hline
+平均                   & \multicolumn{1}{l}{} & \multicolumn{1}{l}{} &                           &                           & 39.7                        &                                                                          &                          &                             \\ \hline
 \end{tabular}
 \end{table*}
 
 \begin{table*}
   \centering
   \tabcolsep = 6pt
-  \renewcommand{\arraystretch}{0．8}
+  \renewcommand{\arraystretch}{0.8}
   \caption{車両数を減らした際の比較}
   \label{m-1}
 \begin{tabular}{cllrrrrrrr}
 \hline
 \multicolumn{1}{l}{} &                          & \multicolumn{4}{c}{台数に変化なし}                                                                                                                                                                               & \multicolumn{4}{c}{1台削除}                                                                                                                                                                                  \\ \hline
 問題例                  & \multicolumn{1}{c}{顧客数} & \multicolumn{1}{c}{車両数} & \multicolumn{1}{c}{最良値} & \multicolumn{1}{c}{\begin{tabular}[c]{@{}c@{}}ペナルティ\\ 合計\end{tabular}} & \multicolumn{1}{c}{\begin{tabular}[c]{@{}c@{}}1人あたりの\\ ペナルティ\end{tabular}} & \multicolumn{1}{c}{車両数} & \multicolumn{1}{c}{最良値} & \multicolumn{1}{c}{\begin{tabular}[c]{@{}c@{}}ペナルティ\\ 合計\end{tabular}} & \multicolumn{1}{c}{\begin{tabular}[c]{@{}c@{}}1人あたりの\\ ペナルティ\end{tabular}} \\ \hline
-r1a                  & 24                       & 3                       & 202．19                    & 1．07                                                                   & 0．04                                                                        & 2                       & 235．23                    & 0．44                                                                   & 0．01                                                                       \\
-r2a                  & 48                       & 5                       & 424．79                    & 1．67                                                                   & 0．03                                                                        & 4                       & 390．20                    & 13．08                                                                  & 0．27                                                                       \\
-r3a                  & 72                       & 7                       & 708．97                    & 17．18                                                                  & 0．23                                                                        & 6                       & 749．78                    & 45．47                                                                  & 0．63                                                                       \\
-r4a                  & 96                       & 9                       & 911．66                    & 14．99                                                                  & 0．15                                                                        & 8                       & 955．01                    & 23．95                                                                  & 0．24                                                                       \\
-r1b                  & 24                       & 3                       & 200．74                    & 0．00                                                                   & 0．00                                                                        & 2                       & 217．61                    & 2．40                                                                   & 0．10                                                                       \\
-r2b                  & 48                       & 5                       & 403．99                    & 1．38                                                                   & 0．02                                                                        & 4                       & 377．78                    & 11．46                                                                  & 0．23                                                                       \\
-r3b                  & 72                       & 7                       & 686．30                    & 15．71                                                                  & 0．21                                                                        & 6                       & 707．90                    & 27．26                                                                  & 0．37                                                                       \\
-r4b                  & 96                       & 9                       & 894．65                    & 3．70                                                                   & 0．03                                                                        & 8                       & 831．89                    & 30．48                                                                  & 0．31                                                                       \\ \hline
+r1a                  & 24                       & 3                       & 202.19                    & 1.07                                                                   & 0.04                                                                        & 2                       & 235.23                    & 0.44                                                                   & 0.01                                                                       \\
+r2a                  & 48                       & 5                       & 424.79                    & 1.67                                                                   & 0.03                                                                        & 4                       & 390.20                    & 13.08                                                                  & 0.27                                                                       \\
+r3a                  & 72                       & 7                       & 708.97                    & 17.18                                                                  & 0.23                                                                        & 6                       & 749.78                    & 45.47                                                                  & 0.63                                                                       \\
+r4a                  & 96                       & 9                       & 911.66                    & 14.99                                                                  & 0.15                                                                        & 8                       & 955.01                    & 23.95                                                                  & 0.24                                                                       \\
+r1b                  & 24                       & 3                       & 200.74                    & 0.00                                                                   & 0.00                                                                        & 2                       & 217.61                    & 2.40                                                                   & 0.10                                                                       \\
+r2b                  & 48                       & 5                       & 403.99                    & 1.38                                                                   & 0.02                                                                        & 4                       & 377.78                    & 11.46                                                                  & 0.23                                                                       \\
+r3b                  & 72                       & 7                       & 686.30                    & 15.71                                                                  & 0.21                                                                        & 6                       & 707.90                    & 27.26                                                                  & 0.37                                                                       \\
+r4b                  & 96                       & 9                       & 894.65                    & 3.70                                                                   & 0.03                                                                        & 8                       & 831.89                    & 30.48                                                                  & 0.31                                                                       \\ \hline
 \end{tabular}
 \end{table*}
 
@@ -322,7 +322,8 @@ r4b                  & 96                       & 9                       & 894�
 
 今後の研究計画としては，ヒューリスティックを用いた局所探索ではない手法を提案していきたい．
 また，より精度の良い解を得るために，近傍操作の見直しなどを行っていく．
-また，本研究の提案手法では近傍操作によって得られたルートの訪問順の全てに対して線形計画問題をLPソルバーを使って解を出力したが，ある程度解の改善の可能性があるルートの訪問順に対してのみ線形計画問題を解くようにすることで計算時間を大幅に削減できると考える．したがって，解の改善可能性の判断についても手法の提案，実装を今後行っていきたい．
+また，本研究の提案手法では近傍操作によって得られたルートの訪問順の全てに対して線形計画問題をLPソルバーを使って解を出力したが，凸費用流に帰着させることで解けると考える．したがって，帰着の方法についても提案，実装を今後行っていきたい．
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% References
 \begin{thebibliography}{99}
