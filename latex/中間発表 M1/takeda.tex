@@ -188,7 +188,7 @@ $\gamma$を定数とすると，ペナルティを加えた評価関数を$f(\si
 
 以下に，$x_{\rm init}$を初期解，$x$を現在解，$x_{\rm best}$を暫定解とした際の提案手法の概要を示す．
 \begin{algorithm}
- \caption{提案手法}
+ \caption{局所探索法}
  \label{algo1}
  \begin{algorithmic}[1]%1を0にすると行番号なし．
   \STATE $x := x_{\rm init}$とする．
@@ -201,6 +201,28 @@ $\gamma$を定数とすると，ペナルティを加えた評価関数を$f(\si
   \STATE $x_{\rm best}$を局所最適解として出力して終了．
  \end{algorithmic}
 \end{algorithm}
+
+\subsection{{\large 反復局所探索法}}
+反復局所探索法とは，局所探索を行い得られた解に小さな変形を施すことによって得られた解を初期解として再び探索を行うという操作を繰り返す操作のことをいう．
+解に小さな変形を施す操作を．kickと呼ぶ．
+DARPに対する反復局所探索法に基づく解法を提案する．
+概要を以下に示す．
+
+\begin{algorithm}
+ \caption{反復局所探索法}
+ \label{algo1}
+ \begin{algorithmic}[1]%1を0にすると行番号なし．
+  \STATE $x := x_{\rm init}$とする．
+  \WHILE{終了条件を満たしていない}
+  \STATE $x := 局所探索で得られた解$
+  \STATE $x_{\rm best} := 現時点での最良解$
+  \STATE $x := kick(x_{\rm best})$
+  \ENDWHILE
+  \STATE $x_{\rm best}$を局所最適解として出力して終了．
+ \end{algorithmic}
+\end{algorithm}
+
+今後，kickの方法について考察していく．
 
 \section{計算実験}
 \subsection{実験環境}
