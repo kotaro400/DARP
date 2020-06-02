@@ -80,6 +80,11 @@ int main(int argc, char *argv[]){
         GRBEnv env=GRBEnv(true);
         env.set("LogFile", "mip1.log");
         env.start();
+        vector<GRBModel> modelList;
+        for(int i=0;i<m;i++){
+            GRBModel modeli = GRBModel(env);
+            modelList.push_back(modeli);
+        }
         GRBModel model = GRBModel(env);
         GRBVar DepartureTime[2*n+1];
         GRBVar DepotTime[2*m];
