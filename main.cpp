@@ -432,6 +432,8 @@ int main(int argc, char *argv[]){
             }
             // afterindexに2つの頂点を挿入
             int aftersize=OuterRoutelist.getRouteSize(afterindex);
+
+            bool isBetter= false;
             for(int f=1;f<aftersize;f++){
                     for (int s=f+1;s<=aftersize;s++){
                         RouteList *TmpRouteList;
@@ -491,6 +493,9 @@ int main(int argc, char *argv[]){
                                     // BestTotalPenalty = TmpTotalPenalty;
                                     TmpRouteDistance = RouteDistance;
                                     TmpBestPenalty = model.get(GRB_DoubleAttr_ObjVal);
+                                    if (TmpTotalPenalty < BestTotalPenalty){
+                                        isBetter = true;
+                                    }
                                 }
                             }
                         }catch(GRBException e){
@@ -507,6 +512,14 @@ int main(int argc, char *argv[]){
                         delete tempconstr;
                         //TmpRouteListクラスのメモリ解放
                         delete TmpRouteList; 
+                        if (isBetter) {
+                            cout << "途中でいい解を発見" << endl;
+                            break;
+                        }
+                    }
+                    if (isBetter) {
+                        cout << "途中でいい解を発見" << endl;
+                        break;
                     }
             }
             // 一番いい位置に挿入して、それが既存より良かったら移動
