@@ -405,7 +405,7 @@ int main(int argc, char *argv[]){
             }
         }
         random_shuffle(SwapList.begin(),SwapList.end());
-        cout << "近傍リストのサイズ:" << SwapList.size() << endl;
+        cout << "swap近傍リストのサイズ:" << SwapList.size() << endl;
 
 
         int NeighrListCount = 0;
@@ -414,8 +414,9 @@ int main(int argc, char *argv[]){
 
         // /*
         // 挿入
-        while(NeighrListCount<NeighborList.size()){
-            cout << NeighborList[NeighrListCount].first << "  " << NeighborList[NeighrListCount].second <<"を挿入" << endl;
+        // while(NeighrListCount<NeighborList.size()){
+        while(NeighrListCount<3){
+            cout << "顧客" << NeighborList[NeighrListCount].first << "を車両" << NeighborList[NeighrListCount].second <<"を挿入" << endl;
             cout << "回数:" << NeighrListCount << endl;
             TmpTotalPenalty = 100000000000000000.0;
             OuterRoutelist = routelist;
@@ -429,6 +430,12 @@ int main(int argc, char *argv[]){
             if (beforeindex == afterindex) {
                 cout << "beforeとafterのindexが同じ" << endl;
                 continue;
+            }
+            for(i=0;i<OuterRoutelist.getRouteListSize();i++){
+                for(j=0;j<OuterRoutelist.getRouteSize(i);j++){
+                    cout << OuterRoutelist.getRoute(i,j) << " ";
+                }
+                cout << endl;
             }
             // afterindexに2つの頂点を挿入
             int aftersize=OuterRoutelist.getRouteSize(afterindex);
@@ -461,15 +468,20 @@ int main(int argc, char *argv[]){
                                 }
                                 RouteDistance += cost.getCost(TmpRouteList->getRoute(i,j),TmpRouteList->getRoute(i,j+1));
                                 // 論文8の式
+                                // *tempconstr = DepartureTime[TmpRouteList->getRoute(i,j)] + 10.0 + cost.getCost(TmpRouteList->getRoute(i,j),TmpRouteList->getRoute(i,j+1)) <= DepartureTime[TmpRouteList->getRoute(i,j+1)];
+                                // constrname = "constr"+to_string(i)+ "_" + to_string(j);
+                                // RouteOrderConstr.push_back(model.addConstr(*tempconstr,constrname));
+                            }
+                        }
+                        // 順番の制約
+                        for(i=0;i<TmpRouteList->getRouteListSize();i++){
+                           for(j=1;j<TmpRouteList->getRouteSize(i)-2;j++){
                                 *tempconstr = DepartureTime[TmpRouteList->getRoute(i,j)] + 10.0 + cost.getCost(TmpRouteList->getRoute(i,j),TmpRouteList->getRoute(i,j+1)) <= DepartureTime[TmpRouteList->getRoute(i,j+1)];
                                 constrname = "constr"+to_string(i)+ "_" + to_string(j);
                                 RouteOrderConstr.push_back(model.addConstr(*tempconstr,constrname));
-                            }
-                        }
-                        // デポの時刻DepotTimeとの制約も追加
-                        for(i=0;i<TmpRouteList->getRouteListSize();i++){
-                            RouteDistance += cost.getCost(0,TmpRouteList->getRoute(i,1));
-                            RouteDistance += cost.getCost(TmpRouteList->getRouteSize(i)-2,0);
+                           }
+                        } 
+                        for (i=0;i<TmpRouteList->getRouteListSize();i++){
                             // デポと1番目の制約
                             *tempconstr = DepotTime[i] + cost.getCost(0,TmpRouteList->getRoute(i,1)) <= DepartureTime[TmpRouteList->getRoute(i,1)];
                             constrname = to_string(i) + "constr_depot_1";
@@ -478,9 +490,27 @@ int main(int argc, char *argv[]){
                             *tempconstr = DepartureTime[TmpRouteList->getRoute(i,TmpRouteList->getRouteSize(i)-2)] + 10.0 + cost.getCost(TmpRouteList->getRoute(i,TmpRouteList->getRouteSize(i)-2),0) == DepotTime[i+m];
                             constrname = to_string(i) + "constr_last_depot";
                             RouteOrderConstr.push_back(model.addConstr(*tempconstr,constrname));
+                        }
+                        // デポの時刻DepotTimeとの制約も追加
+                        for(i=0;i<TmpRouteList->getRouteListSize();i++){
+                            RouteDistance += cost.getCost(0,TmpRouteList->getRoute(i,1));
+                            RouteDistance += cost.getCost(TmpRouteList->getRouteSize(i)-2,0);
+                            // // デポと1番目の制約
+                            // *tempconstr = DepotTime[i] + cost.getCost(0,TmpRouteList->getRoute(i,1)) <= DepartureTime[TmpRouteList->getRoute(i,1)];
+                            // constrname = to_string(i) + "constr_depot_1";
+                            // RouteOrderConstr.push_back(model.addConstr(*tempconstr,constrname));
+                            // // 最後とデポの制約
+                            // *tempconstr = DepartureTime[TmpRouteList->getRoute(i,TmpRouteList->getRouteSize(i)-2)] + 10.0 + cost.getCost(TmpRouteList->getRoute(i,TmpRouteList->getRouteSize(i)-2),0) == DepotTime[i+m];
+                            // constrname = to_string(i) + "constr_last_depot";
+                            // RouteOrderConstr.push_back(model.addConstr(*tempconstr,constrname));
                         }  
                         // LP実行(optimize)
-                        model.optimize();
+                        if (f==1 && s == 1){
+                            cout << "f=1,s=1" << endl;
+                            model.optimize();
+                        }else{
+                            model.optimize();
+                        }
                         search_count++;
                         try {
                             // ペナルティを計算して比較
