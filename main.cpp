@@ -467,10 +467,6 @@ int main(int argc, char *argv[]){
                                     QP += current_person-6;
                                 }
                                 RouteDistance += cost.getCost(TmpRouteList->getRoute(i,j),TmpRouteList->getRoute(i,j+1));
-                                // 論文8の式
-                                // *tempconstr = DepartureTime[TmpRouteList->getRoute(i,j)] + 10.0 + cost.getCost(TmpRouteList->getRoute(i,j),TmpRouteList->getRoute(i,j+1)) <= DepartureTime[TmpRouteList->getRoute(i,j+1)];
-                                // constrname = "constr"+to_string(i)+ "_" + to_string(j);
-                                // RouteOrderConstr.push_back(model.addConstr(*tempconstr,constrname));
                             }
                         }
                         // 順番の制約
@@ -491,18 +487,12 @@ int main(int argc, char *argv[]){
                             constrname = to_string(i) + "constr_last_depot";
                             RouteOrderConstr.push_back(model.addConstr(*tempconstr,constrname));
                         }
+                        // 順番の制約おわり
+
                         // デポの時刻DepotTimeとの制約も追加
                         for(i=0;i<TmpRouteList->getRouteListSize();i++){
                             RouteDistance += cost.getCost(0,TmpRouteList->getRoute(i,1));
                             RouteDistance += cost.getCost(TmpRouteList->getRouteSize(i)-2,0);
-                            // // デポと1番目の制約
-                            // *tempconstr = DepotTime[i] + cost.getCost(0,TmpRouteList->getRoute(i,1)) <= DepartureTime[TmpRouteList->getRoute(i,1)];
-                            // constrname = to_string(i) + "constr_depot_1";
-                            // RouteOrderConstr.push_back(model.addConstr(*tempconstr,constrname));
-                            // // 最後とデポの制約
-                            // *tempconstr = DepartureTime[TmpRouteList->getRoute(i,TmpRouteList->getRouteSize(i)-2)] + 10.0 + cost.getCost(TmpRouteList->getRoute(i,TmpRouteList->getRouteSize(i)-2),0) == DepotTime[i+m];
-                            // constrname = to_string(i) + "constr_last_depot";
-                            // RouteOrderConstr.push_back(model.addConstr(*tempconstr,constrname));
                         }  
                         // LP実行(optimize)
                         if (f==1 && s == 1){
