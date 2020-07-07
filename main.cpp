@@ -270,7 +270,7 @@ int main(int argc, char *argv[]){
         // 初期解のルート内近傍
         for (int RouteIndex=0;RouteIndex<m;RouteIndex++){ //車両ごと
             cout << "RouteIndex:" <<RouteIndex << " " << pow((routelist.getRouteSize(RouteIndex)-2),2)*2 << endl;
-            for (int neighborhood=0;neighborhood<pow((routelist.getRouteSize(RouteIndex)-2),2);neighborhood++){ //近傍サイズを探索
+            for (int neighborhood=0;neighborhood<pow((routelist.getRouteSize(RouteIndex)-2),2)*2;neighborhood++){ //近傍サイズを探索
                 RouteList *TmpRouteList;
                 TmpRouteList = new RouteList(m); //メモリの確保
                 GRBTempConstr *tempconstr;
