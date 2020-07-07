@@ -270,7 +270,7 @@ int main(int argc, char *argv[]){
         // 初期解のルート内近傍
         for (int RouteIndex=0;RouteIndex<m;RouteIndex++){ //車両ごと
             cout << "RouteIndex:" <<RouteIndex << " " << pow((routelist.getRouteSize(RouteIndex)-2),2)*2 << endl;
-            for (int neighborhood=0;neighborhood<pow((routelist.getRouteSize(RouteIndex)-2),2)*2;neighborhood++){ //近傍サイズを探索
+            for (int neighborhood=0;neighborhood<pow((routelist.getRouteSize(RouteIndex)-2),2);neighborhood++){ //近傍サイズを探索
                 RouteList *TmpRouteList;
                 TmpRouteList = new RouteList(m); //メモリの確保
                 GRBTempConstr *tempconstr;
@@ -419,6 +419,8 @@ int main(int argc, char *argv[]){
 
         // /*
         // 挿入
+        int AllCnt = 0;
+        int notGoodCnt = 0;
         while(NeighrListCount<NeighborList.size()){
         // while(NeighrListCount<4){
             cout << "顧客" << NeighborList[NeighrListCount].first << "を車両" << NeighborList[NeighrListCount].second <<"を挿入" << endl;
@@ -432,6 +434,7 @@ int main(int argc, char *argv[]){
             beforeindex = OuterRoutelist.Outer_Relocate(n,m,NeighborList[NeighrListCount].first);
             afterindex = NeighborList[NeighrListCount].second;
             NeighrListCount += 1;
+            AllCnt += 1;
             if (beforeindex == afterindex) {
                 cout << "beforeとafterのindexが同じ" << endl;
                 continue;
@@ -550,12 +553,15 @@ int main(int argc, char *argv[]){
                                     // BestTotalPenalty = TmpTotalPenalty;
                                     TmpRouteDistance = RouteDistance;
                                     TmpBestPenalty = model.get(GRB_DoubleAttr_ObjVal);
-                                    if (TmpTotalPenalty < BestTotalPenalty){
-                                        isBetter = true;
-                                    }
+                                    // if (TmpTotalPenalty < BestTotalPenalty){
+                                    //     isBetter = true;
+                                    // }
                                 }
                             }
-                            model.write("myfile.lp");
+                            // model.write("myfile.lp");
+                            // if (notGoodCnt==1){
+                            //     return 0;
+                            // }
                             // for(i=0;i<TmpRouteList->getRouteListSize();i++){
                             //     for(j=0;j<TmpRouteList->getRouteSize(i);j++){
                             //         cout << TmpRouteList->getRoute(i,j) << " ";
@@ -572,7 +578,7 @@ int main(int argc, char *argv[]){
                                 }
                                 cout << endl;
                             }
-                            return 0;
+                            notGoodCnt += 1;
                         }
                         // 悪い解ならなにもしない
                         // ルートの制約をremove
@@ -586,7 +592,7 @@ int main(int argc, char *argv[]){
                         //TmpRouteListクラスのメモリ解放
                         delete TmpRouteList; 
                         if (isBetter) {
-                            cout << "途中でいい解を発見" << endl;
+                            // cout << "途中でいい解を発見" << endl;
                             break;
                         }
                     }
@@ -609,12 +615,14 @@ int main(int argc, char *argv[]){
                 BestTotalPenalty = TmpTotalPenalty;
                 BestRouteDistance = TmpRouteDistance;
                 BestPenalty =  TmpBestPenalty;
-                for(i=0;i<bestroutelist.getRouteListSize();i++){
-                    for(j=0;j<bestroutelist.getRouteSize(i);j++){
-                        cout << bestroutelist.getRoute(i,j) << " ";
-                    }
-                    cout << endl;
-                }
+                // for(i=0;i<bestroutelist.getRouteListSize();i++){
+                //     for(j=0;j<bestroutelist.getRouteSize(i);j++){
+                //         cout << bestroutelist.getRoute(i,j) << " ";
+                //     }
+                //     cout << endl;
+                // }
+                // random_shuffle(NeighborList.begin(),NeighborList.end()); //近傍リストをシャッフル
+                // NeighrListCount = 0;
             } else{
                     cout << "よくない" << endl;
                     routelist = bestroutelist;
@@ -806,7 +814,7 @@ int main(int argc, char *argv[]){
         }
         */
 
-        cout << "総カウント数:" << search_count << endl;
+        cout << "総カウント数:" << AllCnt << endl;
         cout << "n:" << n << " m:" << m << endl;
         cout << "インスタンス:" << inputfile << endl;
         cout << "係数β:" << BETA << endl;
