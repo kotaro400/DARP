@@ -81,7 +81,6 @@ int main(int argc, char *argv[]){
         GRBEnv env=GRBEnv(true);
         env.set("LogFile", "mip1.log");
         env.start();
-        cout << "yahho" << endl;
         vector<GRBModel> modelList;
         for(int i=0;i<m;i++){
             GRBModel modeli = GRBModel(env);
@@ -125,6 +124,7 @@ int main(int argc, char *argv[]){
                 DepotTimeArr[j][i] = modelList[j].addVar(0.0,(double)inputdata.getLatestArrivalDepotTime(),0.0,GRB_CONTINUOUS,tmp);
             }
         }
+
         for(i=m;i<2*m;i++){
             tmp = "de_"+to_string(i);
             for(j=0;j<m;j++){
@@ -148,7 +148,6 @@ int main(int argc, char *argv[]){
                 RideTimePenaltyArr[j][i] = modelList[j].addVar(0.0,(double)inputdata.getLatestArrivalDepotTime(),0.0,GRB_CONTINUOUS,tmp);
             }
         }
-        cout << "yahho2" << endl;
         // ここまで変数とペナルティ変数を定義
 
         // 出発時刻のペナルティを取得 区分数は4
