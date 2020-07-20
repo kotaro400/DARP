@@ -94,6 +94,7 @@ int main(int argc, char *argv[]){
         GRBVar DepartureTimePenalty[2*n+1];
         GRBVar RideTimePenalty[n+1];
 
+
         GRBVar DepartureTimeArr[m][2*n+1];
         GRBVar DepotTimeArr[m][2*m];
         GRBVar RideTimeArr[m][n+1];
@@ -150,6 +151,7 @@ int main(int argc, char *argv[]){
         }
         // ここまで変数とペナルティ変数を定義
 
+
         // 出発時刻のペナルティを取得 区分数は4
         double departureX[2*n+1][4];
         double departureY[2*n+1][4];
@@ -165,12 +167,14 @@ int main(int argc, char *argv[]){
                 departureY[i][j] = inputdata.getDropoffPointer(i-n)->getDropoffPenaltyYValue(j);
             }
         }
+
         // 出発時刻に関する区分線形関数を追加
         for (j=0;j<m;j++){
             for(i=1;i<=2*n;i++){
-                modelList[j].addGenConstrPWL(DepartureTime[i],DepartureTimePenalty[i],4,departureX[i],departureY[i],"pwl");
+                modelList[j].addGenConstrPWL(DepartureTimeArr[j][i],DepartureTimePenaltyArr[j][i],4,departureX[i],departureY[i],"pwl");
             }
         }
+
         for(i=1;i<=2*n;i++){
             model.addGenConstrPWL(DepartureTime[i],DepartureTimePenalty[i],4,departureX[i],departureY[i],"pwl");
         }
@@ -184,14 +188,28 @@ int main(int argc, char *argv[]){
             objection += RideTimePenalty[i];
         }
         model.setObjective(objection, GRB_MINIMIZE);
-        for (i=0;i<m;i++){
-            modelList[i].setObjective(objection,GRB_MINIMIZE);
+
+
+        GRBLinExpr objectionArr[m];
+        for(j=0;j<m;j++){
+            for(i=1;i<=2*n;i++){
+                objectionArr[j] += DepartureTimePenaltyArr[j][i];
+            }
+            for(i=1;i<=n;i++){
+                objectionArr[j] += RideTimePenaltyArr[j][i];
+            }
+        }
+        for (j=0;j<m;j++){
+            modelList[j].setObjective(objectionArr[j],GRB_MINIMIZE);
         }
 
         // 乗車時間の定義 rt_i = t_i+n -t_i （制約として追加)
         for (i=1;i<=n;i++){
             tmp = "RideConst"+to_string(i);
             model.addConstr(RideTime[i] == DepartureTime[i+n]-DepartureTime[i]-10,tmp);
+            for (j=0;j<m;j++){
+                modelList[j].addConstr(RideTimeArr[j][i] == DepartureTimeArr[j][i+n]-DepartureTimeArr[j][i]-10,tmp);
+            }
         }
 
         // 乗車時間の区分線形関数を取得 区分数は3つ
@@ -212,7 +230,13 @@ int main(int argc, char *argv[]){
         for(i=1;i<=n;i++){
             model.addGenConstrPWL(RideTime[i],RideTimePenalty[i],3,ridetimeX[i],ridetimeY[i],"rtpwl");
         }
+        for (j=0;j<m;j++){
+            for (i=1;i<=n;i++){
+                modelList[j].addGenConstrPWL(RideTimeArr[j][i],RideTimePenaltyArr[j][i],3,ridetimeX[i],ridetimeY[i],"rtpwl");
+            }
+        }
 
+    
         // ここまでの設定は最適化の中で不変
         // ここからはイテレーションごとに変化する設定
 
@@ -757,6 +781,7 @@ int main(int argc, char *argv[]){
             }
         }
         */
+
 
         cout << "総カウント数:" << search_count << endl;
         cout << "n:" << n << " m:" << m << endl;
