@@ -315,7 +315,10 @@ int main(int argc, char *argv[]){
             RouteOrderConstrVec[i].push_back(modelList[i].addConstr(*tempconstr,constrname));
         }
 
-
+        // 初期解のペナルティを計算
+        for (i=0;i<m;i++){
+            modelList[i].set(GRB_IntParam_OutputFlag, 0); //ログの出力をoff
+        }
         for (i=0;i<m;i++){
             modelList[i].optimize();
             PenaltyVec[i] = modelList[i].get(GRB_DoubleAttr_ObjVal);
@@ -338,10 +341,10 @@ int main(int argc, char *argv[]){
         cout << "RouteDistance:" << RouteDistance << endl;
         cout << "penalty: " << Penalty << endl;
 
-        TotalPenalty = ALPHA*RouteDistance + BETA*model.get(GRB_DoubleAttr_ObjVal);
+        TotalPenalty = ALPHA*RouteDistance + BETA*Penalty;
         BestTotalPenalty = TotalPenalty;
         BestRouteDistance = RouteDistance;
-        BestPenalty = model.get(GRB_DoubleAttr_ObjVal);
+        BestPenalty = Penalty;
         // ここでルートの順番の制約をremove
         for(i=0;i<RouteOrderConstr.size();i++){
             model.remove(RouteOrderConstr[i]);
@@ -349,15 +352,6 @@ int main(int argc, char *argv[]){
         //RouteOrderConstrとtempconstrのメモリ解放
         delete tempconstr;
         vector<GRBConstr>().swap(RouteOrderConstr);
-
-        // worstPosition = 1; 
-        // tmpPenalty = 0;
-        // for(i=1;i<=2*n;i++){
-        //     if (DepartureTimePenalty[i].get(GRB_DoubleAttr_X) > tmpPenalty){
-        //         worstPosition = i;
-        //         tmpPenalty = DepartureTimePenalty[i].get(GRB_DoubleAttr_X);
-        //     }
-        // }
         for(i=0;i<routelist.getRouteListSize();i++){
             for(j=0;j<routelist.getRouteSize(i);j++){
                 cout << routelist.getRoute(i,j) << " ";
@@ -372,6 +366,7 @@ int main(int argc, char *argv[]){
         bool recent_changed_flag[m];
         for (int tmp=0;tmp<m;tmp++) recent_changed_flag[tmp] = true;
         double QP;
+        vector<double> QPVec(m,0);
         int search_count = 0;
         double PenaltyArray[m];
         // /*
