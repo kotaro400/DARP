@@ -10,6 +10,7 @@
 #include "myfunction.hpp"
 #include <gurobi_c++.h>
 #include "cpu_time.c"
+#include <numeric>
 using namespace std;
 
 
@@ -236,7 +237,7 @@ int main(int argc, char *argv[]){
             }
         }
 
-    
+
         // ここまでの設定は最適化の中で不変
         // ここからはイテレーションごとに変化する設定
 
@@ -247,7 +248,7 @@ int main(int argc, char *argv[]){
         GRBTempConstr *tempconstr;
         tempconstr = new GRBTempConstr;
         string constrname; //制約の名前付け これは重要じゃない
-        double tmp_double;
+        // double tmp_double;
         for(i=0;i<routelist.getRouteListSize();i++){
             for(j=1;j<routelist.getRouteSize(i)-2;j++){ 
                 // 1から始めるのは最初のデポは別で設定するから 
@@ -279,14 +280,63 @@ int main(int argc, char *argv[]){
             model.addConstr(480 >= DepotTime[i+m]-DepotTime[i],tmp);
         }
 
+
+
+        // ここからルートの制約を車両数分持つモデル
+        vector<double> RouteDistanceVec(m,0); //RouteDistanceはイテレーション毎に0で初期化
+        vector<double> PenaltyVec(m,0);
+        vector<vector<GRBConstr> > RouteOrderConstrVec;
+        for(i=0;i<m;i++){
+            vector<GRBConstr> tmp;
+            RouteOrderConstrVec.push_back(tmp);
+        }
+        // GRBTempConstr *tempconstr;
+        // tempconstr = new GRBTempConstr;
+        // string constrname; //制約の名前付け これは重要じゃない
+        for (i=0;i<routelist.getRouteListSize();i++){
+            for(j=1;j<routelist.getRouteSize(i)-2;j++){
+                RouteDistanceVec[i] += cost.getCost(routelist.getRoute(i,j),routelist.getRoute(i,j+1));
+                *tempconstr = DepartureTimeArr[i][routelist.getRoute(i,j)] + 10.0 +  cost.getCost(routelist.getRoute(i,j),routelist.getRoute(i,j+1)) <= DepartureTimeArr[i][routelist.getRoute(i,j+1)];
+                constrname = "constr"+to_string(i)+ "_" + to_string(j);
+                RouteOrderConstrVec[i].push_back(modelList[i].addConstr(*tempconstr,constrname));
+            }
+        }
+        // デポの時刻DepotTimeとの制約も追加
+        for(i=0;i<routelist.getRouteListSize();i++){
+            RouteDistanceVec[i] += cost.getCost(0,routelist.getRoute(i,1)); //i番目の車両の1番目
+            RouteDistanceVec[i] += cost.getCost(routelist.getRoute(i,routelist.getRouteSize(i)-2),0);//i番目の車両のデポを除く最後
+            // デポと1番目の制約
+            *tempconstr = DepotTimeArr[i][i] +  cost.getCost(0,routelist.getRoute(i,1)) <= DepartureTimeArr[i][routelist.getRoute(i,1)];
+            constrname = to_string(i) + "constr_depot_1";
+            RouteOrderConstrVec[i].push_back(modelList[i].addConstr(*tempconstr,constrname));
+            // 最後とデポの制約
+            *tempconstr = DepartureTimeArr[i][routelist.getRoute(i,routelist.getRouteSize(i)-2)] + 10.0 +  cost.getCost(routelist.getRoute(i,routelist.getRouteSize(i)-2),0) == DepotTimeArr[i][i+m];
+            constrname = to_string(i) + "constr_last_depot";
+            RouteOrderConstrVec[i].push_back(modelList[i].addConstr(*tempconstr,constrname));
+        }
+
+
+        for (i=0;i<m;i++){
+            modelList[i].optimize();
+            PenaltyVec[i] = modelList[i].get(GRB_DoubleAttr_ObjVal);
+        }
+        RouteDistance = accumulate(RouteDistanceVec.begin(),RouteDistanceVec.end(),0.0);
+        double Penalty = accumulate(PenaltyVec.begin(),PenaltyVec.end(),0.0);
+
+
+        
+        
+
+        
+
         // 計算開始時間
         double starttime = cpu_time();
         // optimize
         model.set(GRB_IntParam_OutputFlag, 0); //ログの出力をoff
         model.optimize();
 
-        cout << "RouteDistance:" <<RouteDistance << endl;
-        cout << "penalty: " << model.get(GRB_DoubleAttr_ObjVal) << endl;
+        cout << "RouteDistance:" << RouteDistance << endl;
+        cout << "penalty: " << Penalty << endl;
 
         TotalPenalty = ALPHA*RouteDistance + BETA*model.get(GRB_DoubleAttr_ObjVal);
         BestTotalPenalty = TotalPenalty;
