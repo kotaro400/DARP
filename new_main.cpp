@@ -589,8 +589,11 @@ int main(int argc, char *argv[]){
             RouteOrderConstrVec[beforeindex].push_back(modelList[beforeindex].addConstr(*tempconstr,constrname));
             modelList[beforeindex].optimize();
             // modelList[beforeindex].write("myfile_before.lp");
-            
-            PenaltyVec[beforeindex] = modelList[beforeindex].get(GRB_DoubleAttr_ObjVal);
+            try{
+                PenaltyVec[beforeindex] = modelList[beforeindex].get(GRB_DoubleAttr_ObjVal);
+            }catch(GRBException e){
+                cout << "no solution" << endl;
+            }
             for(i=0;i<RouteOrderConstrVec[beforeindex].size();i++){    
                 modelList[beforeindex].remove(RouteOrderConstrVec[beforeindex][i]);
             }
@@ -643,15 +646,16 @@ int main(int argc, char *argv[]){
                         
                         // LP実行(optimize)
                         modelList[afterindex].optimize();
-                        // modelList[afterindex].write("myfile_after.lp");
+                        modelList[afterindex].write("myfile.lp");
                         search_count++;
-
                         RouteDistance = accumulate(RouteDistanceVec.begin(),RouteDistanceVec.end(),0.0);
-                        PenaltyVec[afterindex] = modelList[afterindex].get(GRB_DoubleAttr_ObjVal);
-                        Penalty = accumulate(PenaltyVec.begin(),PenaltyVec.end(),0.0);
+                        // PenaltyVec[afterindex] = modelList[afterindex].get(GRB_DoubleAttr_ObjVal);
+                        // Penalty = accumulate(PenaltyVec.begin(),PenaltyVec.end(),0.0);
                 
 
                         try {
+                            PenaltyVec[afterindex] = modelList[afterindex].get(GRB_DoubleAttr_ObjVal);
+                            Penalty = accumulate(PenaltyVec.begin(),PenaltyVec.end(),0.0);
                             // ペナルティを計算して比較
                             // 良い解の場合 
                             if (ALPHA*RouteDistance + BETA*Penalty + GAMMA*QP < TmpTotalPenalty){
