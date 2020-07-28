@@ -545,8 +545,7 @@ int main(int argc, char *argv[]){
 
         // /*
         // 挿入
-        // while(NeighrListCount<NeighborList.size()){
-            while(NeighrListCount<1){
+        while(NeighrListCount<NeighborList.size()){
 
             cout << NeighborList[NeighrListCount].first << "  " << NeighborList[NeighrListCount].second <<"を挿入"  << " 回数:" << NeighrListCount <<endl;
             TmpTotalPenalty = 100000000000000000.0;
