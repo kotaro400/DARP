@@ -540,9 +540,12 @@ int main(int argc, char *argv[]){
         tuple<int,int> Tuple_swap;
         int SwapCount = 0;
 
+        int Cnt = 0;
+
         // /*
         // 挿入
         while(NeighrListCount<NeighborList.size()){
+
             cout << NeighborList[NeighrListCount].first << "  " << NeighborList[NeighrListCount].second <<"を挿入"  << " 回数:" << NeighrListCount <<endl;
             TmpTotalPenalty = 100000000000000000.0;
             OuterRoutelist = routelist;
@@ -553,6 +556,7 @@ int main(int argc, char *argv[]){
             beforeindex = OuterRoutelist.Outer_Relocate(n,m,NeighborList[NeighrListCount].first);
             afterindex = NeighborList[NeighrListCount].second;
             NeighrListCount += 1;
+            Cnt += 1;
             if (beforeindex == afterindex) {
                 cout << "beforeとafterのindexが同じ" << endl;
                 continue;
@@ -712,6 +716,8 @@ int main(int argc, char *argv[]){
                 //     }
                 //     cout << endl;
                 // }
+                NeighrListCount = 0;
+                random_shuffle(NeighborList.begin(),NeighborList.end()); 
             } else{
                 cout << "よくない" << endl;
                 routelist = bestroutelist;
@@ -913,6 +919,7 @@ int main(int argc, char *argv[]){
         cout << "RouteDistance: " << BestRouteDistance << endl;
         cout << "bestpena:"<<BestPenalty << endl;
         cout << "NeighbohList:" << NeighborList.size() << endl;
+        cout << "AllCnt: " << Cnt << endl;
         cout << "改善回数:" << ImprovedNumber << endl;
  
  
