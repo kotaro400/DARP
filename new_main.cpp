@@ -11,6 +11,7 @@
 #include <gurobi_c++.h>
 #include "cpu_time.c"
 #include <numeric>
+#include <fstream>
 using namespace std;
 
 
@@ -910,6 +911,9 @@ int main(int argc, char *argv[]){
             }
         }
         */
+       string filename = "result/" + inputfile + ".txt";
+       cout << filename << endl;
+       ofstream outputfile(filename);
 
 
         cout << "総カウント数:" << search_count << endl;
@@ -921,7 +925,17 @@ int main(int argc, char *argv[]){
         cout << "NeighbohList:" << NeighborList.size() << endl;
         cout << "AllCnt: " << Cnt << endl;
         cout << "改善回数:" << ImprovedNumber << endl;
- 
+
+        outputfile << "総カウント数:" << search_count << "\n";
+        outputfile << "n:" << n << " m:" << m << "\n";
+        outputfile << "インスタンス:" << inputfile << "\n";
+        outputfile << "係数β:" << BETA << "\n";
+        outputfile << "RouteDistance: " << BestRouteDistance << "\n";
+        outputfile << "bestpena:"<<BestPenalty << "\n";
+        outputfile << "NeighbohList:" << NeighborList.size() << "\n";
+        outputfile << "AllCnt: " << Cnt << "\n";
+        outputfile << "改善回数:" << ImprovedNumber << "\n";
+        outputfile.close();
  
         // for(i=1;i<=2*n;i++){
         //      cout << DepartureTime[i].get(GRB_StringAttr_VarName) << " "
