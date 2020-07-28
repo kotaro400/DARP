@@ -935,7 +935,6 @@ int main(int argc, char *argv[]){
         outputfile << "NeighbohList:" << NeighborList.size() << "\n";
         outputfile << "AllCnt: " << Cnt << "\n";
         outputfile << "改善回数:" << ImprovedNumber << "\n";
-        outputfile.close();
  
         // for(i=1;i<=2*n;i++){
         //      cout << DepartureTime[i].get(GRB_StringAttr_VarName) << " "
@@ -952,6 +951,8 @@ int main(int argc, char *argv[]){
         double endtime = cpu_time();
 
         cout << "時間:" << endtime -starttime << endl;
+        outputfile << "時間:" << endtime -starttime << "\n";
+        outputfile.close();
         // for(i=0;i<m;i++){
         //     cout << i << " " << DepotTime[i].get(GRB_DoubleAttr_X) << " "
         //     << DepotTime[i+m].get(GRB_DoubleAttr_X) << " " << 
