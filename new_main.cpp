@@ -965,9 +965,6 @@ int main(int argc, char *argv[]){
         outputfile.close();
 
         
-    // } catch (GRBException e) {
-    //     cout << "Error code = " << e.getErrorCode() << endl;
-    //     cout << e.getMessage() << endl;
     } catch (...) {
         cout << "Error during optimization" << endl;
     }
