@@ -545,7 +545,8 @@ int main(int argc, char *argv[]){
 
         // /*
         // 挿入
-        while(NeighrListCount<NeighborList.size()){
+        // while(NeighrListCount<NeighborList.size()){
+            while(NeighrListCount<1){
 
             cout << NeighborList[NeighrListCount].first << "  " << NeighborList[NeighrListCount].second <<"を挿入"  << " 回数:" << NeighrListCount <<endl;
             TmpTotalPenalty = 100000000000000000.0;
@@ -952,18 +953,17 @@ int main(int argc, char *argv[]){
 
         cout << "時間:" << endtime -starttime << endl;
         outputfile << "時間:" << endtime -starttime << "\n";
-        outputfile.close();
-        // for(i=0;i<m;i++){
-        //     cout << i << " " << DepotTime[i].get(GRB_DoubleAttr_X) << " "
-        //     << DepotTime[i+m].get(GRB_DoubleAttr_X) << " " << 
-        //     DepotTime[i+m].get(GRB_DoubleAttr_X)-DepotTime[i].get(GRB_DoubleAttr_X) << endl;
-        // }
+        
         for(i=0;i<bestroutelist.getRouteListSize();i++){
             for(j=0;j<bestroutelist.getRouteSize(i);j++){
                 cout << bestroutelist.getRoute(i,j) << " ";
+                outputfile << bestroutelist.getRoute(i,j) << " ";
             }
             cout << endl;
+            outputfile << "\n";
         }
+
+        outputfile.close();
 
         
     // } catch (GRBException e) {
