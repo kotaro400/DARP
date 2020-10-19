@@ -53,6 +53,8 @@ INPUT /usr/local/texlive/2019/texmf-dist/tex/latex/algorithms/algorithmic.sty
 INPUT /usr/local/texlive/2019/texmf-dist/tex/latex/algorithms/algorithmic.sty
 INPUT /usr/local/texlive/2019/texmf-dist/tex/latex/tools/enumerate.sty
 INPUT /usr/local/texlive/2019/texmf-dist/tex/latex/tools/enumerate.sty
+INPUT /usr/local/texlive/2019/texmf-dist/tex/latex/graphics/lscape.sty
+INPUT /usr/local/texlive/2019/texmf-dist/tex/latex/graphics/lscape.sty
 INPUT takeda_ils.aux
 INPUT takeda_ils.aux
 OUTPUT takeda_ils.aux
@@ -136,5 +138,8 @@ INPUT /usr/local/texlive/2019/texmf-dist/fonts/tfm/public/txfonts/txexa.tfm
 INPUT /usr/local/texlive/2019/texmf-dist/fonts/tfm/public/txfonts/txexa.tfm
 INPUT /usr/local/texlive/2019/texmf-dist/fonts/tfm/uptex-fonts/jis/upjisr-v.tfm
 INPUT /usr/local/texlive/2019/texmf-dist/fonts/tfm/uptex-fonts/jis/upjisr-v.tfm
+INPUT /usr/local/texlive/2019/texmf-dist/fonts/tfm/public/txfonts/txr.tfm
+INPUT /usr/local/texlive/2019/texmf-dist/fonts/tfm/uptex-fonts/jis/upjisr-v.tfm
+INPUT /usr/local/texlive/2019/texmf-dist/fonts/tfm/uptex-fonts/jis/upjisr-h.tfm
 INPUT /usr/local/texlive/2019/texmf-dist/fonts/tfm/public/txfonts/txr.tfm
 INPUT takeda_ils.aux

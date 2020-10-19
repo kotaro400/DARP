@@ -9,6 +9,7 @@
                       %通常のLaTeXのフォントにしたいときはこれをコメントアウトする．
 \usepackage{algorithm,algorithmic}
 \usepackage{enumerate}
+\usepackage{lscape}
 
 \pagestyle{plain} %ページ番号のスタイル
 \urlstyle{same}   %\urlコマンドのフォント指定．"tt"，"rm"，"sf"，"same"(=使用中のフォント)
@@ -56,11 +57,11 @@
  {\LARGE \textbf{時間枠及び乗車時間ペナルティ付き乗合タクシー問題に対する反復局所探索法}}\\
  %\vspace{5mm}
  {\Large 竹田 陽} \\
- 2020年6月2日
+ 2020年10月26日
 \end{center}
 \begin{quote}
  \textbf{Abstract．}
- The dial-a-ride problem (DARP) consists of designing vehicle routes and schedules for multiple users who specify pickup and delivery requests between origins and destination．The aim is to design a set of minimun cost vehicle route while accommodating all requests．Side constraints include vechile capacity，route duration，maximum ride time，etc．DARP arises in share taxi service or transporting people in health care service．A number of papers about DARP has been published，however，most of the previous research deal with time windows and maximum ride time as hard constraints．In this study，we consider with the DARP where time windows and maximum ride time are soft constraints．These soft constraints make the DARP more generic．We propose an iterated local search algorithm on request vertices to find a solution to the problem．
+ The dial-a-ride problem (DARP) consists of designing vehicle routes and schedules for multiple users who specify pickup and delivery requests between origins and destination．The aim is to design a set of minimun cost vehicle route while accommodating all requests．Side constraints include vechile capacity，route duration，maximum ride time，etc．DARP arises in share taxi service or transporting people in health care service．A number of papers about DARP has been published，however，most of the previous research deal with time windows and maximum ride time as hard constraints．In this study，we consider with the DARP where time windows and maximum ride time are soft constraints．These soft constraints make the DARP more generic．We propose several approaches to find optimal service times at each visiting point.
 \end{quote}
 \vspace{5mm}
 ]
@@ -202,27 +203,15 @@ $\gamma$を定数とすると，ペナルティを加えた評価関数を$f(\si
  \end{algorithmic}
 \end{algorithm}
 
-\subsection{{\large 反復局所探索法}}
-反復局所探索法とは，局所探索を行い得られた解に小さな変形を施すことによって得られた解を初期解として再び探索を行うという操作を繰り返す操作のことをいう．
-解に小さな変形を施す操作を．kickと呼ぶ．
-DARPに対する反復局所探索法に基づく解法を提案する．
-概要を以下に示す．
+\subsection{{\large 最適なサービス開始時刻決定}}
+本研究では，各頂点でのサービス開始時刻を線形計画問題として定式化を行い，Gurobi Optimizer (ver 9.0.0) をLPソルバーとして使用している.
+しかし現在は探索1回ごとにサービス時刻を決定するLPを解いているため，計算に多くの時間を要している．この計算時間の長さによって，ヒューリスティックの手法のアプローチをとれていないため，3つのGurobi Optimizerのモデルの持ち方を提案し，計算実験を行う．以下に3つを示す．
 
-\begin{algorithm}
- \caption{反復局所探索法}
- \label{algo1}
- \begin{algorithmic}[1]%1を0にすると行番号なし．
-  \STATE $x := x_{\rm init}$とする．
-  \WHILE{終了条件を満たしていない}
-  \STATE $x := 局所探索で得られた解$
-  \STATE $x_{\rm best} := 現時点での最良解$
-  \STATE $x := kick(x_{\rm best})$
-  \ENDWHILE
-  \STATE $x_{\rm best}$を局所最適解として出力して終了．
- \end{algorithmic}
-\end{algorithm}
-
-今後，kickの方法について考察していく．
+\begin{enumerate}
+  \item すべての車両の情報をひとつのモデルに保持し，探索ごとにすべての車両の各頂点においての時刻を再決定
+  \item 車両ごとにモデルを保持し，探索ごとに変更のあった車両の各頂点における時刻を再決定
+  \item すべての車両の情報をひとつのモデルに保持し，探索ごとに変更のあった頂点に対して時刻を再決定
+\end{enumerate}
 
 \section{計算実験}
 \subsection{実験環境}
@@ -243,9 +232,12 @@ DARPでは多くの既存研究があるが，本研究では時間枠及び乗�
 以上の特徴を持つリクエスト数24から144のインスタンスを使用して計算実験を行う．
 
 \subsection{実験結果}
-今後，実験を行い提案手法の有効性を確認する．
+Gurobi Optimizerにおける3つのモデルの持ち方による計算時間及び目的関数の最良値を表\ref{gurobi}に示す．近傍操作には，挿入近傍を用いた．また，目的関数におけるペナルティを $α=1, β=500$とする．
 
-．
+3つの異なるモデルの持ち方を実装したが，計算時間に大きな違いは見られなかった．
+また，ルートの総距離とペナルティの違いに関しては，実装のランダム性における局所最適解の精度の差異だと考えられる．
+
+
 \section{まとめと今後の課題}
 時間枠及び乗車時間ペナルティ付き乗合タクシー問題に対して，反復局所探索法による解法を提案した．
 今後の研究計画としては，kickの方法などについて考察していきたい．
@@ -258,6 +250,27 @@ DARPでは多くの既存研究があるが，本研究では時間枠及び乗�
   \bibitem{insertion} Jang-Jei Jaw，Amedeo R Odoni，Harilaos N Psaraftis and Nigel H．M．Wilson \，A heuristic algorithm for the multi-vehicle advance request dial-a-ride problem with time windows．Transportation Research Part B: Methodological．Vol．20，No．3，pp．243-2435，1986．
   \bibitem{TSP} 柳浦睦憲，茨木俊秀，組合せ最適化 メタ戦略を中心として，朝倉書店，2001
 \end{thebibliography}
+
+\begin{landscape}
+\begin{table}[]
+  \centering
+ \tabcolsep = 9pt
+ \renewcommand{\arraystretch}{0.8}
+ \caption{モデルの実装方法の比較}
+ \label{gurobi}
+\begin{tabular}{|ｃ|r|r|r|r|r|r|r|r|r|}
+\hline
+    & \multicolumn{2}{c|}{パターン1} & \multicolumn{2}{c|}{パターン2} & \multicolumn{2}{c|}{パターン３} \\ \hline
+問題例 & 総距離   & 計算時間  & 総距離    & 計算時間    & 総距離    & 計算時間   \\ \hline
+r1a &       219.27 &           117.14&      237.30 &       154.22  &        232.51 &      105.23 \\ \hline
+r1b &      208.56  & 183.03      &   254.11  &  124.93       &    232.51     &   105.23  \\ \hline
+r2a &    431.61    &      847.93 &    437.01   &    1136.47 &     437.98    &     877.47  \\ \hline
+r2b &    402.11    &      843.17     &    465.56   &     1311.07    &      421.96   &       1110.43    \\ \hline
+r3a &  779.04      &       3404.06   &     825.01  &     3901.42    &    806.99     &     3155.24     \\ \hline
+r3b &    697.87    &      3231.22     &     817.24  &     3948.20    &     767.10    &      3674.59   \\ \hline
+\end{tabular}
+\end{table}
+\end{landscape}
 \end{document}
 
 % LocalWords:  ij Imahori Yagiura Ibaraki th Metaheuristics McGeoch Aarts lrr
