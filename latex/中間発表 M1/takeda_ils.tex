@@ -54,10 +54,10 @@
 \begin{document}
 \twocolumn[%
 \begin{center}
- {\LARGE \textbf{時間枠及び乗車時間ペナルティ付き乗合タクシー問題に対する反復局所探索法}}\\
+ {\LARGE \textbf{時間枠及び乗車時間ペナルティ付き乗合タクシー問題に対する局所探索法}}\\
  %\vspace{5mm}
  {\Large 竹田 陽} \\
- 2020年10月26日
+ 2020年10月29日
 \end{center}
 \begin{quote}
  \textbf{Abstract．}
@@ -202,8 +202,8 @@ $\gamma$を定数とすると，ペナルティを加えた評価関数を$f(\si
   \STATE $x_{\rm best}$を局所最適解として出力して終了．
  \end{algorithmic}
 \end{algorithm}
-
 \subsection{{\large 最適なサービス開始時刻決定}}
+\subsubsection{{\large 本研究での決定方法}}
 本研究では，各頂点でのサービス開始時刻を線形計画問題として定式化を行い，Gurobi Optimizer (ver 9.0.0) をLPソルバーとして使用している.
 しかし現在は探索1回ごとにサービス時刻を決定するLPを解いているため，計算に多くの時間を要している．この計算時間の長さによって，ヒューリスティックの手法のアプローチをとれていないため，3つのGurobi Optimizerのモデルの持ち方を提案し，計算実験を行う．以下に3つを示す．
 
@@ -212,6 +212,10 @@ $\gamma$を定数とすると，ペナルティを加えた評価関数を$f(\si
   \item 車両ごとにモデルを保持し，探索ごとに変更のあった車両の各頂点における時刻を再決定
   \item すべての車両の情報をひとつのモデルに保持し，探索ごとに変更のあった頂点に対して時刻を再決定
 \end{enumerate}
+
+\subsection{{\large ソルバーを用いない決定方法}}
+茨木らによって提案された手法\cite{masuda}を用いることで，各地点でのサービス開始時刻を線形時間で計算できる．顧客の数を${n}$，ペナルティ関数の区分数の合計を${\delta}$とすると，\mathcal{O($n$\delta)}で計算が可能になる．
+また，本研究ではペナルティ関数が全て凸の区分線形関数である．茨木らによって提案された\cite{sobue}手法では，ペナルティ関数が凸の場合に\mathcal{O($n$\log \delta)}で計算が可能になるため，この手法を用いることで，サービス開始時刻を決定する時間を短縮することが可能であると考えられる．
 
 \section{計算実験}
 \subsection{実験環境}
@@ -234,20 +238,22 @@ DARPでは多くの既存研究があるが，本研究では時間枠及び乗�
 \subsection{実験結果}
 Gurobi Optimizerにおける3つのモデルの持ち方による計算時間及び目的関数の最良値を表\ref{gurobi}に示す．近傍操作には，挿入近傍を用いた．また，目的関数におけるペナルティを $α=1, β=500$とする．
 
-3つの異なるモデルの持ち方を実装したが，計算時間に大きな違いは見られなかった．
-また，ルートの総距離とペナルティの違いに関しては，実装のランダム性における局所最適解の精度の差異だと考えられる．
+3つの異なるモデルの持ち方を実装して，同じ試行回数で比較を行ったが，計算時間に大きな違いは見られなかった．
+
 
 
 \section{まとめと今後の課題}
-時間枠及び乗車時間ペナルティ付き乗合タクシー問題に対して，反復局所探索法による解法を提案した．
-今後の研究計画としては，kickの方法などについて考察していきたい．
-また，より精度の良い解を得るために，近傍操作の見直しなどを行っていく．
+時間枠及び乗車時間ペナルティ付き乗合タクシー問題に対して，局所探索法による解法を提案した．最適なサービス開始時刻を決定するために多くの計算時間を要していることを確認した．
+今後の研究計画としては，サービス開始時刻を決定する時間を短縮していきたい．
+また，より精度の良い解を得るために，ヒューリスティックを用いた手法を提案したい．
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% References
 \begin{thebibliography}{99}
   \bibitem{SA} Kris Braekers，An Caris，and Gerrit K Janssens．Exact and meta-heuristic approach for a general heterogeneous dial-a-ride problem with multiple depots．Transportation Research Part B: Methodlological，Vol．67，pp．166--186，2014
   \bibitem{tabu} Jean-François Cordeau and Gilbert Laporte． \，A Tabu search heuristic for the static multi-vehicle dial-a-ride problem．Transportation Research Part B: Methodological．37．579-594．2003．
   \bibitem{insertion} Jang-Jei Jaw，Amedeo R Odoni，Harilaos N Psaraftis and Nigel H．M．Wilson \，A heuristic algorithm for the multi-vehicle advance request dial-a-ride problem with time windows．Transportation Research Part B: Methodological．Vol．20，No．3，pp．243-2435，1986．
+  \bibitem{sobue} T. Ibaraki, S. Imahori, K. Nonobe, K. Sobue, T. Uno and M. Yagiura, An Iterated Local Search Algorithm for the Vehicle Routing Problem with Convex Time Penalty Functions, Discrete Applied Mathematics, 156 (2008) 2050-2069.
+  \bibitem{masuda} T. Ibaraki, S. Imahori, M. Kubo, T. Masuda, T. Uno and M. Yagiura, Effective Local Search Algorithms for Routing and Scheduling Problems with General Time-Window Constraints, Transportation Science, 39 (2005) 206-232.
   \bibitem{TSP} 柳浦睦憲，茨木俊秀，組合せ最適化 メタ戦略を中心として，朝倉書店，2001
 \end{thebibliography}
 
