@@ -2,7 +2,7 @@
 *.log
 *.o
 a.out
-/data/*
+# /data/*
 gurobi
 /b1/*
 /b1_2/*
