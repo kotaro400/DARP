@@ -1,3 +1,5 @@
+# coding:utf-8
+
 import re
 import os
 filepath = './data'
@@ -27,7 +29,7 @@ for file in files:
         f.write("\n")
 
         for i in range(1,length-1):
-            string = ""  
+            string = ""
             # 入力ファイルをそのまま出力
             for j in range(len(line[i])):
                 if j != 0:
@@ -63,8 +65,8 @@ for file in files:
                 f.write("0,"+lower+",0,0")
                 f.write(","+lower+","+str(MaximuRouteDuraion)+",1,-"+lower)
                 f.write("\n")
-            
-            
+
+
             else:
                 lower = line[i][-2]
                 upper = line[i][-1]
@@ -72,4 +74,3 @@ for file in files:
                 f.write(","+lower+","+upper+",0,0")
                 f.write(","+upper+","+str(MaximuRouteDuraion)+",1,-"+upper)
                 f.write("\n")
-
