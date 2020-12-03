@@ -24,7 +24,7 @@ class InputData{
         int getMaximumRouteDuration();
         int getVehicleCapacity();
         int getLatestArrivalDepotTime();
-        void setRideTimePenalty(int i,vector<double> &temp);
+        void setRideTimePenalty(int i,double cost);
         Location* getLocationPointer(int index);
         Pickup* getPickupPointer(int index);
         Dropoff* getDropoffPointer(int index);

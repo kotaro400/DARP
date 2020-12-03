@@ -14,7 +14,7 @@ for file in files:
     length = len(line)
 
 
-    MaximuRouteDuraion = int(line[0][2])
+    MaximuRouteDuraion = 1440
 
     outputpath = "./new_revised/"+ file
     outputpath = os.path.abspath(outputpath)

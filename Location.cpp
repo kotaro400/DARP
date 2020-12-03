@@ -1,7 +1,7 @@
-using namespace std;
 #include"Location.hpp"
 #include <string>
 #include <iostream>
+using namespace std;
 
 Location::Location(){
 	// cout << "Locationのコンストラクタ" << endl;

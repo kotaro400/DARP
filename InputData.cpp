@@ -18,7 +18,7 @@ void InputData::setInputData(string inputfile){
     vector<string> temp_string_v;
 
     cout << "file name:" << inputfile << endl;
- 
+
     ifstream file(inputfile);
     if (!file) {
 		cerr << "ERROR: could not open inputfile." << endl;
@@ -34,14 +34,14 @@ void InputData::setInputData(string inputfile){
     this->VehicleCapacity = temp_int_v[3];
     temp_int_v.clear();
     this->locationList.reserve(this->RequestSize);
-	this->locationList.resize(this->RequestSize);
+	  this->locationList.resize(this->RequestSize);
     this->PickupList.reserve(this->RequestSize/2+1);
     this->PickupList.resize(this->RequestSize/2+1);
     this->DropoffList.reserve(this->RequestSize/2+1);
     this->DropoffList.resize(this->RequestSize/2+1);
 
     // danger: pickuplistとdropofflistのインデックス0はなにもはいらない
-    
+
     // depot
     getline(file,line);
     temp_string_v = splitstring(line,',');
@@ -49,10 +49,10 @@ void InputData::setInputData(string inputfile){
     temp_string_v.clear();
     getline(file,line);
     temp_string_v = splitstring(line,',');
-    this->LatestArrivalDepotTime = stoi(temp_string_v[6]);
+    this->LatestArrivalDepotTime = stoi(temp_string_v[1]);
 
 
-    
+
     for(int i=1;i <= this->RequestSize; i++){
         getline(file,line);
         temp_string_v = splitstring(line,',');
@@ -104,6 +104,7 @@ Dropoff* InputData::getDropoffPointer(int index){
     return &this->DropoffList[index];
 }
 
-void InputData::setRideTimePenalty(int i,vector<double> &temp){
-    this->DropoffList[i].setRidePenalty(temp);
+void InputData::setRideTimePenalty(int i, double cost){
+    this->PickupList[i].setPickupPenaltyWithRidetime();
+    this->DropoffList[i].setDropoffPenaltyWithRidetime(cost);
 }
