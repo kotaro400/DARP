@@ -2,11 +2,12 @@
 
 using namespace std;
 #include <string>
+
 class Location{
-    private:
-	int index;	//node no.
-	double lat;	//latitude
-	double lng;	//longitude
+private:
+  int index;	//node no.
+  double lat;	//latitude
+  double lng;	//longitude
 
 public:
 	Location();
