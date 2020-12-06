@@ -7,7 +7,7 @@ PiecewiseLinear::PiecewiseLinear(){
   head = NULL;
 }
 
-void PiecewiseLinear::appendFunction(int lower, int upper, double slope, double intercept){
+void PiecewiseLinear::appendFunction(double lower, double upper, double slope, double intercept){
   Function *new_func;
   Function *tmp;
 
@@ -45,11 +45,11 @@ void PiecewiseLinear::displayFunctions(){
   }
 }
 
-PiecewiseLinear* PiecewiseLinear::shiftToRight(int diff){
+PiecewiseLinear* PiecewiseLinear::shiftToRight(double diff){
   Function* tmp = this->head;
 
   while(tmp){
-    if(tmp->upper != 480){
+    if(tmp->upper != 1440){
       tmp->upper += diff;
     }
     tmp->intercept += -diff * tmp->slope;
@@ -59,6 +59,7 @@ PiecewiseLinear* PiecewiseLinear::shiftToRight(int diff){
     tmp = tmp->next;
   }
 
+
   return this;
 }
 
@@ -66,11 +67,14 @@ PiecewiseLinear* PiecewiseLinear::minimize(){
   Function* tmp = this->head;
   double min;
 
-  while(tmp->slope <= 0){
-    tmp = tmp->next;
+  if(tmp->slope > 0){
+    min = tmp->slope * tmp->lower + tmp->intercept;
   }
 
-  min = tmp->slope * tmp->lower + tmp->intercept;
+  while(tmp && tmp->slope <= 0){
+    min = tmp->slope * tmp->upper + tmp->intercept;
+    tmp = tmp->next;
+  }
 
   while(tmp){
     tmp->intercept = min;
@@ -110,4 +114,14 @@ PiecewiseLinear* PiecewiseLinear::sum(PiecewiseLinear* plf_1, PiecewiseLinear* p
   }
 
   return this;
+}
+
+double PiecewiseLinear::computeValue(double var){
+  Function* tmp_func = head;
+
+  while(tmp_func->upper < var){
+    tmp_func = tmp_func->next;
+  }
+
+  return tmp_func->slope * var + tmp_func->intercept;
 }

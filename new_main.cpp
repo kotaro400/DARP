@@ -90,5 +90,95 @@ int main(int argc, char *argv[]){
     //       inputdata.getDropoffPointer(routelist.getRoute(i, j) - 24)->penaltyWithRidetime.displayFunctions();
     //     }
     //   }
-    // }    
+    // }
+
+    // ルートの表示
+    // for(int i = 0; i < m; i++){
+    //   cout << "車両: " << i << endl;
+    //   for(int j = 0; j < routelist.getRouteSize(i); j++){
+    //     cout << routelist.getRoute(i, j) << endl;
+    //   }
+    // }
+
+    vector<vector<double>> start_times(m);
+    vector<vector<double>> service_ride_times(m);
+    vector<vector<PiecewiseLinear>> min_penalties(m);
+
+    for(int i = 0; i < m; i++){
+      service_ride_times[i].resize(routelist.getRouteSize(i));
+
+      for(int j = 0; j < routelist.getRouteSize(i) - 1; j++){
+        if(routelist.getRoute(i, j) <= n){
+          service_ride_times[i][j] = cost.getCost(routelist.getRoute(i, j), routelist.getRoute(i, j + 1)) + inputdata.getPickupPointer(routelist.getRoute(i, j))->servicetime;
+        }else{
+          service_ride_times[i][j] = cost.getCost(routelist.getRoute(i, j), routelist.getRoute(i, j + 1)) + inputdata.getDropoffPointer(routelist.getRoute(i, j) - n)->servicetime;
+        }
+      }
+    }
+
+    for(int i = 0; i < m; i++){
+      start_times[i].resize(routelist.getRouteSize(i));
+      min_penalties[i].resize(routelist.getRouteSize(i));
+
+      for(int j = 1; j < routelist.getRouteSize(i) - 1; j++){
+        if(j == 1){
+          min_penalties[i][1].copy(&(inputdata.getPickupPointer(routelist.getRoute(i, j))->penaltyWithRidetime));
+          min_penalties[i][1].minimize();
+        }else{
+          if(routelist.getRoute(i, j) <= n){
+            min_penalties[i][j].sum(min_penalties[i][j - 1].shiftToRight(service_ride_times[i][j - 1]), &(inputdata.getPickupPointer(routelist.getRoute(i, j))->penaltyWithRidetime));
+            min_penalties[i][j].minimize();
+          }else{
+            min_penalties[i][j].sum(min_penalties[i][j - 1].shiftToRight(service_ride_times[i][j - 1]), &(inputdata.getDropoffPointer(routelist.getRoute(i, j) - n)->penaltyWithRidetime));
+            min_penalties[i][j].minimize();
+          }
+        }
+      }
+    }
+
+    for(int i = 0; i < m; i++){
+      for(int j = routelist.getRouteSize(i) - 2; j > 0; j--){
+        Function* tmp_func = min_penalties[i][j].head;
+        double opt_time = 0;
+        double min_penalty = min_penalties[i][j].head->intercept;
+        double tmp_penalty;
+
+        if(j == routelist.getRouteSize(i) - 2){
+          while(tmp_func){
+            tmp_penalty = tmp_func->slope * tmp_func->upper + tmp_func->intercept;
+            if(min_penalty > tmp_penalty){
+              min_penalty = tmp_penalty;
+              opt_time = tmp_func->upper;
+            }
+            tmp_func = tmp_func->next;
+          }
+        }else{
+          while(tmp_func){
+            double upper_bound = start_times[i][j + 1] - service_ride_times[i][j];
+            tmp_penalty = tmp_func->slope * tmp_func->upper + tmp_func->intercept;
+            if(min_penalty > tmp_penalty){
+              if(tmp_func->upper <= upper_bound){
+                min_penalty = tmp_penalty;
+                opt_time = tmp_func->upper;
+              }else if(tmp_func->slope * upper_bound + tmp_func->intercept < min_penalty){
+                min_penalty = tmp_func->slope * upper_bound + tmp_func->intercept;
+                opt_time = upper_bound;
+              }
+            }
+            tmp_func = tmp_func->next;
+          }
+        }
+        start_times[i][j] = opt_time;
+      }
+    }
+
+
+    for(int i = 0; i < m; i++){
+      cout << "車両: " << i << endl;
+      for(int j = 0; j < routelist.getRouteSize(i); j++){
+        cout << "地点: " << routelist.getRoute(i, j) << endl;
+        cout << "開始時刻: " << start_times[i][j] << endl;
+        cout << "サービスと次への移動時間: " << service_ride_times[i][j] << endl;
+      }
+    }
 }

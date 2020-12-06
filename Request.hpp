@@ -9,11 +9,11 @@ protected:
 	int demand;
   int earliest;
   int latest;
-  int servicetime;
   int nodetype; //0:depot 1:pickup 2:dropoff
 	double ridetimeSlope;
 
 public:
+	int servicetime;
 	Request();
   void setRequest(int locationIdx, int servicetime, int demand,int earliest,int latest,int nodetype);
   int getRequestdemand();

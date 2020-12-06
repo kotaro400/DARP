@@ -198,7 +198,7 @@ void RouteList::InnerRouteChange_specified(int customerSize,int worst){
         }
     }
     // cout  << "newindex:" << newindex << endl;
-    it += newindex;  
+    it += newindex;
     this->Routelist[index].insert(it,worst);
     // cout << "------------------" << endl;
     // for(int i=0;i<this->Routelist.size();i++){
@@ -413,7 +413,7 @@ tuple<int, int,int,int,int,int> RouteList::swapRoute(int customerSize){
     // it = this->Routelist[afterindex].insert(it,before_first);
     // it++;
     // it = this->Routelist[afterindex].insert(it,before_second);
-    
+
     // afterindexの2つをbeforeindexに挿入
     // it = this->Routelist[beforeindex].end()-1;
     // it = this->Routelist[beforeindex].insert(it,after_first);
@@ -451,7 +451,7 @@ int RouteList::Outer_Relocate(int n,int m, int number){
             ++itr;
         }
     }
-    return beforeindex;    
+    return beforeindex;
 }
 
 tuple<int,int> RouteList::Outer_Swap(int n,int m,int num1,int num2){
@@ -467,7 +467,7 @@ tuple<int,int> RouteList::Outer_Swap(int n,int m,int num1,int num2){
         for (int j=0;j<this->Routelist[VehicileNum].size();j++){
             if (this->Routelist[VehicileNum][j]==num1){
                 beforeindex = VehicileNum;
-            } 
+            }
             if (this->Routelist[VehicileNum][j]==num2){
                 afterindex = VehicileNum;
             }
@@ -493,4 +493,3 @@ tuple<int,int> RouteList::Outer_Swap(int n,int m,int num1,int num2){
 
 
 }
-

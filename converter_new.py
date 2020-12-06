@@ -13,7 +13,6 @@ for file in files:
             line.append(words)
     length = len(line)
 
-
     MaximuRouteDuraion = 1440
 
     outputpath = "./new_revised/"+ file
