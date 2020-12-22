@@ -52,7 +52,6 @@ void InputData::setInputData(string inputfile){
     this->LatestArrivalDepotTime = stoi(temp_string_v[1]);
 
 
-
     for(int i=1;i <= this->RequestSize; i++){
         getline(file,line);
         temp_string_v = splitstring(line,',');

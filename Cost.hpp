@@ -3,7 +3,8 @@
 using namespace std;
 #include <string>
 #include <vector>
-#include "RouteList.hpp"
+
+class RouteList;
 
 class Cost{
 private:

@@ -99,7 +99,7 @@ void Dropoff::setDropoffPenaltyWithRidetime(double cost){
 
 	while(tmp_func){
 		tmp_func->slope += ridetimeSlope;
-		tmp_func->intercept -= ridetimeSlope * cost;
+		tmp_func->intercept -= ridetimeSlope * (cost + servicetime);
 		tmp_func = tmp_func->next;
 	}
 }

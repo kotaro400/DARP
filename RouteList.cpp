@@ -1,4 +1,6 @@
 #include "RouteList.hpp"
+#include "PiecewiseLinear.hpp"
+#include "Cost.hpp"
 using namespace std;
 #include <iostream>
 #include <random>
@@ -8,9 +10,19 @@ void removeElement(vector<int> &vector, int index); //vectorの指定したイ�
 
 RouteList::RouteList(int VehicleNum){
     // cout << "RouteListのコンストラクタ" << endl;
-    this->VehicleNum = VehicleNum;
-    this->Routelist.reserve(VehicleNum);
+  this->VehicleNum = VehicleNum;
+
+  this->Routelist.reserve(VehicleNum);
 	this->Routelist.resize(VehicleNum);
+
+  this->start_times.reserve(VehicleNum);
+  this->start_times.resize(VehicleNum);
+
+  this->service_ride_times.reserve(VehicleNum);
+  this->service_ride_times.resize(VehicleNum);
+
+  this->min_penalties.reserve(VehicleNum);
+  this->min_penalties.resize(VehicleNum);
 }
 
 RouteList::~RouteList(){
@@ -62,7 +74,7 @@ int RouteList::getRoute(int RouteNumber,int RouteOrder){
     return this->Routelist[RouteNumber][RouteOrder];
 }
 
-void RouteList::InnerRouteChange_requestSet(){
+int RouteList::InnerRouteChange_requestSet(){
     mt19937_64 mt64(rand());
     int index= abs((int)mt64()) % this->Routelist.size();
     int RequestSize = (this->Routelist[index].size()-2) / 2;
@@ -83,6 +95,9 @@ void RouteList::InnerRouteChange_requestSet(){
     it = this->Routelist[index].insert(it,first);
     it++;it = this->Routelist[index].insert(it,second);
     it++;
+
+    // 変更のあった車両を返す
+    return index;
 }
 
 void RouteList::InnerRouteChange_node(int customerSize){
@@ -490,6 +505,107 @@ tuple<int,int> RouteList::Outer_Swap(int n,int m,int num1,int num2){
         }
     }
     return make_tuple(beforeindex,afterindex);
+}
+
+void RouteList::ComputeStartTimes(Cost* cost, InputData* inputdata, int i){
+  int n=inputdata->getRequestSize()/2;
+
+  if(!service_ride_times[i].size()){
+    service_ride_times[i].resize(getRouteSize(i));
+    start_times[i].resize(getRouteSize(i));
+    min_penalties[i].resize(getRouteSize(i));
+  }
+
+  for(int j = 0; j < getRouteSize(i) - 1; j++){
+    if(getRoute(i, j) <= n){
+      service_ride_times[i][j] = cost->getCost(getRoute(i, j), getRoute(i, j + 1)) + inputdata->getPickupPointer(getRoute(i, j))->servicetime;
+    }else{
+      service_ride_times[i][j] = cost->getCost(getRoute(i, j), getRoute(i, j + 1)) + inputdata->getDropoffPointer(getRoute(i, j) - n)->servicetime;
+    }
+  }
+
+  for(int j = 0; j < getRouteSize(i) - 1; j++){
+    min_penalties[i][j].head = NULL;
+  }
 
 
+  for(int j = 1; j < getRouteSize(i) - 1; j++){
+    if(j == 1){
+      PiecewiseLinear depot_penalty;
+
+      depot_penalty.appendFunction(-1000000, 0, -1000000, 0);
+      depot_penalty.appendFunction(0, 1440, 0, 0);
+      depot_penalty.shiftToRight(cost->getCost(0, getRoute(i, 1)));
+      min_penalties[i][1].sum(&depot_penalty, &(inputdata->getPickupPointer(getRoute(i, j))->penaltyWithRidetime));
+      min_penalties[i][1].minimize();
+    }else{
+      if(getRoute(i, j) <= n){
+        min_penalties[i][j].sum(min_penalties[i][j - 1].shiftToRight(service_ride_times[i][j - 1]), &(inputdata->getPickupPointer(getRoute(i, j))->penaltyWithRidetime));
+        min_penalties[i][j].minimize();
+      }else{
+        min_penalties[i][j].sum(min_penalties[i][j - 1].shiftToRight(service_ride_times[i][j - 1]), &(inputdata->getDropoffPointer(getRoute(i, j) - n)->penaltyWithRidetime));
+        min_penalties[i][j].minimize();
+      }
+    }
+  }
+
+  for(int j = getRouteSize(i) - 2; j > 0; j--){
+    Function* tmp_func = min_penalties[i][j].head;
+    double opt_time = 0;
+    double min_penalty = min_penalties[i][j].head->intercept;
+    double tmp_penalty;
+
+    if(j == getRouteSize(i) - 2){
+      while(tmp_func){
+        tmp_penalty = tmp_func->slope * tmp_func->upper + tmp_func->intercept;
+        if(min_penalty > tmp_penalty){
+          min_penalty = tmp_penalty;
+          opt_time = tmp_func->upper;
+        }
+        tmp_func = tmp_func->next;
+      }
+    }else{
+      while(tmp_func){
+        double upper_bound = start_times[i][j + 1] - service_ride_times[i][j];
+        tmp_penalty = tmp_func->slope * tmp_func->upper + tmp_func->intercept;
+        if(min_penalty > tmp_penalty){
+          if(tmp_func->upper <= upper_bound){
+            min_penalty = tmp_penalty;
+            opt_time = tmp_func->upper;
+          }else if(tmp_func->slope * upper_bound + tmp_func->intercept < min_penalty){
+            min_penalty = tmp_func->slope * upper_bound + tmp_func->intercept;
+            opt_time = upper_bound;
+          }
+        }
+        tmp_func = tmp_func->next;
+      }
+    }
+    start_times[i][j] = opt_time;
+  }
+}
+
+bool RouteList::satisfyCapacityConstraint(int routeindex, InputData* inputdata){
+  int total_demand = 0;
+  int order = 1;
+  int n=inputdata->getRequestSize()/2;
+
+  while(order < getRouteSize(routeindex) - 1){
+    if(getRoute(routeindex, order) <= n){
+      total_demand += 1;
+    }else{
+      total_demand -= 1;
+    }
+
+    if(total_demand <= inputdata->getVehicleCapacity()){
+      order += 1;
+    }else{
+      break;
+    }
+  }
+
+  if(order == getRouteSize(routeindex) - 1){
+    return true;
+  }else{
+    return false;
+  }
 }

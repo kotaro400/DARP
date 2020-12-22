@@ -22,7 +22,7 @@ void Cost::setCost(int indexI,double latI,double lngI,int indexJ,double latJ,dou
 }
 
 double Cost::getCost(int indexI,int indexJ){
-	return this->cost[indexI][indexJ];	
+	return this->cost[indexI][indexJ];
 }
 
 double Cost::CalcDistance(RouteList *routelist){

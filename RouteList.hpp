@@ -1,8 +1,11 @@
 #pragma once
 
 #include"InputData.hpp"
+#include "PiecewiseLinear.hpp"
 #include <vector>
 //ルートの数は車両の数
+
+class Cost;
 
 class RouteList {
 private:
@@ -10,6 +13,10 @@ private:
     vector<vector<int> > Routelist;
 
 public:
+  vector<vector<double>> start_times;
+  vector<vector<double>> service_ride_times;
+  vector<vector<PiecewiseLinear>> min_penalties;
+
 	  RouteList(int VehicleNum);
     ~RouteList();
     int getVehicleNum();
@@ -18,7 +25,7 @@ public:
     vector<int>* getRoutePointerByIndex(int index);
     int getRouteListSize();
     int getRoute(int RouteNumber,int RouteOrder);
-    void InnerRouteChange_requestSet(); //リクエストをセットでルート内 ランダム
+    int InnerRouteChange_requestSet(); //リクエストをセットでルート内 ランダム
     void InnerRouteChange_node(int customerSize); //ノードごとにルート内 ランダム
     void InnerRouteChange_specified(int customerSize,int worst); //ペナルティの大きいノードを単体で違う場所に挿入
     void InnerOrderChange_requestset(int RouteIndex); //ルートのインデックスを指定してリクエストをセットでルート内
@@ -31,4 +38,6 @@ public:
     void insertRoute(int routeindex,int place, int number);
     int Outer_Relocate(int n, int m,int number);
     tuple<int,int> Outer_Swap(int n,int m,int num1,int num2);
+    void ComputeStartTimes(Cost* cost, InputData* inputdata, int i);
+    bool satisfyCapacityConstraint(int routeindex, InputData* inputdata);
 };

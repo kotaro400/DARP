@@ -18,5 +18,5 @@ Request.o : Request.hpp Request.cpp PiecewiseLinear.hpp
 	g++ -c Request.cpp -o Request.o -std=c++11
 Cost.o : Cost.cpp Cost.hpp RouteList.hpp
 	g++ -c Cost.cpp -o Cost.o -std=c++11
-RouteList.o : RouteList.hpp RouteList.cpp
+RouteList.o : RouteList.hpp RouteList.cpp Cost.hpp PiecewiseLinear.hpp
 	g++ -c RouteList.cpp -o RouteList.o -std=c++11
