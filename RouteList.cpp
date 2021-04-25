@@ -8,7 +8,7 @@ using namespace std;
 #include <tuple>
 void removeElement(vector<int> &vector, int index); //vectorの指定したインデックスの要素を削除する関数
 
-RouteList::RouteList(int VehicleNum){
+RouteList::RouteList(int VehicleNum, int RequestSize){
     // cout << "RouteListのコンストラクタ" << endl;
   this->VehicleNum = VehicleNum;
 
@@ -23,6 +23,9 @@ RouteList::RouteList(int VehicleNum){
 
   this->min_penalties.reserve(VehicleNum);
   this->min_penalties.resize(VehicleNum);
+
+  this->ride_times.reserve(RequestSize);
+  this->ride_times.resize(RequestSize);
 }
 
 RouteList::~RouteList(){
@@ -536,14 +539,14 @@ void RouteList::ComputeStartTimes(Cost* cost, InputData* inputdata, int i){
       depot_penalty.appendFunction(-1000000, 0, -1000000, 0);
       depot_penalty.appendFunction(0, 1440, 0, 0);
       depot_penalty.shiftToRight(cost->getCost(0, getRoute(i, 1)));
-      min_penalties[i][1].sum(&depot_penalty, &(inputdata->getPickupPointer(getRoute(i, j))->penaltyWithRidetime));
+      min_penalties[i][1].sum(&depot_penalty, &(inputdata->getPickupPointer(getRoute(i, j))->penalty));
       min_penalties[i][1].minimize();
     }else{
       if(getRoute(i, j) <= n){
-        min_penalties[i][j].sum(min_penalties[i][j - 1].shiftToRight(service_ride_times[i][j - 1]), &(inputdata->getPickupPointer(getRoute(i, j))->penaltyWithRidetime));
+        min_penalties[i][j].sum(min_penalties[i][j - 1].shiftToRight(service_ride_times[i][j - 1]), &(inputdata->getPickupPointer(getRoute(i, j))->penalty));
         min_penalties[i][j].minimize();
       }else{
-        min_penalties[i][j].sum(min_penalties[i][j - 1].shiftToRight(service_ride_times[i][j - 1]), &(inputdata->getDropoffPointer(getRoute(i, j) - n)->penaltyWithRidetime));
+        min_penalties[i][j].sum(min_penalties[i][j - 1].shiftToRight(service_ride_times[i][j - 1]), &(inputdata->getDropoffPointer(getRoute(i, j) - n)->penalty));
         min_penalties[i][j].minimize();
       }
     }
@@ -581,6 +584,62 @@ void RouteList::ComputeStartTimes(Cost* cost, InputData* inputdata, int i){
       }
     }
     start_times[i][j] = opt_time;
+
+    if(getRoute(i, j) > n){
+      PiecewiseLinear rideTimeFunction;
+      double bound = opt_time - inputdata->getDropoffPointer(getRoute(i, j) - n)->servicetime - inputdata->getPickupPointer(getRoute(i, j) - n)->maxRideTime;
+      if(bound >= 0){
+        rideTimeFunction.appendFunction(0, bound, - 1, bound);
+        rideTimeFunction.appendFunction(bound, 1440, 0, 0);
+      }else{
+        rideTimeFunction.appendFunction(0, 1440, 0, 0);
+      }
+      int pickupPos = j - 1;
+      while (true) {
+        if(getRoute(i, pickupPos) == getRoute(i, j) - n){
+          break;
+        }else{
+          pickupPos -= 1;
+        }
+      }
+      for(int k = pickupPos; k < j; k++){
+        min_penalties[i][k].head = NULL;
+        PiecewiseLinear newPlf;
+        if(k == 1){
+          PiecewiseLinear depot_penalty;
+
+          depot_penalty.appendFunction(-1000000, 0, -1000000, 0);
+          depot_penalty.appendFunction(0, 1440, 0, 0);
+          depot_penalty.shiftToRight(cost->getCost(0, getRoute(i, 1)));
+          min_penalties[i][1].sum(&depot_penalty, &(inputdata->getPickupPointer(getRoute(i, k))->penalty));
+          newPlf.sum(&(min_penalties[i][1]), &rideTimeFunction);
+          min_penalties[i][1] = newPlf;
+          min_penalties[i][1].minimize();
+        }else{
+          if(getRoute(i, k) <= n){
+            min_penalties[i][k].sum(min_penalties[i][k - 1].shiftToRight(service_ride_times[i][k - 1]), &(inputdata->getPickupPointer(getRoute(i, k))->penalty));
+            newPlf.sum(&(min_penalties[i][k]), &rideTimeFunction);
+            min_penalties[i][1] = newPlf;
+            min_penalties[i][k].minimize();
+          }else{
+            min_penalties[i][k].sum(min_penalties[i][k - 1].shiftToRight(service_ride_times[i][k - 1]), &(inputdata->getDropoffPointer(getRoute(i, k) - n)->penalty));
+            newPlf.sum(&(min_penalties[i][k]), &rideTimeFunction);
+            min_penalties[i][1] = newPlf;
+            min_penalties[i][k].minimize();
+          }
+        }
+      }
+    }else{
+      int dropoffPos = j + 1;
+      while (true) {
+        if(getRoute(i, dropoffPos) == getRoute(i, j) + n){
+          break;
+        }else{
+          dropoffPos += 1;
+        }
+      }
+      ride_times[getRoute(i, j) - 1] = start_times[i][dropoffPos] - opt_time - inputdata->getPickupPointer(getRoute(i, j))->servicetime;
+    }
   }
 }
 

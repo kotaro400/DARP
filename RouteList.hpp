@@ -16,8 +16,9 @@ public:
   vector<vector<double>> start_times;
   vector<vector<double>> service_ride_times;
   vector<vector<PiecewiseLinear>> min_penalties;
+  vector<double> ride_times;
 
-	  RouteList(int VehicleNum);
+	  RouteList(int VehicleNum, int RequestSize);
     ~RouteList();
     int getVehicleNum();
     void makeInitialRoute(int RequestSize);

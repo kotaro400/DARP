@@ -102,7 +102,6 @@ PiecewiseLinear* PiecewiseLinear::sum(PiecewiseLinear* plf_1, PiecewiseLinear* p
 
   while(plf_1_func || plf_2_func){
     appendFunction(max(plf_1_func->lower, plf_2_func->lower), min(plf_1_func->upper, plf_2_func->upper), plf_1_func->slope + plf_2_func->slope, plf_1_func->intercept + plf_2_func->intercept);
-
     if(plf_1_func->upper < plf_2_func->upper){
       plf_1_func = plf_1_func->next;
     }else if(plf_1_func->upper > plf_2_func->upper){
@@ -115,6 +114,7 @@ PiecewiseLinear* PiecewiseLinear::sum(PiecewiseLinear* plf_1, PiecewiseLinear* p
 
   return this;
 }
+
 
 double PiecewiseLinear::computeValue(double var){
   Function* tmp_func = head;

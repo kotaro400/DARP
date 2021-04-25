@@ -104,6 +104,5 @@ Dropoff* InputData::getDropoffPointer(int index){
 }
 
 void InputData::setRideTimePenalty(int i, double cost){
-    this->PickupList[i].setPickupPenaltyWithRidetime();
-    this->DropoffList[i].setDropoffPenaltyWithRidetime(cost);
+  this->PickupList[i].maxRideTime = cost * 1.5;
 }

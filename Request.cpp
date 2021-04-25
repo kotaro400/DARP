@@ -7,7 +7,6 @@ using namespace std;
 
 Request::Request(){
 	// cout << "Requestのコンストラクタ" << endl;
-	ridetimeSlope = 1.0;
 }
 
 void Request::setRequest(int locationIdx, int servicetime, int demand,int earliest,int latest, int nodetype) {
@@ -32,15 +31,15 @@ void Pickup::setPickupPenalty(const vector<double> &temp){
 	}
 }
 
-void Pickup::setPickupPenaltyWithRidetime(){
-	penaltyWithRidetime.copy(&penalty);
-	Function* tmp_func = penaltyWithRidetime.head;
-
-	while(tmp_func){
-		tmp_func->slope -= ridetimeSlope;
-		tmp_func = tmp_func->next;
-	}
-}
+// void Pickup::setPickupPenaltyWithRidetime(){
+// 	penaltyWithRidetime.copy(&penalty);
+// 	Function* tmp_func = penaltyWithRidetime.head;
+//
+// 	while(tmp_func){
+// 		tmp_func->slope -= ridetimeSlope;
+// 		tmp_func = tmp_func->next;
+// 	}
+// }
 
 void Pickup::setPickup(int locationIdx, int servicetime, int demand,int earliest,int latest){
 	this->locationIdx = locationIdx;
@@ -93,16 +92,16 @@ void Dropoff::setDropoff(int locationIdx, int servicetime, int demand,int earlie
 	this->nodetype = nodetype;
 }
 
-void Dropoff::setDropoffPenaltyWithRidetime(double cost){
-	penaltyWithRidetime.copy(&penalty);
-	Function* tmp_func = penaltyWithRidetime.head;
-
-	while(tmp_func){
-		tmp_func->slope += ridetimeSlope;
-		tmp_func->intercept -= ridetimeSlope * (cost + servicetime);
-		tmp_func = tmp_func->next;
-	}
-}
+// void Dropoff::setDropoffPenaltyWithRidetime(double cost){
+// 	penaltyWithRidetime.copy(&penalty);
+// 	Function* tmp_func = penaltyWithRidetime.head;
+//
+// 	while(tmp_func){
+// 		tmp_func->slope += ridetimeSlope;
+// 		tmp_func->intercept -= ridetimeSlope * (cost + servicetime);
+// 		tmp_func = tmp_func->next;
+// 	}
+// }
 
 
 // vector<double>* Dropoff::getDropoffPenaltyX(){

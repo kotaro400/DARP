@@ -10,10 +10,11 @@ protected:
   int earliest;
   int latest;
   int nodetype; //0:depot 1:pickup 2:dropoff
-	double ridetimeSlope;
+	// double ridetimeSlope;
 
 public:
 	int servicetime;
+	double maxRideTime;
 	Request();
   void setRequest(int locationIdx, int servicetime, int demand,int earliest,int latest,int nodetype);
   int getRequestdemand();
@@ -25,14 +26,14 @@ private:
 
 public:
 	PiecewiseLinear penalty;
-	PiecewiseLinear penaltyWithRidetime;
+	// PiecewiseLinear penaltyWithRidetime;
   Pickup();
   void setPickupPenalty(const vector<double> &temp);
   void setPickup(int locationIdx, int servicetime, int demand,int earliest,int latest);
   // vector<double>* getPickupPenaltyX();
   // double getPickupPenaltyXValue(int index);
   // double getPickupPenaltyYValue(int index);
-	void setPickupPenaltyWithRidetime();
+	// void setPickupPenaltyWithRidetime();
 };
 
 class Dropoff :public Request{
@@ -45,7 +46,7 @@ private:
 
 public:
 	PiecewiseLinear penalty;
-	PiecewiseLinear penaltyWithRidetime;
+	// PiecewiseLinear penaltyWithRidetime;
   Dropoff();
   void setDropOffPenalty(const vector<double> &temp);
   // void setRidePenalty(vector<double> &temp);
@@ -56,5 +57,5 @@ public:
   // vector<double>* getRidetimePenaltyX();
   // double getRidetimePenaltyXValue(int index);
   // double getRidetimePenaltyYValue(int index);
-	void setDropoffPenaltyWithRidetime(double cost);
+	// void setDropoffPenaltyWithRidetime(double cost);
 };
