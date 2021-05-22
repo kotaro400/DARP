@@ -252,7 +252,7 @@ void RouteList::InnerOrderChange_requestset(int RouteIndex){
 void RouteList::InnerOrderChange_node(int customerSize,int RouteIndex){
     int index,firstindex,first,another,anotherindex,newindex;
     bool ispick;
-    mt19937_64 mt64(rand());
+    mt19937_64 mt64(1);
     index = RouteIndex;
     int RequestSize_inRoot = (this->Routelist[index].size()-2) / 2;
     firstindex = abs((int)mt64())%(this->Routelist[index].size()-2)+1;

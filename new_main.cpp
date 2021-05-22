@@ -91,64 +91,62 @@ int main(int argc, char *argv[]){
       }
     }
 
-    double starttime = cpu_time();
-
-    for(int routeindex = 0; routeindex < m; routeindex++){
-      for(int it = 0; it < pow((routelist.getRouteSize(routeindex)-2),2)*2; it++){
-        tmpPenalty = 0;
-        RouteList *tmp_routelist;
-        tmp_routelist = new RouteList(m, n);
-        *tmp_routelist = routelist;
-
-        tmp_routelist->InnerOrderChange_node(n, routeindex);
-
-        if(tmp_routelist->satisfyCapacityConstraint(routeindex, &inputdata)){
-
-          tmp_routelist->ComputeStartTimes(&cost, &inputdata, routeindex);
-
-          // ペナルティの計算
-          // tmpPenalty = ALPHA * cost.CalcDistance(tmp_routelist);
-          for(int i = 0; i < m; i++){
-            // tmpPenalty += BETA * tmp_routelist->min_penalties[i][tmp_routelist->getRouteSize(i) - 2].computeValue(tmp_routelist->start_times[i][tmp_routelist->getRouteSize(i) - 2]);
-            for(int j = 1; j < tmp_routelist->getRouteSize(i) - 1; j++){
-              if(tmp_routelist->getRoute(i, j) <= n){
-                tmpPenalty += BETA * inputdata.getPickupPointer(tmp_routelist->getRoute(i, j))->penalty.computeValue(tmp_routelist->start_times[i][j]);
-                if(inputdata.getPickupPointer(tmp_routelist->getRoute(i, j))->maxRideTime < tmp_routelist->ride_times[tmp_routelist->getRoute(i, j) - 1]){
-                  tmpPenalty += BETA * (tmp_routelist->ride_times[tmp_routelist->getRoute(i, j) - 1] - inputdata.getPickupPointer(tmp_routelist->getRoute(i, j))->maxRideTime);
-                }
-              }else{
-                tmpPenalty += BETA * inputdata.getDropoffPointer(tmp_routelist->getRoute(i, j) - n)->penalty.computeValue(tmp_routelist->start_times[i][j]);
-              }
-            }
-          }
-
-          cout << tmpPenalty << endl;
-
-          if(tmpPenalty < BestPenalty){
-            BestPenalty = tmpPenalty;
-            routelist = *tmp_routelist;
-          }
-        }
-
-        delete tmp_routelist;
-      }
-    }
-
-    double endtime = cpu_time();
+    // double starttime = cpu_time();
+    //
+    // for(int routeindex = 0; routeindex < m; routeindex++){
+    //   for(int it = 0; it < 20; it++){
+    //     tmpPenalty = 0;
+    //     RouteList *tmp_routelist;
+    //     tmp_routelist = new RouteList(m, n);
+    //     *tmp_routelist = routelist;
+    //
+    //     tmp_routelist->InnerOrderChange_node(n, routeindex);
+    //
+    //     if(tmp_routelist->satisfyCapacityConstraint(routeindex, &inputdata)){
+    //
+    //       tmp_routelist->ComputeStartTimes(&cost, &inputdata, routeindex);
+    //
+    //       // ペナルティの計算
+    //       // tmpPenalty = ALPHA * cost.CalcDistance(tmp_routelist);
+    //       for(int i = 0; i < m; i++){
+    //         // tmpPenalty += BETA * tmp_routelist->min_penalties[i][tmp_routelist->getRouteSize(i) - 2].computeValue(tmp_routelist->start_times[i][tmp_routelist->getRouteSize(i) - 2]);
+    //         for(int j = 1; j < tmp_routelist->getRouteSize(i) - 1; j++){
+    //           if(tmp_routelist->getRoute(i, j) <= n){
+    //             tmpPenalty += BETA * inputdata.getPickupPointer(tmp_routelist->getRoute(i, j))->penalty.computeValue(tmp_routelist->start_times[i][j]);
+    //             if(inputdata.getPickupPointer(tmp_routelist->getRoute(i, j))->maxRideTime < tmp_routelist->ride_times[tmp_routelist->getRoute(i, j) - 1]){
+    //               tmpPenalty += BETA * (tmp_routelist->ride_times[tmp_routelist->getRoute(i, j) - 1] - inputdata.getPickupPointer(tmp_routelist->getRoute(i, j))->maxRideTime);
+    //             }
+    //           }else{
+    //             tmpPenalty += BETA * inputdata.getDropoffPointer(tmp_routelist->getRoute(i, j) - n)->penalty.computeValue(tmp_routelist->start_times[i][j]);
+    //           }
+    //         }
+    //       }
+    //
+    //       if(tmpPenalty < BestPenalty){
+    //         BestPenalty = tmpPenalty;
+    //         routelist = *tmp_routelist;
+    //       }
+    //     }
+    //
+    //     delete tmp_routelist;
+    //   }
+    // }
+    //
+    // double endtime = cpu_time();
 
 
 
-    for(int i = 0; i < m; i++){
-      cout << "車両: " << i << endl;
-      for(int j = 0; j < routelist.getRouteSize(i); j++){
-        cout << "地点: " << routelist.getRoute(i, j) << endl;
-        cout << "開始時刻: " << routelist.start_times[i][j] << endl;
-        cout << "サービスと次への移動時間: " << routelist.service_ride_times[i][j] << endl;
-        if (routelist.getRoute(i, j) <= n) {
-          cout << "乗車制約" << inputdata.getPickupPointer(routelist.getRoute(i, j))->maxRideTime << endl;
-        }
-      }
-    }
+    // for(int i = 0; i < m; i++){
+    //   cout << "車両: " << i << endl;
+    //   for(int j = 0; j < routelist.getRouteSize(i); j++){
+    //     cout << "地点: " << routelist.getRoute(i, j) << endl;
+    //     cout << "開始時刻: " << routelist.start_times[i][j] << endl;
+    //     cout << "サービスと次への移動時間: " << routelist.service_ride_times[i][j] << endl;
+    //     if (routelist.getRoute(i, j) <= n) {
+    //       cout << "乗車制約" << inputdata.getPickupPointer(routelist.getRoute(i, j))->maxRideTime << endl;
+    //     }
+    //   }
+    // }
 
     //乗車時間の表示
     // for(int i = 0; i < n; i++){
@@ -156,12 +154,13 @@ int main(int argc, char *argv[]){
     // }
 
     //ルートの表示
-    // for(int i = 0; i < m; i++){
-    //   cout << "車両: " << i << endl;
-    //   for(int j = 0; j < routelist.getRouteSize(i); j++){
-    //     cout << routelist.getRoute(i, j) << endl;
-    //   }
-    // }
+    for(int i = 0; i < m; i++){
+      cout << "車両: " << i << endl;
+      for(int j = 0; j < routelist.getRouteSize(i); j++){
+        cout << routelist.getRoute(i, j) << " ";
+      }
+      cout << endl;
+    }
 
     cout << "ペナルティ: " << BestPenalty <<endl;
     // cout << "時間: " << endtime - starttime << "秒" << endl;
